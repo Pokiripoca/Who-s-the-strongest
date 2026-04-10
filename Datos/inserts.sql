@@ -12,11 +12,11 @@ INSERT INTO Series_origen (ID_Serie, Nombre_Serie, Autor, Estudio_Animacion, Pai
 (11, 'JoJo''s Bizarre Adventure', 'Hirohiko Araki', 'David Production', 'Japón', 2012),
 (12, 'Shingeki no Kyojin', 'Hajime Isayama', 'WIT Studio', 'Japón', 2013);
 
-INSERT INTO cat_tipos_cuerpo ( ID_Tipo, Nombre_Tipo, Descripcion_Fisica, Factor_Metabolico, Recomendacion_Gimnasio, Dificultad_Hipertrofia) VALUES
-(1, 'Ectomorfo', 'Delgado, huesos finos, poca grasa', 'Muy Rápido', 'Entrenamientos cortos e intensos', 'Alta'),
-(2, 'Mesomorfo', 'Atlético, hombros anchos, simétrico', 'Eficiente', 'Variedad de pesos y repeticiones', 'Baja'),
-(3, 'Endomorfo', 'Robusto, tendencia a ganar peso', 'Lento', 'Mucho volumen y control calórico', 'Media'),
-(4, 'Hipertrófico', 'Masa muscular extrema, densidad ósea superior', 'Especial', 'Mantenimiento de fuerza límite', 'N/A');
+INSERT INTO cat_tipos_cuerpo (ID_Tipo, Nombre_Tipo, Descripcion_Fisica, Factor_Metabolico, Recomendacion_Gimnasio, Dificultad_Hipertrofia) VALUES
+(1, 'Ectomorfo', 'Delgado, huesos finos', 'Muy Rápido', 'Entrenamientos cortos e intensos', 'Alta'),
+(2, 'Mesomorfo', 'Atlético, hombros anchos', 'Eficiente', 'Variedad de pesos y repeticiones', 'Baja'),
+(3, 'Endomorfo', 'Robusto, extremidades cortas', 'Lento', 'Mucho volumen y control calórico', 'Media'),
+(4, 'Hipertrófico', 'Masa muscular extrema', 'Especial', 'Mantenimiento de fuerza límite', 'N/A');
 
 INSERT INTO cat_facciones (ID_Faccion, Nombre_Faccion, Lider_Actual, Ubicacion_Sede, Alineacion, Objetivo_Principal) VALUES
 (1, 'Academia U.A.', 'Nezu / All Might', 'Musutafu, Japón', 'Héroe', 'Formar nuevos profesionales'),
@@ -99,3 +99,173 @@ INSERT INTO Medidas_Fisicas (ID_Medida, ID_P, Peso_kg, Altura_cm, Grasa_Pct, Pec
 (33, 33, 58.0, 174, '15%', 92, 64, 'Mesomorfo'),
 (34, 34, 68.0, 176, '9%', 104, 70, 'Mesomorfo'),
 (35, 35, 65.0, 167, '8%', 102, 74, 'Mesomorfo');
+
+INSERT INTO cat_planes_nutricion (ID_Plan, Nombre_Plan, Objetivo_Fisico, Total_Calorias_Dia, Ratio_Proteina, Descripcion_Menu) VALUES
+(1, 'Volumen Sucio', 'Ganancia masiva de masa', '5,000+ kcal', '30%', 'Altas grasas y carbohidratos (Ej. Goku/All Might)'),
+(2, 'Definición Extrema', 'Marcar músculo (Ripped)', '2,200 kcal', '50%', 'Baja en carbohidratos, alta en fibra (Ej. Toji)'),
+(3, 'Mantenimiento Atlético', 'Resistencia y agilidad', '3,000 kcal', '35%', 'Balanceado para guerreros híbridos (Ej. Tanjiro)'),
+(4, 'Ayuno de Combate', 'Claridad mental y ligereza', '1,800 kcal', '40%', 'Ventanas de 16 horas sin comer (Ej. Itadori)'),
+(5, 'Dieta de Regeneración', 'Recuperación de lesiones', '3,500 kcal', '45%', 'Alta en colágeno y micronutrientes (Ej. Midoriya)'),
+(6, 'Superávit Limpio', 'Músculo sin grasa', '3,800 kcal', '40%', 'Carbohidratos complejos y proteína magra (Ej. Zoro)');
+
+INSERT INTO bitacora_entrenamiento (ID_Bit, ID_P, ID_Ejerc, Series, Repeticiones, Carga_Intensidad, Fecha_Entreno) VALUES
+(1, 1, 9, 5, 5, '500 kg', '2026-03-01'), (2, 2, 1, 4, 8, '140 kg', '2026-03-01'),
+(3, 3, 3, 4, 12, 'Lastre 30 kg', '2026-03-01'), (4, 4, 2, 5, 5, '220 kg', '2026-03-01'),
+(5, 5, 6, 4, 1, 'Max Esfuerzo', '2026-03-01'), (6, 6, 7, 5, 10, '180 kg', '2026-03-01'),
+(7, 7, 2, 10, 1, '10,000 kg', '2026-03-02'), (8, 8, 9, 8, 3, '8,000 kg', '2026-03-02'),
+(9, 9, 11, 4, 10, '100 kg', '2026-03-02'), (10, 10, 1, 4, 12, '80 kg', '2026-03-02'),
+(11, 11, 2, 3, 1, '400 kg', '2026-03-02'), (12, 12, 10, 4, 15, 'Extravagante', '2026-03-02'),
+(13, 13, 3, 5, 20, 'Corporal', '2026-03-02'), (14, 14, 9, 4, 10, '90 kg', '2026-03-02'),
+(15, 15, 7, 6, 15, '140 kg', '2026-03-02'), (16, 16, 3, 5, 15, 'Lastre 40 kg', '2026-03-03'),
+(17, 17, 10, 10, 50, 'Corporal', '2026-03-03'), (18, 18, 9, 3, 5, '160 kg', '2026-03-03'),
+(19, 19, 11, 5, 5, '250 kg', '2026-03-03'), (20, 20, 7, 8, 20, 'Fuego', '2026-03-03'),
+(21, 21, 6, 3, 2, 'Fuerza G', '2026-03-03'), (22, 22, 7, 5, 5, '200 kg', '2026-03-03'),
+(23, 23, 6, 1, 1, 'Infinito', '2026-03-04'), (24, 24, 9, 5, 5, '180 kg', '2026-03-04'),
+(25, 25, 2, 1, 1, '1,000 kg', '2026-03-04'), (26, 26, 3, 5, 30, 'Corporal', '2026-03-04'),
+(27, 27, 11, 4, 10, '110 kg', '2026-03-04'), (28, 28, 1, 3, 8, '60 kg', '2026-03-04'),
+(29, 29, 3, 4, 15, 'Bufanda', '2026-03-04'), (30, 30, 6, 3, 2, 'Mente', '2026-03-04'),
+(31, 31, 4, 10, 1, 'Sónico', '2026-03-05'), (32, 32, 9, 4, 8, '85 kg', '2026-03-05'),
+(33, 33, 10, 4, 12, 'Hilos', '2026-03-05'), (34, 34, 3, 6, 20, 'Ackerman', '2026-03-05'),
+(35, 35, 2, 5, 5, '150 kg', '2026-03-05');
+
+INSERT INTO rutina_ejercicios (ID_Ejerc, Nombre_Ejercicio, Tipo_Movimiento, Grupo_Muscular, Intensidad_Sujeta, Gasto_Estimado) VALUES
+(1, 'Press Militar', 'Empuje', 'Hombros', 'Alta', 'Media'),
+(2, 'Peso Muerto', 'Tracción', 'Espalda/Pierna', 'Extrema', 'Alta'),
+(3, 'Dominadas', 'Tracción', 'Espalda', 'Alta', 'Media'),
+(4, 'Sprints', 'Explosivo', 'Cuerpo Completo', 'Alta', 'Alta'),
+(6, 'Plancha', 'Isométrico', 'Core', 'Media', 'Baja'),
+(7, 'Sentadilla', 'Empuje', 'Piernas', 'Alta', 'Alta'),
+(9, 'Press de Banca', 'Empuje', 'Pecho', 'Alta', 'Media'),
+(10, 'Extensión Tríceps', 'Empuje', 'Brazos', 'Baja', 'Baja'),
+(11, 'Remo con Barra', 'Tracción', 'Espalda', 'Media', 'Media');
+
+INSERT INTO cat_suplementos (ID_Suple, Nombre_Suplemento, Marca, Tipo_Suple, Contenido_Neto, Beneficio_Principal) VALUES
+(1, 'Creatina Monohidratada', 'GymHeroes', 'Aminoácido', '500g', 'Fuerza explosiva'),
+(2, 'Whey Protein Isolate', 'U.A. Sports', 'Proteína', '2kg', 'Recuperación muscular'),
+(3, 'Pre-Entreno Nitro', 'Explosion', 'Estimulante', '300g', 'Energía y Enfoque'),
+(4, 'BCAA 2:1:1', 'Zenin Corp', 'Aminoácidos', '400g', 'Protección muscular'),
+(5, 'Caseina Micelar', 'SleepWell', 'Proteína', '1kg', 'Absorción lenta'),
+(6, 'Multivitamínico Élite', 'Capsule Corp', 'Vitamina', '90 caps', 'Salud general');
+
+INSERT INTO cat_alimentos (ID_Alimento, Nombre, Categoria, Unidad_Medida, Calorias_U, Proteina_g) VALUES
+(1, 'Pechuga de Pollo', 'Proteína', '100g', 165, 31.0),
+(2, 'Arroz Integral', 'Carbohidrato', '100g', 110, 2.6),
+(3, 'Huevo Integro', 'Proteína', 'Unidad', 70, 6.0),
+(4, 'Brócoli', 'Vegetal', '100g', 34, 2.8),
+(5, 'Carne de Res (Magra)', 'Proteína', '100g', 250, 26.0),
+(6, 'Avena', 'Carbohidrato', '100g', 389, 16.9),
+(7, 'Salmón', 'Proteína/Grasa', '100g', 208, 20.0),
+(8, 'Camote', 'Carbohidrato', '100g', 86, 1.6);
+
+INSERT INTO asignacion_dietas_detalle (ID_Asig_D, ID_P, ID_Plan, ID_Alimento, Porcion_Gramos, Frecuencia_Dia) VALUES
+(1, 1, 1, 5, 500, '5 veces al día'), (2, 2, 1, 5, 400, '4 veces al día'),
+(3, 3, 6, 1, 250, '4 veces al día'), (4, 4, 1, 3, 300, '3 veces al día'),
+(5, 5, 3, 7, 200, '3 veces al día'), (6, 6, 5, 1, 200, '4 veces al día'),
+(7, 7, 1, 2, 1000, '6 veces al día'), (8, 8, 6, 5, 300, '5 veces al día'),
+(9, 9, 3, 1, 200, '4 veces al día'), (10, 10, 1, 5, 300, '3 veces al día'),
+(11, 11, 1, 6, 400, '3 veces al día'), (12, 12, 6, 7, 250, '4 veces al día'),
+(13, 13, 4, 1, 200, '2 veces al día'), (14, 14, 3, 2, 250, '3 veces al día'),
+(15, 15, 1, 5, 350, '4 veces al día'), (16, 16, 6, 1, 200, '4 veces al día'),
+(17, 17, 6, 5, 300, '5 veces al día'), (18, 18, 1, 3, 400, '3 veces al día'),
+(19, 19, 6, 5, 350, '4 veces al día'), (20, 20, 3, 7, 250, '3 veces al día'),
+(21, 21, 4, 4, 300, '2 veces al día'), (22, 22, 2, 1, 150, '5 veces al día'),
+(23, 23, 4, 8, 200, '2 veces al día'), (24, 24, 3, 5, 250, '3 veces al día'),
+(25, 25, 1, 5, 600, '2 veces al día'), (26, 26, 2, 1, 200, '6 veces al día'),
+(27, 27, 3, 2, 200, '3 veces al día'), (28, 28, 2, 4, 200, '3 veces al día'),
+(29, 29, 4, 1, 150, '2 veces al día'), (30, 30, 3, 6, 150, '3 veces al día'),
+(31, 31, 2, 1, 150, '5 veces al día'), (32, 32, 6, 1, 220, '4 veces al día'),
+(33, 33, 3, 7, 180, '3 veces al día'), (34, 34, 2, 1, 180, '4 veces al día'),
+(35, 35, 1, 5, 300, '3 veces al día');
+
+INSERT INTO asignacion_suplementos (ID_Asig_S, ID_P, ID_Suple, Cantidad_Dosis, Frecuencia, Objetivo_Entreno) VALUES
+(1, 1, 2, '2 Scoops', 'Post-entreno', 'Mantenimiento'),
+(2, 2, 2, '2 Scoops', 'Post-entreno', 'Recuperación Tejido'),
+(3, 3, 3, '1 Scoop', 'Pre-entreno', 'Explosividad'),
+(4, 4, 1, '5g', 'Diario', 'Dureza Muscular'),
+(5, 5, 6, '1 cap', 'Mañanas', 'Resistencia'),
+(6, 6, 2, '1.5 Scoops', 'Post-entreno', 'Reparación Ósea'),
+(7, 7, 1, '10g', 'Diario', 'Ruptura de Límites'),
+(8, 8, 1, '5g', 'Diario', 'Poder Saiyan'),
+(9, 9, 2, '1 Scoop', 'Post-entreno', 'Crecimiento'),
+(10, 10, 4, '10g', 'Intra-entreno', 'Resistencia Térmica'),
+(11, 11, 1, '5g', 'Diario', 'Densidad Ósea'),
+(12, 12, 3, '1 Scoop', 'Pre-entreno', 'Agilidad'),
+(13, 13, 6, '1 cap', 'Mañanas', 'Enfoque'),
+(14, 14, 2, '1 Scoop', 'Post-entreno', 'Respiración'),
+(15, 15, 1, '5g', 'Diario', 'Instinto Salvaje'),
+(16, 16, 4, '10g', 'Intra-entreno', 'Fuerza Física'),
+(17, 17, 1, '5g', 'Diario', 'Potencia de Lucha'),
+(18, 18, 5, '1 Scoop', 'Noches', 'Densidad'),
+(19, 19, 1, '5g', 'Diario', 'Fuerza de Agarre'),
+(20, 20, 2, '1 Scoop', 'Post-entreno', 'Potencia Piernas'),
+(21, 21, 6, '1 cap', 'Mañanas', 'Recuperación'),
+(22, 22, 3, '1 Scoop', 'Pre-entreno', 'Velocidad'),
+(23, 23, 6, '1 cap', 'Mañanas', 'Energía Mental'),
+(24, 24, 1, '5g', 'Diario', 'Resistencia Maldita'),
+(25, 25, 3, '2 Scoops', 'Pre-entreno', 'Dominación'),
+(26, 26, 3, '2 Scoops', 'Pre-entreno', 'Fuerza Bruta'),
+(27, 27, 2, '1 Scoop', 'Post-entreno', 'Desestrés'),
+(28, 28, 4, '10g', 'Diario', 'Protección'),
+(29, 29, 6, '2 caps', 'Mañanas', 'Fatiga Ocular'),
+(30, 30, 6, '1 cap', 'Mañanas', 'Concentración'),
+(31, 31, 2, '1 Scoop', 'Post-entreno', 'Metabolismo Alado'),
+(32, 32, 2, '1 Scoop', 'Post-entreno', 'Balance Elemental'),
+(33, 33, 4, '5g', 'Diario', 'Elasticidad'),
+(34, 34, 2, '1 Scoop', 'Post-entreno', 'Élite Militar'),
+(35, 35, 1, '5g', 'Diario', 'Híbrido Power');
+
+INSERT INTO cat_equipamiento_gym (ID_Equipo, Nombre_Equipo, Categoria, Estado_Actual, Ultimo_Mantenimiento, Ubicacion_Sala) VALUES
+(1, 'Cámara de Gravedad Aumentada (x100)', 'Mística/Tecnológica', 'Excelente', '2026-03-15', 'Domp de Entrenamiento'),
+(2, 'Prensa Hidráulica Anti-Kryptoniana', 'Máquinas Pesadas', 'Operativo', '2026-02-10', 'Zona de Fuerza Bruta'),
+(3, 'Cinta de Correr de Velocidad Luz', 'Cardio Avanzado', 'Mantenimiento', '2026-03-25', 'Pista de Velocistas'),
+(4, 'Banco de Press de Adamantium Puro', 'Pesos Libres', 'Indestructible', '2026-01-10', 'Forja de Héroes'),
+(5, 'Set de Mancuernas de Enano Blanco (1 Ton+)', 'Pesos Libres', 'Operativo', '2026-02-01', 'Zona de Pesos Prohibidos'),
+(6, 'Simulador de Combate Holográfico (Danger Room)', 'Funcional/IA', 'Excelente', '2026-04-01', 'Área de Simulación'),
+(7, 'Barra Olímpica de Vibranium (Absorbe Impacto)', 'Pesos Libres', 'Excelente', '2026-03-01', 'Zona de Levantamiento'),
+(8, 'Tanque de Recuperación Médica (Bacta/Líquido)', 'Recuperación', 'Operativo', '2026-03-28', 'Ala Médica'),
+(9, 'Plataforma de Salto Gravitacional', 'Funcional', 'Operativo', '2026-01-20', 'Área de Agilidad'),
+(10, 'Saco de Boxeo de Piel de Kaiju (Reforzado)', 'Boxeo/MMA', 'Excelente', '2026-02-15', 'Dojo Central');
+
+INSERT INTO cat_estatus_salud (ID_Estatus, Nombre_Estatus, Nivel_Riesgo, Permite_Entrenar, Accion_Recomendada, Prioridad) VALUES
+(1, 'Óptimo', 'Nulo', 'Sí', 'Continuar plan actual', 'Baja'),
+(2, 'Lesión Leve', 'Bajo', 'Sí', 'Reducir cargas al 50%', 'Media'),
+(3, 'Fatiga Crónica', 'Medio', 'No', 'Descanso total 1 semana', 'Alta'),
+(4, 'Lesión Grave', 'Alto', 'No', 'Remitir a Recovery Girl / Médico', 'Crítica'),
+(5, 'Retirado', 'N/A', 'No', 'Solo mantenimiento ligero opcional', 'Baja');
+
+INSERT INTO seguimiento_antropometrico (ID_Seg, ID_P, Fecha_Visita, Peso_Actual_kg, Pecho_Actual_cm, Cintura_Actual_cm, Grasa_Actual_Pct, Notas_Progreso) VALUES
+(1, 1, '2026-04-01', 258.0, 130, 84, '4.5%', 'Ganancia muscular masiva, forma de Símbolo de Paz recuperada.'),
+(2, 2, '2026-04-01', 120.5, 118, 88, '7.5%', 'Mejora en resistencia cardiovascular tras entrenamiento ígneo.'),
+(3, 3, '2026-04-01', 72.0, 102, 73, '8.0%', 'Definición mejorada en tren superior. Explosividad estable.'),
+(4, 4, '2026-04-01', 75.5, 106, 77, '9.0%', 'Endurecimiento notable de fibras musculares.'),
+(5, 5, '2026-04-01', 69.0, 100, 71, '7.5%', 'Balance térmico estable durante hipertrofia.'),
+(6, 6, '2026-04-01', 67.5, 98, 69, '9.0%', 'Aumento de densidad ósea para soportar el 100%.'),
+(7, 7, '2026-04-01', 92.0, 115, 75, '6.0%', 'Nivel de Ki elevado; metabolismo Saiyajin en tope.'),
+(8, 8, '2026-04-01', 62.0, 100, 67, '5.5%', 'Superación de límites en cámara de gravedad.'),
+(9, 9, '2026-04-01', 64.5, 98, 69, '6.5%', 'Progreso constante en agilidad y corte.'),
+(10, 10, '2026-04-01', 76.0, 107, 77, '7.0%', 'Fuerza de voluntad y física en sincronía.'),
+(11, 11, '2026-04-01', 142.0, 135, 103, '11.0%', 'Fuerza absoluta; masa muscular de piedra.'),
+(12, 12, '2026-04-01', 77.0, 110, 77, '6.5%', 'Mantenimiento extravagante de masa magra.'),
+(13, 13, '2026-04-01', 70.0, 100, 71, '7.0%', 'Calma mental reflejada en control de grasa.'),
+(14, 14, '2026-04-01', 73.0, 104, 78, '7.5%', 'Respiración optimizada para flujo sanguíneo.'),
+(15, 15, '2026-04-01', 96.5, 120, 83, '5.5%', 'Agresividad física máxima. Instinto animal.'),
+(16, 16, '2026-04-01', 63.5, 100, 64, '11.0%', 'Fuerza física pura sin energía maldita.'),
+(17, 17, '2026-04-01', 65.0, 102, 69, '5.5%', 'Espalda de demonio en desarrollo óptimo.'),
+(18, 18, '2026-04-01', 71.5, 112, 84, '14.0%', 'Maestría Karate; densidad de golpeo aumentada.'),
+(19, 19, '2026-04-01', 87.0, 112, 77, '5.5%', 'Entrenamiento de 3 espadas: hipertrofia de cuello y hombros.'),
+(20, 20, '2026-04-01', 79.5, 108, 75, '6.5%', 'Potencia de piernas Diable Jambe optimizada.'),
+(21, 21, '2026-04-01', 76.5, 100, 73, '8.5%', 'Recuperación post-operatoria completa.'),
+(22, 22, '2026-04-01', 56.5, 96, 59, '9.0%', 'Potencia de salto y fuerza de impacto en piernas.'),
+(23, 23, '2026-04-01', 81.0, 107, 77, '4.5%', 'Fisico infinito; estatus de Grado Especial.'),
+(24, 24, '2026-04-01', 80.0, 105, 79, '7.5%', 'Resistencia base aumentada por el recipiente.'),
+(25, 25, '2026-04-01', 94.5, 112, 80, '5.5%', 'Anatomía de Rey de Maldiciones perfecta.'),
+(26, 26, '2026-04-01', 92.0, 114, 70, '2.5%', 'Restricción celestial: grasa corporal mínima posible.'),
+(27, 27, '2026-04-01', 83.0, 105, 80, '9.0%', 'Productividad física en horas extra.'),
+(28, 28, '2026-04-01', 61.5, 92, 71, '11.0%', 'Mantenimiento de tejido quemado estable.'),
+(29, 29, '2026-04-01', 69.5, 97, 75, '10.0%', 'Fatiga ocular reducida por suplementación.'),
+(30, 30, '2026-04-01', 65.5, 94, 74, '12.0%', 'Concentración mental y física en equilibrio.'),
+(31, 31, '2026-04-01', 72.5, 104, 73, '7.0%', 'Aerodinámica física optimizada para vuelo.'),
+(32, 32, '2026-04-01', 74.0, 107, 71, '12.0%', 'Estado Avatar: balance de elementos y masa corporal.'),
+(33, 33, '2026-04-01', 59.5, 94, 63, '14.0%', 'Elasticidad muscular Stone Free aumentada.'),
+(34, 34, '2026-04-01', 70.0, 106, 69, '8.0%', 'Rendimiento de soldado de élite. Disciplina.'),
+(35, 35, '2026-04-01', 67.0, 104, 73, '7.5%', 'Equilibrio entre forma humana y demonio.');

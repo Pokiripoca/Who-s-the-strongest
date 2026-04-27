@@ -62,6 +62,7 @@ INSERT INTO Heroes (ID_P, Nombre, Genero, ID_Serie, ID_Biotipo, ID_Faccion, Rol_
 (33, 'Jolyne Cujoh', 'F', 11, 2, 6, 'Usuaria de Stand', 'A', 'Activo'),
 (34, 'Mikasa Ackerman', 'F', 12, 2, 6, 'Soldado de Élite', 'S', 'Activo'),
 (35, 'Inuyasha', 'M', 8, 2, 6, 'Híbrido', 'B', 'Activo');
+-- juju
 
 INSERT INTO Medidas_Fisicas (ID_Medida, ID_P, Peso_kg, Altura_cm, Grasa_Pct, Pecho_cm, Cintura_cm, Somatotipo_Asignado) VALUES
 (1, 1, 255.0, 220, '5%', 125, 85, 'Hipertrófico'),

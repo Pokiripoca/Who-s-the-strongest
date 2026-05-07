@@ -153,3 +153,6 @@ CREATE TABLE asignacion_suplementos (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P),
     FOREIGN KEY (ID_Suple) REFERENCES cat_suplementos(ID_Suple)
 );
+
+ALTER TABLE Series_origen
+ADD COLUMN Color_Hex VARCHAR(7) DEFAULT '#FFFFFF';

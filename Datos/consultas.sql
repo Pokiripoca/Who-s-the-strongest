@@ -154,7 +154,6 @@ WHERE h.Nombre LIKE '%{busqueda}%' OR s.Nombre_Serie LIKE '%{busqueda}%';
 
 ALTER TABLE Series_origen ADD COLUMN Color_Hex VARCHAR(7) DEFAULT '#000000';
 
--- Ejemplos de actualización de colores para tu interfaz:
 UPDATE Series_origen SET Color_Hex = '#ff7300' WHERE Nombre_Serie = 'Dragon Ball Z'; -- Naranja Goku
 UPDATE Series_origen SET Color_Hex = '#047947' WHERE Nombre_Serie = 'Boku no Hero Academia'; -- Azul Midoriya
 UPDATE Series_origen SET Color_Hex = '#800080' WHERE Nombre_Serie = 'Jujutsu Kaisen'; -- Morado Hechicería
@@ -164,7 +163,7 @@ CREATE OR REPLACE VIEW vw_dashboard_progreso AS
 SELECT
     h.Nombre,
     s.Nombre_Serie,
-    s.Color_Hex, -- ESTE ES EL DATO CLAVE PARA TU DISEÑO
+    s.Color_Hex, 
     m.Peso_kg AS Peso_Inicial,
     sa.Peso_Actual_kg,
     (sa.Peso_Actual_kg - m.Peso_kg) AS Diferencia_Peso

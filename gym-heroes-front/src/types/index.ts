@@ -1,5 +1,4 @@
 // src/types/index.ts
-
 export interface HeroStats {
   imc: number;
   grasa: string;

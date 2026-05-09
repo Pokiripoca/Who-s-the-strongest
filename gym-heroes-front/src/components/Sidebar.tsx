@@ -1,59 +1,28 @@
-import {
-  LayoutDashboard,
-  Dumbbell,
-  Users,
-  Apple,
-  LineChart,
-  LogOut,
-} from "lucide-react";
+import { Home, LayoutGrid, Settings } from "lucide-react";
 
-export const Sidebar = () => {
-  const menuItems = [
-    { icon: <LayoutDashboard size={20} />, label: "Dashboard", ref: "home" },
-    { icon: <Dumbbell size={20} />, label: "Sectores", ref: "gym" },
-    { icon: <Users size={20} />, label: "Héroes", ref: "heroes" },
-    { icon: <Apple size={20} />, label: "Nutrición", ref: "food" },
-    { icon: <LineChart size={20} />, label: "Progreso", ref: "stats" },
-  ];
-
+export const Sidebar = ({ onGoHome }: { onGoHome: () => void }) => {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-20 hover:w-64 bg-black border-r border-white/10 transition-all duration-300 group z-50 flex flex-col justify-between py-8 overflow-hidden">
-      {/* LOGO SUPERIOR */}
-      <div className="px-6 flex items-center gap-4">
-        <div className="min-w-[32px] h-8 bg-cyan-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-          <span className="text-black font-black text-xs">GH</span>
-        </div>
-        <span className="opacity-0 group-hover:opacity-100 text-white font-black italic tracking-tighter text-xl transition-opacity whitespace-nowrap">
-          GYM HEROES
-        </span>
+    <aside className="w-20 fixed left-0 h-full bg-zinc-900 border-r border-white/5 flex flex-col items-center py-8 gap-10 z-50">
+      <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black italic text-black">
+        HF
       </div>
 
-      {/* MENÚ CENTRAL */}
-      <nav className="flex flex-col gap-2 px-4">
-        {menuItems.map((item) => (
-          <a
-            key={item.label}
-            href={`#${item.ref}`}
-            className="flex items-center gap-4 p-3 rounded-xl text-zinc-500 hover:text-cyan-400 hover:bg-white/5 transition-all group/item"
-          >
-            <div className="min-w-[24px] group-hover/item:scale-110 transition-transform">
-              {item.icon}
-            </div>
-            <span className="opacity-0 group-hover:opacity-100 font-bold uppercase text-[10px] tracking-widest transition-opacity whitespace-nowrap">
-              {item.label}
-            </span>
-          </a>
-        ))}
+      <nav className="flex flex-col gap-6">
+        {/* BOTÓN HOME: Al darle clic, resetea todo en App.tsx */}
+        <button
+          onClick={onGoHome}
+          className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all"
+        >
+          <Home size={24} />
+        </button>
+
+        <button className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all">
+          <LayoutGrid size={24} />
+        </button>
       </nav>
 
-      {/* LOGIN / PERFIL ABAJO */}
-      <div className="px-4 border-t border-white/5 pt-6">
-        <button className="flex items-center gap-4 p-3 w-full text-zinc-500 hover:text-red-500 transition-colors">
-          <LogOut size={20} />
-          <span className="opacity-0 group-hover:opacity-100 font-bold uppercase text-[10px] tracking-widest transition-opacity">
-            Salir
-          </span>
-        </button>
+      <div className="mt-auto">
+        <Settings className="text-zinc-700 hover:text-white cursor-pointer" />
       </div>
     </aside>
   );

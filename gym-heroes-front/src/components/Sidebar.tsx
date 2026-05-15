@@ -1,93 +1,91 @@
-import {
-  Home,
-  LayoutGrid,
-  Utensils,
-  Settings,
-  BarChart2,
-  Activity,
-} from "lucide-react";
+import { Home, LayoutGrid, Utensils, Activity } from "lucide-react";
 
-// 1. Agregamos onGoFacility a la interfaz
 interface SidebarProps {
+  activeView: string;
   onGoHome: () => void;
   onGoNutrition: () => void;
   onGoUniverses: () => void;
-  onGoFacility: () => void; // <--- Agregado
+  onGoFacility: () => void;
 }
 
 export const Sidebar = ({
+  activeView,
   onGoHome,
   onGoNutrition,
   onGoUniverses,
-  onGoFacility, // <--- Recibimos la prop
+  onGoFacility,
 }: SidebarProps) => {
   return (
     <aside className="w-20 fixed left-0 h-full bg-[#0a0a0a] border-r border-white/5 flex flex-col items-center py-8 gap-10 z-50">
       {/* LOGO */}
-      <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black italic text-black shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+      <div className="w-10 h-10 bg-cyan-500 rounded-xl flex items-center justify-center font-black italic text-black shadow-[0_0_15px_rgba(6,182,212,0.3)]">
         HF
       </div>
 
       <nav className="flex flex-col gap-8">
-        {/* BOTÓN HOME */}
-        <button
+        {/* HOME */}
+        <SidebarButton
           onClick={onGoHome}
-          className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all group relative"
-        >
-          <Home size={24} />
-          <span className="absolute left-16 bg-orange-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
-            Home
-          </span>
-        </button>
+          icon={<Home size={24} />}
+          label="Home"
+          active={activeView === "home"}
+        />
 
-        {/* BOTÓN UNIVERSOS */}
-        <button
+        {/* UNIVERSOS */}
+        <SidebarButton
           onClick={onGoUniverses}
-          className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all group relative"
-        >
-          <LayoutGrid size={24} />
-          <span className="absolute left-16 bg-orange-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
-            Universes
-          </span>
-        </button>
+          icon={<LayoutGrid size={24} />}
+          label="Universes"
+          active={activeView === "universes"}
+        />
 
-        {/* BOTÓN NUTRICIÓN */}
-        <button
-          onClick={onGoNutrition}
-          className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all group relative"
-        >
-          <Utensils size={24} />
-          <span className="absolute left-16 bg-orange-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
-            Nutrition
-          </span>
-        </button>
-
-        {/* BOTÓN GIMNASIO (FACILITY) */}
-        <button
+        {/* FACILITY */}
+        <SidebarButton
           onClick={onGoFacility}
-          className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all group relative"
-        >
-          <Activity size={24} />
-          <span className="absolute left-16 bg-orange-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
-            Facility
-          </span>
-        </button>
+          icon={<Activity size={24} />}
+          label="Facility"
+          active={activeView === "facility"}
+        />
 
-        {/* BOTÓN PROGRESO */}
-        <button className="p-3 text-zinc-500 hover:text-orange-500 hover:bg-white/5 rounded-xl transition-all group relative">
-          <BarChart2 size={24} />
-          <span className="absolute left-16 bg-orange-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
-            Analytics
-          </span>
-        </button>
+        {/* NUTRICIÓN */}
+        <SidebarButton
+          onClick={onGoNutrition}
+          icon={<Utensils size={24} />}
+          label="Nutrition"
+          active={activeView === "nutrition"}
+        />
       </nav>
 
-      {/* AJUSTES AL FINAL */}
-      <div className="mt-auto flex flex-col gap-4">
-        <button className="p-3 text-zinc-700 hover:text-white transition-all">
-          <Settings size={24} />
-        </button>
+      {/* STATUS INDICATOR AL FINAL */}
+      <div className="mt-auto mb-4 flex flex-col items-center gap-2">
+        <div className="w-1 h-1 rounded-full bg-cyan-500 animate-ping"></div>
+        <span className="text-[8px] font-mono text-zinc-600 uppercase vertical-text tracking-widest">
+          Live
+        </span>
       </div>
     </aside>
   );
 };
+
+// Sub-componente para evitar repetición de código
+const SidebarButton = ({
+  onClick,
+  icon,
+  label,
+  active,
+}: {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+}) => (
+  <button
+    onClick={onClick}
+    className={`p-3 rounded-xl transition-all group relative ${active ? "text-cyan-400 bg-white/5" : "text-zinc-500 hover:text-cyan-400 hover:bg-white/5"}`}
+  >
+    {icon}
+    <span className="absolute left-16 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+      {label}
+    </span>
+  </button>
+);

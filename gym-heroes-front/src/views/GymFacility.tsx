@@ -1,127 +1,93 @@
-import { Dumbbell, Download } from "lucide-react";
+// src/views/GymFacility.tsx
+import { Wrench, CheckCircle2, AlertTriangle } from "lucide-react";
+
+const equipment = [
+  {
+    id: 1,
+    name: "Rogue Power Rack R-7",
+    type: "RACK",
+    lastService: "2026-04-12",
+    status: "Optimal",
+  },
+  {
+    id: 2,
+    name: "Eleiko Olympic Bar",
+    type: "BARBELL",
+    lastService: "2026-04-30",
+    status: "Optimal",
+  },
+  {
+    id: 3,
+    name: "Concept2 RowErg",
+    type: "CARDIO",
+    lastService: "2026-03-08",
+    status: "Maintenance",
+  },
+  {
+    id: 4,
+    name: "Assault Bike Pro",
+    type: "CARDIO",
+    lastService: "2026-05-01",
+    status: "Optimal",
+  },
+];
 
 export const GymFacility = () => {
-  const equipment = [
-    {
-      name: "SMITH MACHINE",
-      zone: "STRENGTH",
-      status: "OPTIMAL",
-      img: "url_smith",
-    },
-    {
-      name: "TREADMILLS",
-      zone: "CARDIO",
-      status: "OPTIMAL",
-      img: "url_treadmill",
-    },
-    {
-      name: "LEG PRESS",
-      zone: "STRENGTH",
-      status: "OPTIMAL",
-      img: "url_legpress",
-    },
-    {
-      name: "SPIN BIKES",
-      zone: "CARDIO",
-      status: "MAINTENANCE",
-      img: "url_bikes",
-    },
-  ];
-
   return (
-    <div className="p-8 bg-[#0a0a0a] min-h-screen text-white">
-      {/* HEADER */}
-      <header className="flex justify-between items-center mb-10">
-        <div>
-          <h1 className="text-4xl font-black uppercase italic tracking-tighter">
-            Facility Status
-          </h1>
-          <p className="text-zinc-500 text-xs font-bold uppercase mt-1">
-            Real-time overview of gym equipment and training zones.
-          </p>
-        </div>
-        <button className="flex items-center gap-2 bg-orange-500 text-black px-4 py-2 rounded-lg font-black text-[10px] uppercase hover:bg-orange-400 transition-all">
-          <Download size={14} /> Export Report
-        </button>
+    <div className="p-12">
+      <header className="mb-12">
+        <span className="text-zinc-500 font-mono text-[10px] tracking-widest uppercase">
+          05 / CAT_EQUIPAMIENTO_GYM
+        </span>
+        <h2 className="text-5xl font-black italic uppercase mt-2">
+          Nuestro Gimnasio
+        </h2>
+        <p className="text-zinc-500 mt-2">
+          Instalaciones, equipo y rutinas oficiales de los héroes.
+        </p>
       </header>
 
-      <div className="grid grid-cols-12 gap-8">
-        {/* GRID DE EQUIPAMIENTO */}
-        <div className="col-span-8 space-y-6">
-          <div className="bg-zinc-900/30 border border-white/5 rounded-3xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-black italic uppercase flex items-center gap-2 text-sm">
-                <Dumbbell size={18} className="text-orange-500" /> Equipment
-                Status
-              </h3>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {equipment.map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-black/40 border border-white/5 rounded-2xl overflow-hidden p-4 group hover:border-orange-500/30"
-                >
-                  <div className="flex gap-4">
-                    <div className="w-24 h-16 bg-zinc-800 rounded-xl overflow-hidden">
-                      <img
-                        src={item.img}
-                        className="w-full h-full object-cover opacity-50"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="text-[11px] font-black italic uppercase">
-                        {item.name}
-                      </h4>
-                      <p className="text-[8px] text-zinc-500 font-bold uppercase">
-                        {item.zone} ZONE
-                      </p>
-                      <div
-                        className={`flex items-center gap-1 mt-2 text-[8px] font-black ${item.status === "OPTIMAL" ? "text-green-500" : "text-red-500"}`}
-                      >
-                        <div
-                          className={`w-1.5 h-1.5 rounded-full ${item.status === "OPTIMAL" ? "bg-green-500 shadow-[0_0_5px_green]" : "bg-red-500 shadow-[0_0_5px_red]"}`}
-                        />
-                        {item.status}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* COLUMNA DERECHA: ZONAS */}
-        <div className="col-span-4 space-y-6">
-          <div className="bg-zinc-900/30 border border-white/5 rounded-3xl p-6">
-            <h3 className="font-black italic uppercase text-xs mb-6">
-              Training Zones
-            </h3>
-            {["CARDIO", "STRENGTH", "RECOVERY"].map((zone, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 border border-white/5 bg-white/5">
+        {equipment.map((item) => (
+          <div
+            key={item.id}
+            className="bg-zinc-950 p-6 group hover:bg-zinc-900 transition-colors"
+          >
+            <div className="flex justify-between items-start mb-8">
+              <Wrench
+                size={18}
+                className="text-zinc-700 group-hover:text-cyan-400"
+              />
               <div
-                key={i}
-                className="relative h-32 rounded-2xl overflow-hidden mb-4 group cursor-pointer border border-white/5"
+                className={`flex items-center gap-1 px-2 py-1 rounded-sm text-[10px] font-bold uppercase ${
+                  item.status === "Optimal"
+                    ? "text-emerald-500 bg-emerald-500/10"
+                    : "text-orange-500 bg-orange-500/10"
+                }`}
               >
-                <img
-                  src={`url_${zone}`}
-                  className="absolute w-full h-full object-cover opacity-40 group-hover:scale-105 transition-all"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
-                <div className="absolute bottom-4 left-4">
-                  <p className="text-[10px] font-black italic">{zone} ZONE</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-[8px] text-zinc-400 font-bold uppercase">
-                      Util: 74%
-                    </span>
-                  </div>
-                </div>
-                <div className="absolute top-4 right-4 bg-green-500 text-[8px] font-black text-black px-2 py-0.5 rounded italic">
-                  OPTIMAL
-                </div>
+                {item.status === "Optimal" ? (
+                  <CheckCircle2 size={10} />
+                ) : (
+                  <AlertTriangle size={10} />
+                )}
+                {item.status}
               </div>
-            ))}
+            </div>
+
+            <h4 className="text-xl font-black italic uppercase leading-tight mb-1">
+              {item.name}
+            </h4>
+            <p className="text-zinc-600 text-[10px] font-mono tracking-widest mb-6">
+              {item.type}
+            </p>
+
+            <div className="border-t border-white/5 pt-4">
+              <p className="text-zinc-500 text-[9px] uppercase font-bold tracking-tighter">
+                Last service • {item.lastService}
+              </p>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -1,207 +1,114 @@
-import {
-  Search,
-  Bell,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle2,
-  Plus,
-} from "lucide-react";
+import { Utensils, Zap, Database } from "lucide-react";
 
 export const NutritionDashboard = () => {
-  const meals = [
-    {
-      name: "PROTEIN SHAKE",
-      type: "BREAKFAST",
-      p: "40g",
-      c: "5g",
-      f: "6g",
-      img: "URL_DE_TU_IMAGEN",
-    },
-    {
-      name: "GRILLED SALMON",
-      type: "LUNCH",
-      p: "42g",
-      c: "28g",
-      f: "14g",
-      img: "URL_DE_TU_IMAGEN",
-    },
-    {
-      name: "CHICKEN & RICE",
-      type: "DINNER",
-      p: "45g",
-      c: "28g",
-      f: "12g",
-      img: "URL_DE_TU_IMAGEN",
-    },
-    {
-      name: "GREEK YOGURT BOWL",
-      type: "SNACK",
-      p: "20g",
-      c: "18g",
-      f: "4g",
-      img: "URL_DE_TU_IMAGEN",
-    },
-  ];
-
   return (
-    <div className="p-8 bg-[#0a0a0a] min-h-screen text-white">
-      {/* HEADER */}
-      <header className="flex justify-between items-center mb-10">
-        <div>
-          <h1 className="text-5xl font-black uppercase italic tracking-tighter">
-            Eat Like a Hero
-          </h1>
-          <p className="text-zinc-500 font-medium uppercase text-xs tracking-widest mt-2">
-            Fuel your body. Elevate your training.
-          </p>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="relative">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
-              size={18}
-            />
-            <input
-              className="bg-zinc-900 border border-white/5 rounded-full py-2 pl-10 pr-4 text-xs w-64"
-              placeholder="Search meals, foods..."
-            />
-          </div>
-          <Bell className="text-zinc-500 cursor-pointer hover:text-orange-500" />
-          <div className="flex items-center gap-3 border-l border-white/10 pl-6">
-            <div className="text-right">
-              <p className="text-[10px] font-black italic">GOKU</p>
-              <p className="text-[8px] text-zinc-500">Saiyan Elite</p>
-            </div>
-            <img
-              src="https://images.alphacoders.com/605/605592.png"
-              className="w-10 h-10 rounded-full object-cover border border-orange-500/50"
-            />
-          </div>
-        </div>
+    <div
+      id="nutrition"
+      className="p-12 bg-zinc-950 min-h-screen border-t border-white/5"
+    >
+      <header className="mb-16">
+        <span className="text-cyan-400 font-mono text-[10px] tracking-[0.4em] uppercase">
+          ■ 06 / EAT_LIKE_A_HERO
+        </span>
+        <h2 className="text-7xl font-[1000] italic uppercase leading-none mt-4 text-white">
+          EAT LIKE
+          <br />
+          <span className="text-zinc-800">A HERO</span>
+        </h2>
       </header>
 
-      <div className="grid grid-cols-12 gap-8">
-        {/* COLUMNA IZQUIERDA: MEAL PLAN */}
-        <div className="col-span-9 space-y-8">
-          <section className="bg-zinc-900/30 border border-white/5 rounded-3xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-black italic uppercase flex items-center gap-2">
-                <span className="text-orange-500">●</span> Today's Meal Plan
-              </h3>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-black/40 px-3 py-1 rounded-lg border border-white/5">
-                  <ChevronLeft
-                    size={14}
-                    className="text-zinc-500 cursor-pointer"
-                  />
-                  <span className="text-[10px] font-bold uppercase">
-                    May 18, 2025
-                  </span>
-                  <ChevronRight
-                    size={14}
-                    className="text-zinc-500 cursor-pointer"
-                  />
-                </div>
-                <button className="bg-orange-500 text-black text-[10px] font-black uppercase px-4 py-2 rounded-lg hover:bg-orange-400 transition-all">
-                  View Full Plan
-                </button>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* COL 1: ACTIVE PLANS (Tabla: cat_planes_nutricion) */}
+        <div className="space-y-6">
+          <h3 className="text-xs font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+            <Zap size={14} className="text-cyan-400" /> Active_Plans
+          </h3>
+          <div className="bg-zinc-900/50 border border-cyan-400/20 p-6 group hover:border-cyan-400 transition-all">
+            <p className="text-cyan-400 font-mono text-[10px] mb-2 uppercase">
+              Vanguard Surplus
+            </p>
+            <h4 className="text-2xl font-black italic uppercase text-white leading-tight">
+              Bulking Phase_01
+            </h4>
+            <div className="mt-6 flex justify-between items-end">
+              <div>
+                <p className="text-3xl font-black text-white italic">3,400</p>
+                <p className="text-[10px] text-zinc-500 uppercase font-bold">
+                  Kcal / Day
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold text-zinc-400 italic">
+                  High Carb
+                </p>
+                <p className="text-[10px] text-zinc-500 uppercase font-bold">
+                  Macro Focus
+                </p>
               </div>
             </div>
-
-            <div className="grid grid-cols-4 gap-4">
-              {meals.map((meal, i) => (
-                <div
-                  key={i}
-                  className="bg-zinc-900/50 rounded-2xl overflow-hidden border border-white/5 group hover:border-orange-500/50 transition-all"
-                >
-                  <div className="h-40 relative">
-                    <img
-                      src={meal.img}
-                      className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2 left-2 text-[8px] font-black bg-black/80 px-2 py-1 rounded italic uppercase">
-                      {meal.type}
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h4 className="text-[11px] font-black italic mb-3 uppercase">
-                      {meal.name}
-                    </h4>
-                    <div className="flex justify-between text-[10px] font-bold">
-                      <div className="text-center">
-                        <p className="text-orange-500">{meal.p}</p>
-                        <p className="text-[8px] text-zinc-500">P</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-orange-500">{meal.c}</p>
-                        <p className="text-[8px] text-zinc-500">C</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-orange-500">{meal.f}</p>
-                        <p className="text-[8px] text-zinc-500">F</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          </div>
         </div>
 
-        {/* COLUMNA DERECHA: MACROS & SUPPLEMENTS */}
-        <div className="col-span-3 space-y-6">
-          <section className="bg-zinc-900/30 border border-white/5 rounded-3xl p-6">
-            <h3 className="font-black italic uppercase text-xs mb-6">
-              Macro Summary
-            </h3>
-            <div className="flex justify-between mb-4">
-              {/* Aquí irían los círculos de progreso (puedes usar librerías como Recharts o puro CSS) */}
-              {[79, 84, 80].map((val, i) => (
-                <div
-                  key={i}
-                  className="w-16 h-16 rounded-full border-4 border-zinc-800 flex items-center justify-center relative"
-                >
-                  <span className="text-[10px] font-black italic">{val}%</span>
-                  <div className="absolute -bottom-4 text-[7px] font-bold text-zinc-500 uppercase">
-                    {i === 0 ? "Protein" : i === 1 ? "Carbs" : "Fats"}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="bg-zinc-900/30 border border-white/5 rounded-3xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-black italic uppercase text-xs">
-                Supplements
-              </h3>
-              <span className="text-[8px] text-zinc-500 font-bold uppercase cursor-pointer hover:text-white">
-                Manage ›
-              </span>
-            </div>
-            <div className="space-y-3">
-              {["Whey Protein", "Creatine", "Fish Oil"].map((sup, i) => (
-                <div
-                  key={i}
-                  className="bg-black/40 border border-white/5 p-3 rounded-xl flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-zinc-800 rounded-lg flex items-center justify-center">
-                      <CheckCircle2 size={14} className="text-orange-500" />
-                    </div>
-                    <span className="text-[10px] font-bold uppercase">
-                      {sup}
-                    </span>
-                  </div>
-                  <CheckCircle2 size={14} className="text-orange-500" />
-                </div>
-              ))}
-              <button className="w-full py-2 border border-dashed border-white/10 rounded-xl text-[8px] font-black uppercase text-zinc-500 hover:border-white/30 transition-all flex items-center justify-center gap-2">
-                <Plus size={10} /> Add Supplement
-              </button>
-            </div>
-          </section>
+        {/* COL 2: DAILY DIET (Rel_Hero_Alimento) */}
+        <div className="lg:col-span-2 space-y-6">
+          <h3 className="text-xs font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+            <Utensils size={14} className="text-cyan-400" /> Current_Hero_Diet
+          </h3>
+          <div className="border border-white/5 bg-zinc-900/20 overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-white/5 bg-white/5 text-[10px] font-mono text-zinc-500 uppercase">
+                  <th className="p-4">Meal</th>
+                  <th className="p-4">Food Item</th>
+                  <th className="p-4 text-right">Amount</th>
+                  <th className="p-4 text-right">Protein</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <td className="p-4 font-black italic text-cyan-400">
+                    Breakfast
+                  </td>
+                  <td className="p-4 text-white uppercase font-bold text-xs">
+                    Oats + Whey Protein
+                  </td>
+                  <td className="p-4 text-right text-zinc-400 italic">
+                    120g / 2 Scoops
+                  </td>
+                  <td className="p-4 text-right font-black text-white">45g</td>
+                </tr>
+                <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <td className="p-4 font-black italic text-cyan-400">Lunch</td>
+                  <td className="p-4 text-white uppercase font-bold text-xs">
+                    Chicken Breast + Jasmine Rice
+                  </td>
+                  <td className="p-4 text-right text-zinc-400 italic">
+                    250g / 150g
+                  </td>
+                  <td className="p-4 text-right font-black text-white">62g</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
+
+      {/* FOOTER: FOOD DATABASE SECTOR */}
+      <div className="mt-12 bg-zinc-900/10 border border-white/5 p-8 flex items-center justify-between">
+        <div className="flex items-center gap-6">
+          <Database size={40} className="text-zinc-800" />
+          <div>
+            <h5 className="font-black italic uppercase text-xl">
+              Food_Database_v.1
+            </h5>
+            <p className="text-zinc-500 text-xs uppercase tracking-tighter">
+              Search & analyze 500+ ingredients for hero performance
+            </p>
+          </div>
+        </div>
+        <button className="bg-white text-black px-6 py-2 text-xs font-black uppercase italic hover:bg-cyan-400 transition-colors">
+          Open Database
+        </button>
       </div>
     </div>
   );

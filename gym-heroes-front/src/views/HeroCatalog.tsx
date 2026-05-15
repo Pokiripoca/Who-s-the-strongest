@@ -1,169 +1,159 @@
-import { useState } from "react";
-import { Search, Filter, Star } from "lucide-react";
+import { useState, useMemo } from "react";
+import { ArrowLeft, Search, Filter, SlidersHorizontal } from "lucide-react";
+import type { Hero } from "../types/hero_types";
 
-const HEROES_MOCK = [
-  {
-    id: 1,
-    name: "Goku",
-    serie: "Dragon Ball Z",
-    rank: "S",
-    color: "text-yellow-500",
-    border: "border-yellow-500/50",
-    img: "https://images.alphacoders.com/605/605592.png",
-  },
-  {
-    id: 2,
-    name: "Izuku Midoriya",
-    serie: "Boku No Hero Academia",
-    rank: "S",
-    color: "text-yellow-500",
-    border: "border-yellow-500/50",
-    img: "https://images7.alphacoders.com/928/928420.png",
-  },
-  {
-    id: 3,
-    name: "Monkey D. Luffy",
-    serie: "One Piece",
-    rank: "A",
-    color: "text-purple-500",
-    border: "border-purple-500/50",
-    img: "https://images5.alphacoders.com/132/1322132.jpeg",
-  },
-  {
-    id: 4,
-    name: "Roronoa Zoro",
-    serie: "One Piece",
-    rank: "B",
-    color: "text-cyan-500",
-    border: "border-cyan-500/50",
-    img: "https://images2.alphacoders.com/132/1321040.png",
-  },
-];
-// ... tus imports y HEROES_MOCK se mantienen igual
+interface HeroCatalogProps {
+  serieId: number;
+  onSelectHero: (id: number) => void;
+  onBack: () => void;
+  heroesData: Hero[]; // Pasamos los héroes como prop o los traemos de un hook
+}
 
 export const HeroCatalog = ({
   serieId,
   onSelectHero,
   onBack,
-}: {
-  serieId: number;
-  onSelectHero: (id: number) => void;
-  onBack: () => void;
-}) => {
+  heroesData,
+}: HeroCatalogProps) => {
   const [search, setSearch] = useState("");
+  const [filterRango, setFilterRango] = useState("ALL");
+  const [filterFaccion, setFilterFaccion] = useState("ALL");
+
+  // Lógica de filtrado dinámico
+  const filteredHeroes = useMemo(() => {
+    return heroesData.filter((hero) => {
+      const matchesSearch =
+        hero.nombre.toLowerCase().includes(search.toLowerCase()) ||
+        hero.alias.toLowerCase().includes(search.toLowerCase());
+      const matchesRank = filterRango === "ALL" || hero.rango === filterRango;
+      const matchesFaction =
+        filterFaccion === "ALL" || hero.faccion === filterFaccion;
+      // Aquí usamos serieId para asegurar que solo vemos héroes de este universo
+      // const matchesSerie = hero.serie_id === serieId;
+
+      return matchesSearch && matchesRank && matchesFaction;
+    });
+  }, [search, filterRango, filterFaccion, heroesData]);
 
   return (
-    <div className="p-8 bg-black min-h-screen text-white font-sans animate-in fade-in duration-500">
-      {/* HEADER DE NAVEGACIÓN */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+    <div className="p-12 bg-zinc-950 min-h-screen">
+      <div className="mb-8 flex justify-between items-end">
         <div>
           <button
             onClick={onBack}
-            className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-4 hover:text-orange-500 transition-colors flex items-center gap-2"
+            className="flex items-center gap-2 text-zinc-600 hover:text-cyan-400 mb-6 transition-colors font-mono text-[10px] tracking-widest uppercase"
           >
-            ← Back to Universes
+            <ArrowLeft size={14} /> Back to Multiverse Selection
           </button>
-          <h1 className="text-4xl font-black italic tracking-tighter uppercase leading-none">
-            SELECT <span className="text-orange-500 font-normal">YOUR</span>{" "}
-            HERO
-          </h1>
-          <p className="text-zinc-500 text-[10px] font-bold tracking-widest mt-2 uppercase">
-            Universe ID: {serieId} — Choose a hero to view your profile.
-          </p>
+          <h2 className="text-6xl font-[1000] italic uppercase tracking-tighter">
+            Top Tier Heroes{" "}
+            <span className="text-zinc-800 ml-4">/ SID_{serieId}</span>
+          </h2>
         </div>
-
-        {/* BUSCADOR Y FILTROS */}
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="relative flex-1">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
-              size={16}
-            />
-            <input
-              type="text"
-              placeholder="Search heroes..."
-              className="bg-zinc-900/50 border border-white/5 rounded-lg py-2 pl-10 pr-4 text-xs w-full md:w-64 focus:border-orange-500/50 outline-none transition-all"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <button className="bg-zinc-900/50 border border-white/5 p-2 rounded-lg hover:bg-white/5 transition-colors">
-            <Filter size={18} className="text-zinc-400" />
-          </button>
-        </div>
-      </header>
-
-      {/* GRID DE HÉROES */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {HEROES_MOCK.filter((h) =>
-          h.name.toLowerCase().includes(search.toLowerCase()),
-        ).map((hero) => (
-          <div
-            key={hero.id}
-            onClick={() => onSelectHero(hero.id)} // <--- CONEXIÓN DE DATOS
-            className="group relative bg-zinc-900 rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/50 cursor-pointer transition-all duration-500 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)]"
-          >
-            {/* BADGE DE RANK */}
-            <div
-              className={`absolute top-4 left-4 z-20 flex flex-col items-center bg-black/80 backdrop-blur-md border ${hero.border} px-2 py-1 rounded`}
-            >
-              <span
-                className={`text-xl font-black italic leading-none ${hero.color}`}
-              >
-                {hero.rank}
-              </span>
-              <span className="text-[7px] font-black text-zinc-500 uppercase tracking-tighter">
-                Power Rank
-              </span>
-            </div>
-
-            {/* BOTÓN FAVORITO */}
-            <button
-              className="absolute top-4 right-4 z-20 text-zinc-500 hover:text-yellow-500 transition-colors"
-              onClick={(e) => e.stopPropagation()} // Evita que al dar clic a la estrella se seleccione el héroe
-            >
-              <Star size={18} />
-            </button>
-
-            {/* IMAGEN DEL HÉROE */}
-            <div className="h-[400px] relative overflow-hidden">
-              <img
-                src={hero.img}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-[0.8] group-hover:brightness-110"
-                alt={hero.name}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-            </div>
-
-            {/* INFO DEL HÉROE */}
-            <div className="absolute bottom-0 p-6 w-full transform group-hover:-translate-y-2 transition-transform duration-500">
-              <h3 className="text-2xl font-black italic text-white uppercase tracking-tighter mb-1 leading-none">
-                {hero.name}
-              </h3>
-              <div className="flex items-center gap-2">
-                <span className="text-orange-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                  {hero.serie}
-                </span>
-              </div>
-
-              {/* LÍNEA DE PROGRESO DECORATIVA */}
-              <div className="mt-4 h-[2px] w-full bg-white/10 rounded-full overflow-hidden">
-                <div className="h-full bg-orange-500 w-0 group-hover:w-full transition-all duration-700 ease-out" />
-              </div>
-            </div>
-          </div>
-        ))}
+        <Filter size={20} className="text-zinc-800 mb-2" />{" "}
+        {/* Ya se usa Filter */}
       </div>
 
-      {/* BOTÓN CARGAR MÁS */}
-      <div className="mt-16 flex flex-col items-center gap-4">
-        <div className="h-px w-20 bg-zinc-800" />
-        <button className="group bg-zinc-900/50 border border-white/10 px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all flex items-center gap-3">
-          <span className="group-hover:rotate-180 transition-transform duration-500 text-orange-500 font-bold text-lg">
-            ↻
-          </span>
-          Load More Heroes
-        </button>
+      {/* PANEL DE FILTROS TÉCNICOS */}
+      <div className="flex flex-wrap items-center gap-6 p-4 bg-zinc-900/30 border border-white/5 mb-10 rounded-sm backdrop-blur-md">
+        <div className="relative flex-1 min-w-[240px]">
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600"
+            size={16}
+          />
+          <input
+            type="text"
+            value={search}
+            placeholder="FILTER_BY_NAME_OR_ALIAS..."
+            className="w-full bg-black/40 border border-white/10 py-2 pl-10 pr-4 text-[10px] font-mono text-cyan-400 focus:outline-none focus:border-cyan-400/50 uppercase"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <FilterGroup
+          label="Rank"
+          value={filterRango}
+          onChange={setFilterRango}
+          options={["S+", "S", "A", "B"]}
+        />
+        <FilterGroup
+          label="Faction"
+          value={filterFaccion}
+          onChange={setFilterFaccion}
+          options={["VANGUARD", "SENTINEL", "NEUTRAL"]}
+        />
+
+        <div className="ml-auto flex items-center gap-4 border-l border-white/10 pl-6">
+          <div className="text-right">
+            <p className="text-[8px] font-mono text-zinc-600 uppercase">
+              Found
+            </p>
+            <p className="text-[10px] font-black text-cyan-400 italic">
+              {filteredHeroes.length} ACTIVE_DOSSIERS
+            </p>
+          </div>
+          <SlidersHorizontal size={18} className="text-zinc-700" />
+        </div>
+      </div>
+
+      {/* GRID DE RESULTADOS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 border border-white/5 bg-white/5">
+        {filteredHeroes.map((hero) => (
+          <HeroCard
+            key={hero.id_p}
+            hero={hero}
+            onClick={() => onSelectHero(hero.id_p)}
+          />
+        ))}
       </div>
     </div>
   );
 };
+
+// Componentes pequeños para mantener limpio el código
+const FilterGroup = ({ label, value, onChange, options }: any) => (
+  <div className="flex items-center gap-2">
+    <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">
+      {label}:
+    </span>
+    <select
+      value={value}
+      className="bg-black/40 border border-white/10 text-[10px] font-mono p-2 text-white focus:outline-none focus:border-cyan-400 uppercase"
+      onChange={(e) => onChange(e.target.value)}
+    >
+      <option value="ALL">ALL_{label.toUpperCase()}</option>
+      {options.map((opt: string) => (
+        <option key={opt} value={opt}>
+          {opt}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+const HeroCard = ({ hero, onClick }: { hero: Hero; onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className="group relative flex flex-col bg-zinc-950 p-6 border border-white/5 hover:bg-zinc-900 transition-all text-left"
+  >
+    <div className="relative aspect-[3/4] mb-6 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+      <img
+        src={hero.imagen_url}
+        alt={hero.nombre}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+      />
+      <div className="absolute top-2 left-2 bg-cyan-500 text-black px-2 py-1 text-[10px] font-black italic uppercase">
+        Rank {hero.rango}
+      </div>
+    </div>
+    <p className="text-cyan-500 font-mono text-[9px] uppercase tracking-tighter mb-1">
+      {hero.faccion}
+    </p>
+    <h3 className="text-2xl font-[1000] italic uppercase leading-none text-white">
+      {hero.nombre}
+    </h3>
+    <p className="text-zinc-600 text-xs font-bold mt-1 uppercase tracking-tighter">
+      {hero.alias}
+    </p>
+  </button>
+);

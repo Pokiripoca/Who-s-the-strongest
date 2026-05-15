@@ -2,119 +2,84 @@ import { useState } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { UniverseSelection } from "./views/UniverseSelection";
 import { HeroCatalog } from "./views/HeroCatalog";
-import { HeroProfile } from "./views/HeroProfile";
-import { Home } from "./views/Home";
-import { NutritionDashboard } from "./views/NutritionDashboard";
-import { GymFacility } from "./views/GymFacility"; // <-- No olvides importar la nueva vista
+import { HeroProfile } from "./views/HeroProfile"; // Importamos el componente de arriba
+import type { Hero } from "./types/hero_types";
+
+type View =
+  | "home"
+  | "universes"
+  | "catalog"
+  | "profile"
+  | "facility"
+  | "nutrition";
+
+// MOCK DATA (Fuera del componente)
+const MOCK_HEROES: Hero[] = [
+  {
+    id_p: 3,
+    nombre: "Red Riot",
+    alias: "Eijiro Kirishima",
+    imagen_url:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz6u3L-16S_vF_SOfG0pL0Y9m_EInT-F3o_g&s",
+    serie_titulo: "Cape Doctrine",
+    color_hex: "#ff0000",
+    estatus_salud: "Óptimo",
+    permite_entrenar: "Si",
+    tipo_cuerpo: "Endo-mesomorfo",
+    faccion: "U.A. HIGH",
+    rango: "A",
+    stats: { peso: 72, pecho: 105, cintura: 78, grasa_pct: 12 },
+  },
+];
 
 function App() {
-  const [showHome, setShowHome] = useState(true);
-  const [selectedSerieId, setSelectedSerieId] = useState<number | null>(null);
-  const [viewingHeroId, setViewingHeroId] = useState<number | null>(null);
-  const [viewingFacility, setViewingFacility] = useState(false);
-  const [viewingNutrition, setViewingNutrition] = useState(false);
-
-  // --- FUNCIONES DE NAVEGACIÓN ---
-
-  const goToFacility = () => {
-    setViewingFacility(true);
-    setViewingNutrition(false);
-    setViewingHeroId(null);
-    setSelectedSerieId(null);
-    setShowHome(false);
-  }; // <-- Aquí faltaba esta llave
-
-  const goToUniverses = () => {
-    setViewingFacility(false); // Limpiamos gimnasio
-    setViewingNutrition(false);
-    setSelectedSerieId(null);
-    setViewingHeroId(null);
-    setShowHome(false);
-  };
-
-  const goToCatalog = (id: number) => {
-    setViewingFacility(false); // Limpiamos gimnasio
-    setViewingNutrition(false);
-    setSelectedSerieId(id);
-    setViewingHeroId(null);
-    setShowHome(false);
-  };
-
-  const goToProfile = (id: number) => {
-    setViewingFacility(false); // Limpiamos gimnasio
-    setViewingHeroId(id);
-    setViewingNutrition(false);
-  };
-
-  const goToNutrition = () => {
-    setViewingNutrition(true);
-    setViewingFacility(false); // Limpiamos gimnasio
-    setViewingHeroId(null);
-    setSelectedSerieId(null);
-    setShowHome(false);
-  };
-
-  const resetToHome = () => {
-    setShowHome(true);
-    setSelectedSerieId(null);
-    setViewingHeroId(null);
-    setViewingNutrition(false);
-    setViewingFacility(false);
-  };
+  const [currentView, setCurrentView] = useState<View>("home");
+  const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
 
   return (
     <div className="flex bg-zinc-950 min-h-screen text-white">
-      {!showHome && (
-        <Sidebar
-          onGoHome={resetToHome}
-          onGoNutrition={goToNutrition}
-          onGoUniverses={goToUniverses}
-          onGoFacility={goToFacility}
-        />
-      )}
+      <Sidebar
+        activeView={currentView}
+        onGoHome={() => setCurrentView("home")}
+        onGoUniverses={() => setCurrentView("universes")}
+        onGoNutrition={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+        onGoFacility={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
 
-      <main
-        className={`flex-1 transition-all duration-300 ${!showHome ? "ml-20" : "ml-0"}`}
-      >
-        {/* LANDING */}
-        {showHome && <Home onStart={() => setShowHome(false)} />}
+      <main className="flex-1 ml-20">
+        {currentView === "home" && (
+          <h1 className="text-[12vw] p-12 font-black italic leading-[0.8]">
+            ENTRENA.
+            <br />
+            <span className="text-cyan-400">SUPÉRATE.</span>
+          </h1>
+        )}
 
-        {/* UNIVERSOS */}
-        {!showHome &&
-          !selectedSerieId &&
-          !viewingNutrition &&
-          !viewingFacility && <UniverseSelection onSelectSerie={goToCatalog} />}
+        {currentView === "universes" && (
+          <UniverseSelection onSelectSerie={() => setCurrentView("catalog")} />
+        )}
 
-        {/* CATÁLOGO */}
-        {!showHome &&
-          selectedSerieId &&
-          !viewingHeroId &&
-          !viewingNutrition &&
-          !viewingFacility && (
-            <HeroCatalog
-              serieId={selectedSerieId}
-              onSelectHero={goToProfile}
-              onBack={() => setSelectedSerieId(null)}
-            />
-          )}
+        {currentView === "catalog" && (
+          <HeroCatalog
+            heroesData={MOCK_HEROES}
+            onSelectHero={(id) => {
+              setSelectedHeroId(id);
+              setCurrentView("profile");
+            }}
+            onBack={() => setCurrentView("universes")}
+            serieId={0}
+          />
+        )}
 
-        {/* GIMNASIO (FACILITY) */}
-        {!showHome && viewingFacility && <GymFacility />}
-
-        {/* PERFIL */}
-        {!showHome &&
-          viewingHeroId &&
-          !viewingNutrition &&
-          !viewingFacility && (
-            <HeroProfile
-              heroId={viewingHeroId}
-              onBack={() => setViewingHeroId(null)}
-            />
-          )}
-
-        {/* NUTRICIÓN */}
-        {!showHome && viewingNutrition && !viewingFacility && (
-          <NutritionDashboard />
+        {currentView === "profile" && selectedHeroId && (
+          <HeroProfile
+            hero={MOCK_HEROES.find((h) => h.id_p === selectedHeroId)!}
+            onBack={() => setCurrentView("catalog")}
+          />
         )}
       </main>
     </div>

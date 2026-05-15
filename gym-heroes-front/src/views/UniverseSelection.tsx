@@ -1,92 +1,130 @@
-import { Zap } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+
+interface Universe {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  heroesCount: number;
+  image?: string;
+}
 
 export const UniverseSelection = ({
   onSelectSerie,
 }: {
   onSelectSerie: (id: number) => void;
 }) => {
-  // Datos simulados de universos
-  const universos = [
+  const universes: Universe[] = [
     {
       id: 1,
-      nombre: "Dragon Ball Z",
-      heroes: 12,
-      color: "#f97316",
-      img: "https://images.alphacoders.com/605/605592.png",
+      slug: "SERIES_01",
+      title: "Shonen Forge",
+      description: "Will, sweat, ascension.",
+      heroesCount: 2,
     },
     {
       id: 2,
-      nombre: "My Hero Academia",
-      heroes: 8,
-      color: "#06b6d4",
-      img: "https://images7.alphacoders.com/928/928420.png",
+      slug: "SERIES_02",
+      title: "Cape Doctrine",
+      description: "Modern myth.",
+      heroesCount: 2,
     },
     {
       id: 3,
-      nombre: "Marvel Universe",
-      heroes: 24,
-      color: "#ef4444",
-      img: "https://images.alphacoders.com/135/1351221.png",
+      slug: "SERIES_03",
+      title: "Mecha Division",
+      description: "Pilots & iron.",
+      heroesCount: 2,
     },
   ];
 
   return (
-    <div className="p-8 mt-6 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <header className="mb-12">
-        <h1 className="text-5xl font-black text-white italic tracking-tighter uppercase leading-none">
-          SELECT <span className="text-orange-500">UNIVERSE</span>
+    <div className="p-12 bg-zinc-950 min-h-screen">
+      {/* HEADER TÉCNICO */}
+      <div className="mb-16">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-2 h-2 bg-cyan-400"></div>
+          <span className="text-cyan-400 font-mono text-[10px] tracking-[0.4em] uppercase">
+            Multiverse Console / Phase 01 — Universe Selection
+          </span>
+        </div>
+
+        <h1 className="text-8xl font-[1000] italic uppercase leading-[0.85] tracking-tighter text-white">
+          ESCOGE TU
+          <br />
+          <span className="text-cyan-400">UNIVERSO.</span>
+          <br />
         </h1>
-        <p className="text-zinc-500 text-[10px] font-black tracking-[0.3em] uppercase mt-2">
-          Protocolo de sincronización dimensional activo
+
+        <p className="mt-8 text-zinc-500 max-w-xl text-sm leading-relaxed font-medium">
+          Elige el universo del que quieres tomar tu modelo. Cada serie
+          desbloquea su roster, su nutrición y su gimnasio con telemetría
+          completa.
         </p>
-      </header>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {universos.map((uni) => (
-          <div
+      {/* GRID DE UNIVERSOS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/5">
+        {universes.map((uni) => (
+          <UniverseCard
             key={uni.id}
+            universe={uni}
             onClick={() => onSelectSerie(uni.id)}
-            className="group relative h-[450px] rounded-[2.5rem] overflow-hidden border border-white/5 cursor-pointer hover:border-white/20 transition-all duration-500"
-          >
-            {/* Fondo con imagen y overlay */}
-            <img
-              src={uni.img}
-              className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-40 group-hover:opacity-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-
-            {/* Contenido Táctico */}
-            <div className="absolute bottom-0 p-8 w-full">
-              <div className="flex items-center gap-2 mb-4">
-                <div
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{ backgroundColor: uni.color }}
-                />
-                <span className="text-[10px] font-black text-zinc-500 tracking-widest uppercase">
-                  {uni.heroes} Unidades Disponibles
-                </span>
-              </div>
-
-              <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-2 group-hover:text-orange-500 transition-colors">
-                {uni.nombre}
-              </h2>
-
-              <div
-                className="h-1 w-0 group-hover:w-full transition-all duration-700"
-                style={{ backgroundColor: uni.color }}
-              />
-            </div>
-
-            {/* Badge Flotante */}
-            <div className="absolute top-6 right-6 p-3 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 group-hover:border-orange-500/50 transition-colors">
-              <Zap
-                size={20}
-                className="text-zinc-500 group-hover:text-orange-500 transition-colors"
-              />
-            </div>
-          </div>
+          />
         ))}
       </div>
     </div>
+  );
+};
+
+// COMPONENTE INTERNO PARA LAS TARJETAS
+const UniverseCard = ({
+  universe,
+  onClick,
+}: {
+  universe: Universe;
+  onClick: () => void;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className="group relative border border-white/5 p-8 text-left hover:bg-cyan-400/5 transition-all duration-500 overflow-hidden"
+    >
+      <div className="flex justify-between items-start mb-12">
+        <span className="text-[10px] font-mono text-zinc-600 group-hover:text-cyan-400 transition-colors">
+          {universe.slug}
+        </span>
+        <ArrowUpRight
+          size={18}
+          className="text-zinc-700 group-hover:text-cyan-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+        />
+      </div>
+
+      <h3 className="text-3xl font-black italic uppercase text-white mb-2 group-hover:tracking-wider transition-all">
+        {universe.title}
+      </h3>
+      <p className="text-zinc-500 text-xs mb-10 font-medium">
+        {universe.description}
+      </p>
+
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-4xl font-black text-white italic">
+            {universe.heroesCount}
+          </p>
+          <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+            Heroes on Roster
+          </p>
+        </div>
+
+        {/* Placeholder de imagen pequeña como en el mock */}
+        <div className="w-16 h-10 bg-zinc-800 grayscale group-hover:grayscale-0 transition-all opacity-50 group-hover:opacity-100 overflow-hidden rounded-sm">
+          <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-black"></div>
+        </div>
+      </div>
+
+      {/* Línea de acento inferior */}
+      <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-700"></div>
+    </button>
   );
 };

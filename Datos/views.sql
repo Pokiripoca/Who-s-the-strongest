@@ -94,3 +94,47 @@ SELECT
     sa.Notas_Progreso
 FROM seguimiento_antropometrico sa
 JOIN Heroes h ON sa.ID_P = h.ID_P;
+
+CREATE VIEW vista_planes_maestros AS
+SELECT
+    p.ID_Plan,
+    p.Nombre_Plan,
+    p.Objetivo_Fisico,
+    p.Total_Calorias_Dia,
+    COUNT(ad.ID_P) AS Total_Heroes_Asignados
+FROM cat_planes_nutricion p
+LEFT JOIN (SELECT DISTINCT ID_P, ID_Plan FROM asignacion_dietas_detalle) ad ON p.ID_Plan = ad.ID_Plan
+GROUP BY p.ID_Plan;
+
+CREATE VIEW vista_suplementos_heroes AS
+SELECT
+    h.ID_P,
+    h.Nombre AS Heroe,
+    s.Nombre_Suplemento,
+    s.Tipo_Suple,
+    s.Beneficio_Principal,
+    asig.Cantidad_Dosis,
+    asig.Frecuencia
+FROM asignacion_suplementos asig
+JOIN Heroes h ON asig.ID_P = h.ID_P
+JOIN cat_suplementos s ON asig.ID_Suple = s.ID_Suple;
+
+CREATE VIEW vista_inventario_gym AS
+SELECT
+    id_equipo,
+    nombre,
+    categoria,
+    condicion,
+    ubicacion,
+    ultimo_mantenimineto
+FROM Equipamineto;
+
+CREATE VIEW vista_rutinas_musculares AS
+SELECT
+    ID_Ejerc,
+    Nombre_Ejercicio,
+    Grupo_Muscular,
+    Tipo_Movimiento,
+    Intensidad_Sugerida,
+    Gasto_Estimado
+FROM Rutina_ejercicios;

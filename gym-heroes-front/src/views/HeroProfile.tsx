@@ -1,16 +1,13 @@
-// src/views/HeroProfile.tsx
 import { useHero } from "../hooks/useHero";
 import { StatsGrid } from "../components/StatsGrid";
-import { ArrowLeft } from "lucide-react"; // Para el botón de volver
+import { ArrowLeft } from "lucide-react";
 
-// 1. Definimos qué necesita este componente para funcionar
 interface HeroProfileProps {
   heroId: number;
   onBack: () => void;
 }
 
 export const HeroProfile = ({ heroId, onBack }: HeroProfileProps) => {
-  // 2. Usamos el heroId que viene por props en lugar de un número fijo
   const { hero, loading } = useHero(heroId);
 
   if (loading)
@@ -83,7 +80,7 @@ export const HeroProfile = ({ heroId, onBack }: HeroProfileProps) => {
             <span className="text-white/20">SYSTEM_ID: 00{heroId}</span>
           </p>
 
-          {/* Tus Stats (Asegúrate de que StatsGrid acepte themeColor) */}
+          {}
           <StatsGrid stats={hero.stats} themeColor={hero.color} />
         </div>
       </div>

@@ -4,7 +4,7 @@ export const Home = ({ onStart }: { onStart: () => void }) => {
       className="relative min-h-[90vh] w-full flex flex-col items-center justify-center bg-black px-6 overflow-hidden"
       style={{ fontFamily: "sans-serif" }}
     >
-      {/* Glow de fondo */}
+      {/* Fondo decorativo */}
       <div className="absolute w-[400px] h-[200px] bg-cyan-500/10 blur-[100px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center">

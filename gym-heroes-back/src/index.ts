@@ -13,7 +13,7 @@ app.get("/api/heroes", async (req, res) => {
     const [rows]: any = await pool.query(
       "SELECT * FROM vista_api_heroes_completa",
     );
-
+    console.log("=== DATOS CRUDOS DE LA VISTA EN MYSQL ===", rows);
     const formattedRows = rows.map((hero: any) => {
       // 1. Limpieza de Grasa Corporal (Quitamos el '%' si viene de la DB)
       let grasaNum = 0;

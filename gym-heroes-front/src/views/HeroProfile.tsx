@@ -1,4 +1,3 @@
-// src/views/HeroProfile.tsx
 import { ArrowLeft, Activity } from "lucide-react";
 import type { Hero } from "../types/hero_types";
 
@@ -68,10 +67,30 @@ export const HeroProfile = ({ hero, onBack }: HeroProfileProps) => {
               Biometric_Analysis_v.4
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <StatCard label="Weight" value={`${hero.peso}`} unit="kg" />
-              <StatCard label="Chest" value={`${hero.pecho}`} unit="cm" />
-              <StatCard label="Waist" value={`${hero.cintura}`} unit="cm" />
-              <StatCard label="Body Fat" value={`${hero.grasa_pct}`} unit="%" />
+              {/* 🔥 SOLUCIÓN INTEGRAL AL UNDEFINED:
+                Usamos el operador de coalescencia nula (??). Si 'hero.peso' no existe,
+                busca en 'hero.stats.peso'. Si tampoco existe, muestra '0' por defecto.
+              */}
+              <StatCard
+                label="Weight"
+                value={`${(hero as any).peso ?? 0}`}
+                unit="kg"
+              />
+              <StatCard
+                label="Chest"
+                value={`${(hero as any).pecho ?? 0}`}
+                unit="cm"
+              />
+              <StatCard
+                label="Waist"
+                value={`${(hero as any).cintura ?? 0}`}
+                unit="cm"
+              />
+              <StatCard
+                label="Body Fat"
+                value={`${(hero as any).grasa_pct ?? 0}`}
+                unit="%"
+              />
             </div>
           </div>
         </div>

@@ -199,3 +199,29 @@ LEFT JOIN cat_estatus_salud e ON h.ID_Estatus = e.ID_Estatus
 LEFT JOIN cat_tipos_cuerpo b ON h.ID_Biotipo = b.ID_Tipo
 LEFT JOIN cat_facciones f ON h.ID_Faccion = f.ID_Faccion
 LEFT JOIN medidas_fisicas mf ON h.ID_P = mf.ID_P;
+
+CREATE OR REPLACE VIEW vista_api_heroes_completa AS
+SELECT
+  h.ID_P AS id_p,
+  h.Nombre AS nombre,
+  h.Rol_Ocupacion AS alias,
+  h.Imagen_URL AS imagen_url,
+  h.Rango_Poder AS rango,
+  h.ID_Serie AS id_serie,
+  COALESCE(s.Titulo, 'Universo Desconocido') AS serie_titulo,
+  COALESCE(s.Color_Hex, '#06b6d4') AS color_hex,
+  COALESCE(e.Nombre_Estatus, 'Óptimo') AS estatus_salud,
+  COALESCE(e.Permite_Entrenar, 'Sí') AS permite_entrenar,
+  COALESCE(b.Nombre_Tipo, 'No definido') AS tipo_cuerpo,
+  COALESCE(f.Nombre_Faccion, 'Independiente') AS faccion,
+
+  COALESCE(mf.Peso_kg, 0.0) AS peso,
+  COALESCE(mf.Pecho_cm, 0) AS pecho,
+  COALESCE(mf.Cintura_cm, 0) AS cintura,
+  COALESCE(mf.Grasa_Pct, '0%') AS grasa_pct
+FROM heroes h
+LEFT JOIN series_origen s ON h.ID_Serie = s.ID_Serie
+LEFT JOIN cat_estatus_salud e ON h.ID_Estatus = e.ID_Estatus
+LEFT JOIN cat_tipos_cuerpo b ON h.ID_Biotipo = b.ID_Tipo
+LEFT JOIN cat_facciones f ON h.ID_Faccion = f.ID_Faccion
+LEFT JOIN medidas_fisicas mf ON h.ID_P = mf.ID_P; 

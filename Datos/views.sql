@@ -153,13 +153,13 @@ SELECT
     COALESCE(s.Color_Hex, '#06b6d4') AS color_hex,
     COALESCE(e.Nombre_Estatus, 'Óptimo') AS estatus_salud,
     COALESCE(e.Permite_Entrenar, 'Sí') AS permite_entrenar,
-    COALESCE(b.Nombre_Tipo, 'No definido') AS tipo_cuerpo, -- CORREGIDO: Nombre_Tipo en vez de Nombre_Type
+    COALESCE(b.Nombre_Tipo, 'No definido') AS tipo_cuerpo,
     COALESCE(f.Nombre_Faccion, 'Independiente') AS faccion,
     COALESCE(sa.Peso_Actual_kg, 0.0) AS peso,
     COALESCE(sa.Pecho_Actual_cm, 0) AS pecho,
     COALESCE(sa.Cintura_Actual_cm, 0) AS cintura,
     COALESCE(sa.Grasa_Actual_Pct, '0%') AS grasa_pct
-FROM heroes h -- CORREGIDO: Tu tabla está en minúsculas según tu árbol lateral
+FROM heroes h
 LEFT JOIN series_origen s ON h.ID_Serie = s.ID_Serie
 LEFT JOIN cat_estatus_salud e ON h.ID_Estatus = e.ID_Estatus
 LEFT JOIN cat_tipos_cuerpo b ON h.ID_Biotipo = b.ID_Tipo

@@ -1,8 +1,9 @@
-import { useState } from "react";
+// src/App.tsx (CÓDIGO COMPLETO REPARADO PARA EL FRONTEND)
+import { useState, useEffect } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { UniverseSelection } from "./views/UniverseSelection";
 import { HeroCatalog } from "./views/HeroCatalog";
-import { HeroProfile } from "./views/HeroProfile"; // Importamos el componente de arriba
+import { HeroProfile } from "./views/HeroProfile";
 import type { Hero } from "./types/hero_types";
 
 type View =
@@ -13,14 +14,14 @@ type View =
   | "facility"
   | "nutrition";
 
-// MOCK DATA (Fuera del componente)
 const MOCK_HEROES: Hero[] = [
   {
     id_p: 3,
-    nombre: "Red Riot",
+    nombre: "Red Riot (Respaldo)",
     alias: "Eijiro Kirishima",
     imagen_url:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz6u3L-16S_vF_SOfG0pL0Y9m_EInT-F3o_g&s",
+    id_serie: 1,
     serie_titulo: "Cape Doctrine",
     color_hex: "#ff0000",
     estatus_salud: "Óptimo",
@@ -29,12 +30,34 @@ const MOCK_HEROES: Hero[] = [
     faccion: "U.A. HIGH",
     rango: "A",
     stats: { peso: 72, pecho: 105, cintura: 78, grasa_pct: 12 },
-  },
+  } as unknown as Hero,
 ];
 
 function App() {
   const [currentView, setCurrentView] = useState<View>("home");
   const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
+
+  const [selectedSerieId, setSelectedSerieId] = useState<number>(0);
+
+  const [heroesData, setHeroesData] = useState<Hero[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/heroes")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error en el servidor");
+        return res.json();
+      })
+      .then((data) => {
+        setHeroesData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("❌ Usando MOCK_HEROES como respaldo:", err);
+        setHeroesData(MOCK_HEROES);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="flex bg-zinc-950 min-h-screen text-white">
@@ -42,12 +65,8 @@ function App() {
         activeView={currentView}
         onGoHome={() => setCurrentView("home")}
         onGoUniverses={() => setCurrentView("universes")}
-        onGoNutrition={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        onGoFacility={function (): void {
-          throw new Error("Function not implemented.");
-        }}
+        onGoNutrition={() => setCurrentView("nutrition")}
+        onGoFacility={() => setCurrentView("facility")}
       />
 
       <main className="flex-1 ml-20">
@@ -60,26 +79,63 @@ function App() {
         )}
 
         {currentView === "universes" && (
-          <UniverseSelection onSelectSerie={() => setCurrentView("catalog")} />
-        )}
-
-        {currentView === "catalog" && (
-          <HeroCatalog
-            heroesData={MOCK_HEROES}
-            onSelectHero={(id) => {
-              setSelectedHeroId(id);
-              setCurrentView("profile");
+          // Ahora pasamos el ID real de la serie que el usuario elija
+          <UniverseSelection
+            onSelectSerie={(id: number) => {
+              setSelectedSerieId(id);
+              setCurrentView("catalog");
             }}
-            onBack={() => setCurrentView("universes")}
-            serieId={0}
           />
         )}
+
+        {currentView === "catalog" &&
+          (loading ? (
+            <div className="p-12 font-mono text-cyan-400 animate-pulse text-2xl">
+              Cargando base de datos...
+            </div>
+          ) : (
+            <HeroCatalog
+              heroesData={heroesData}
+              onSelectHero={(id) => {
+                setSelectedHeroId(id);
+                setCurrentView("profile");
+              }}
+              onBack={() => setCurrentView("universes")}
+              serieId={selectedSerieId} // <-- Ahora le mandamos el ID dinámico seleccionado
+            />
+          ))}
 
         {currentView === "profile" && selectedHeroId && (
           <HeroProfile
-            hero={MOCK_HEROES.find((h) => h.id_p === selectedHeroId)!}
+            hero={
+              heroesData.find((h) => h.id_p === selectedHeroId) || heroesData[0]
+            }
             onBack={() => setCurrentView("catalog")}
           />
+        )}
+
+        {currentView === "nutrition" && (
+          <div className="p-12">
+            <h2 className="text-4xl font-bold text-cyan-400 mb-4">
+              Sección de Nutrición
+            </h2>
+            <p className="text-zinc-400 font-mono">
+              Aquí se gestionarán los suplementos y dietas de los héroes de la
+              base de datos.
+            </p>
+          </div>
+        )}
+
+        {currentView === "facility" && (
+          <div className="p-12">
+            <h2 className="text-4xl font-bold text-cyan-400 mb-4">
+              Instalaciones e Infraestructura
+            </h2>
+            <p className="text-zinc-400 font-mono">
+              Panel de control de zonas de entrenamiento y bitácoras de
+              equipamiento.
+            </p>
+          </div>
         )}
       </main>
     </div>

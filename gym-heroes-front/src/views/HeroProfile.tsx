@@ -1,5 +1,5 @@
-// src/views/HeroProfile
-import { ArrowLeft, Activity, Shield, Zap } from "lucide-react";
+// src/views/HeroProfile.tsx
+import { ArrowLeft, Activity } from "lucide-react";
 import type { Hero } from "../types/hero_types";
 
 interface HeroProfileProps {
@@ -34,8 +34,12 @@ export const HeroProfile = ({ hero, onBack }: HeroProfileProps) => {
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
               />
               <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-zinc-950 to-transparent">
-                <span className="text-cyan-400 font-mono text-[10px] tracking-[0.5em] uppercase block mb-2">
-                  {hero.faccion}
+                {/* Muestra dinámicamente la serie real de la base de datos */}
+                <span
+                  className="font-mono text-[10px] tracking-[0.5em] uppercase block mb-2"
+                  style={{ color: hero.color_hex || "#22d3ee" }}
+                >
+                  {hero.serie_titulo} // {hero.faccion}
                 </span>
                 <h2 className="text-5xl font-[1000] italic uppercase text-white leading-none tracking-tighter">
                   {hero.nombre}
@@ -64,48 +68,10 @@ export const HeroProfile = ({ hero, onBack }: HeroProfileProps) => {
               Biometric_Analysis_v.4
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <StatCard label="Weight" value={`${hero.stats.peso}`} unit="kg" />
-              <StatCard label="Chest" value={`${hero.stats.pecho}`} unit="cm" />
-              <StatCard
-                label="Waist"
-                value={`${hero.stats.cintura}`}
-                unit="cm"
-              />
-              <StatCard
-                label="Body Fat"
-                value={`${hero.stats.grasa_pct}`}
-                unit="%"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-8 border border-white/5 bg-zinc-900/10 relative overflow-hidden group">
-              <Shield
-                className="absolute -right-4 -bottom-4 text-white/5"
-                size={140}
-              />
-              <h4 className="text-[10px] font-bold uppercase tracking-widest mb-6 text-zinc-500">
-                Combat_Specialization
-              </h4>
-              <p className="text-3xl font-black italic uppercase text-white">
-                Tank / Frontline
-              </p>
-            </div>
-            <div className="p-8 border border-white/5 bg-zinc-900/10 relative overflow-hidden">
-              <Zap
-                className="absolute -right-4 -bottom-4 text-white/5"
-                size={140}
-              />
-              <h4 className="text-[10px] font-bold uppercase tracking-widest mb-6 text-zinc-500">
-                Evolution
-              </h4>
-              <p className="text-3xl font-black italic uppercase text-cyan-400">
-                Hardening_V2
-              </p>
-              <div className="mt-8 bg-white/5 h-1.5 w-full relative">
-                <div className="bg-cyan-500 h-full w-[85%] shadow-[0_0_15px_#22d3ee]"></div>
-              </div>
+              <StatCard label="Weight" value={`${hero.peso}`} unit="kg" />
+              <StatCard label="Chest" value={`${hero.pecho}`} unit="cm" />
+              <StatCard label="Waist" value={`${hero.cintura}`} unit="cm" />
+              <StatCard label="Body Fat" value={`${hero.grasa_pct}`} unit="%" />
             </div>
           </div>
         </div>

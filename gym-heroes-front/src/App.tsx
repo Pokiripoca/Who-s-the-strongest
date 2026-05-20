@@ -1,4 +1,4 @@
-// src/App.tsx (CÓDIGO COMPLETO REPARADO PARA EL FRONTEND)
+// src/App.tsx
 import { useState, useEffect } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { UniverseSelection } from "./views/UniverseSelection";
@@ -22,10 +22,10 @@ const MOCK_HEROES: Hero[] = [
     imagen_url:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz6u3L-16S_vF_SOfG0pL0Y9m_EInT-F3o_g&s",
     id_serie: 1,
-    serie_titulo: "Cape Doctrine",
+    serie_titulo: "Boku No Hero Academia",
     color_hex: "#ff0000",
     estatus_salud: "Óptimo",
-    permite_entrenar: "Si",
+    permite_entrenar: "Sí",
     tipo_cuerpo: "Endo-mesomorfo",
     faccion: "U.A. HIGH",
     rango: "A",
@@ -36,9 +36,7 @@ const MOCK_HEROES: Hero[] = [
 function App() {
   const [currentView, setCurrentView] = useState<View>("home");
   const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
-
   const [selectedSerieId, setSelectedSerieId] = useState<number>(0);
-
   const [heroesData, setHeroesData] = useState<Hero[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -53,7 +51,7 @@ function App() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("❌ Usando MOCK_HEROES como respaldo:", err);
+        console.error("Usando MOCK_HEROES como respaldo:", err);
         setHeroesData(MOCK_HEROES);
         setLoading(false);
       });
@@ -79,8 +77,8 @@ function App() {
         )}
 
         {currentView === "universes" && (
-          // Ahora pasamos el ID real de la serie que el usuario elija
           <UniverseSelection
+            heroesData={heroesData} // <-- ESTA LÍNEA ES LA QUE FALTA PASARLE AQUÍ
             onSelectSerie={(id: number) => {
               setSelectedSerieId(id);
               setCurrentView("catalog");
@@ -101,7 +99,7 @@ function App() {
                 setCurrentView("profile");
               }}
               onBack={() => setCurrentView("universes")}
-              serieId={selectedSerieId} // <-- Ahora le mandamos el ID dinámico seleccionado
+              serieId={selectedSerieId}
             />
           ))}
 

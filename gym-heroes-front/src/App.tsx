@@ -44,7 +44,7 @@ export default function App() {
           setHeroes(data);
         }
       } catch (error) {
-        console.error("❌ Error cargando héroes desde SQL:", error);
+        console.error(" Error cargando héroes desde SQL:", error);
       }
     };
     fetchGlobalHeroes();
@@ -71,7 +71,7 @@ export default function App() {
           }
         } catch (error) {
           console.error(
-            "❌ Error consultando base de datos de nutrición:",
+            " Error consultando base de datos de nutrición:",
             error,
           );
         } finally {
@@ -99,7 +99,7 @@ export default function App() {
             setBackendEquipamiento(await resEquipamiento.json());
           if (resUso.ok) setBackendUsoLogs(await resUso.json());
         } catch (error) {
-          console.error("❌ Error consultando logs de infraestructura:", error);
+          console.error(" Error consultando logs de infraestructura:", error);
         } finally {
           setIsFacilityLoading(false);
         }

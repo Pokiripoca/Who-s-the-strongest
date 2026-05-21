@@ -35,7 +35,7 @@ export const UniverseSelection: React.FC<UniverseSelectionProps> = ({
         </h1>
       </div>
 
-      {/* GRILLA TÁCTICA DE UNIVERSOS ANIMADA */}
+      {/* GRId */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {universosUnicos.map((universo) => (
           <div

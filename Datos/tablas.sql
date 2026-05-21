@@ -103,8 +103,10 @@ CREATE TABLE Equipamineto (
 
 
 
--- SECCIÓN 2: Entidad Central (HÉROES) y Tablas Dependientes Colectivas
 
+    set foreign_key_checks = 1;
+
+drop table if exists Heroes;
 -- 10. Tabla Principal: Héroes
 CREATE TABLE Heroes (
     ID_P INT PRIMARY KEY,
@@ -123,7 +125,7 @@ CREATE TABLE Heroes (
     FOREIGN KEY (ID_Estatus) REFERENCES cat_estatus_salud(ID_Estatus)
 );
 
--- 11. Medidas Físicas Actuales (Ficha Maestra vinculada al TRIGGER de Auditoría)
+-- 11. Medidas Físicas Actuales
 CREATE TABLE Medidas_Fisicas (
     ID_Medida INT PRIMARY KEY,
     ID_P INT,
@@ -136,7 +138,7 @@ CREATE TABLE Medidas_Fisicas (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 12. Historial de Seguimiento Antropométrico (Evolutivo Clínico)
+-- 12. Historial de Seguimiento Antropométrico
 CREATE TABLE seguimiento_antropometrico (
     ID_Seg INT PRIMARY KEY,
     ID_P INT,
@@ -149,7 +151,7 @@ CREATE TABLE seguimiento_antropometrico (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 13. Asignación de Dietas Detallada (Tabla de Rompimiento de Muchos a Muchos)
+-- 13. Asignación de Dietas Detallada
 CREATE TABLE asignacion_dietas_detalle (
     ID_Asig_D INT PRIMARY KEY,
     ID_P INT,
@@ -162,7 +164,7 @@ CREATE TABLE asignacion_dietas_detalle (
     FOREIGN KEY (ID_Alimento) REFERENCES cat_alimentos(ID_Alimento)
 );
 
--- 14. Bitácora Transaccional de Entrenamiento (Alimentada por el SP_Registrar)
+-- 14. Bitácora Transaccional de Entrenamiento
 CREATE TABLE bitacora_entrenamiento (
     ID_Bit INT PRIMARY KEY,
     ID_P INT,
@@ -187,11 +189,11 @@ CREATE TABLE asignacion_suplementos (
     FOREIGN KEY (ID_Suple) REFERENCES cat_suplementos(ID_Suple)
 );
 
--- 16. Registro Transaccional de Uso de Equipamiento (Relación Máquina-Héroe)
+-- 16. Registro Transaccional
 CREATE TABLE Uso_Equipamiento (
     id_uso INT PRIMARY KEY,
     id_equipo INT,
-    id_heroe INT, -- Declarada e indexada correctamente desde el inicio
+    id_heroe INT,
     fecha DATETIME NOT NULL,
     duracion_min INT NOT NULL,
     estado_ini VARCHAR(50) NOT NULL,
@@ -202,7 +204,7 @@ CREATE TABLE Uso_Equipamiento (
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
 
--- 17. Tabla de Registro Histórico de Cambios de Peso (Poblada exclusivamente por el TRIGGER)
+-- 17. Tabla de Registro Histórico de Cambios de Peso
 CREATE TABLE auditoria_peso (
     id_auditoria INT PRIMARY KEY,
     id_heroe INT,
@@ -212,12 +214,12 @@ CREATE TABLE auditoria_peso (
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
 
--- 18. Seguridad de Sistema: Credenciales de Acceso para Login del Front-end
+-- 18. Seguridad de Sistema
 CREATE TABLE credenciales_access (
     id_credenciales INT PRIMARY KEY,
     id_heroe INT,
     username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL, -- Soporta cadenas HASH seguras (bcrypt/argon2) de la API
+    password VARCHAR(255) NOT NULL,
     ultimo_acceso DATETIME,
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );

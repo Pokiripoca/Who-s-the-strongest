@@ -29,9 +29,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
       {/* RETORNO TÁCTICO */}
       <div className="flex justify-between items-center border-b border-zinc-800/60 pb-6">
         <div>
-          <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
-            Subject_Inspection_File_
-          </h2>
+          <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase"></h2>
           <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
             Expediente Médico
           </h1>
@@ -40,7 +38,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
           onClick={onBack}
           className="font-mono text-xs tracking-wider text-zinc-400 hover:text-white transition-colors bg-zinc-900 border border-zinc-800 px-4 py-2 uppercase"
         >
-          // VOLVER_AL_ROSTER
+          - VOLVER
         </button>
       </div>
 

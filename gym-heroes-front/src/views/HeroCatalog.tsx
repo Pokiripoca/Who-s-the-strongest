@@ -52,19 +52,19 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
                 </span>
               </div>
 
-              {/* cuaditos */}
+              {/* GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {listaDeHeroes.map((hero) => (
                   <div
                     key={hero.id_p}
                     onClick={() => onViewProfile(hero.id_p)}
-                    className="bg-zinc-900/20 border border-zinc-800/80 p-4 relative group cursor-pointer hover:border-cyan-500/40 transition-all duration-200"
+                    className="bg-zinc-900/20 border border-zinc-800/80 p-4 relative group cursor-pointer hover:border-cyan-500/40 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.15)]"
                   >
                     <div className="aspect-[4/5] bg-zinc-950 mb-3 overflow-hidden border border-zinc-900 group-hover:border-zinc-800 transition-colors">
                       <img
                         src={hero.imagen_url}
                         alt={hero.nombre}
-                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300 grayscale group-hover:grayscale-0"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale group-hover:grayscale-0"
                       />
                     </div>
 

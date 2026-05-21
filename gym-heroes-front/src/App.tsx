@@ -147,7 +147,6 @@ export default function App() {
                     <span className="font-sans font-bold">→</span>
                   </span>
                   <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
-                  <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
                 </button>
               </div>
             </div>

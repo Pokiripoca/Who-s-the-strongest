@@ -1,3 +1,5 @@
+// src/components/Sidebar.tsx
+import React from "react";
 import { Home, LayoutGrid, Utensils, Activity } from "lucide-react";
 
 interface SidebarProps {
@@ -36,7 +38,11 @@ export const Sidebar = ({
           onClick={onGoUniverses}
           icon={<LayoutGrid size={24} />}
           label="Universes"
-          active={activeView === "universes"}
+          active={
+            activeView === "universes" ||
+            activeView === "catalog" ||
+            activeView === "profile"
+          }
         />
 
         {/* FACILITY */}
@@ -67,24 +73,30 @@ export const Sidebar = ({
   );
 };
 
-// Sub-componente para evitar repetición de código
+// INTERFAZ EXPLÍCITA PARA TU SUB-COMPONENTE ORIGINAL
+interface SidebarButtonProps {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+}
+
 const SidebarButton = ({
   onClick,
   icon,
   label,
   active,
-}: {
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-}) => (
+}: SidebarButtonProps) => (
   <button
     onClick={onClick}
-    className={`p-3 rounded-xl transition-all group relative ${active ? "text-cyan-400 bg-white/5" : "text-zinc-500 hover:text-cyan-400 hover:bg-white/5"}`}
+    className={`p-3 rounded-xl transition-all group relative ${
+      active
+        ? "text-cyan-400 bg-white/5"
+        : "text-zinc-500 hover:text-cyan-400 hover:bg-white/5"
+    }`}
   >
     {icon}
-    <span className="absolute left-16 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+    <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
       {label}
     </span>
   </button>

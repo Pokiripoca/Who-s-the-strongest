@@ -1,9 +1,10 @@
-// src/App.tsx
 import { useState, useEffect } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { UniverseSelection } from "./views/UniverseSelection";
 import { HeroCatalog } from "./views/HeroCatalog";
 import { HeroProfile } from "./views/HeroProfile";
+import { NutritionDashboard } from "./views/NutritionDashboard";
+import { GymFacility } from "./views/GymFacility";
 import type { Hero } from "./types/hero_types";
 
 type View =
@@ -59,6 +60,7 @@ function App() {
 
   return (
     <div className="flex bg-zinc-950 min-h-screen text-white">
+      {/* SIDEBAR ORIGINAL */}
       <Sidebar
         activeView={currentView}
         onGoHome={() => setCurrentView("home")}
@@ -67,7 +69,9 @@ function App() {
         onGoFacility={() => setCurrentView("facility")}
       />
 
+      {/* CONTENEDOR PRINCIPAL */}
       <main className="flex-1 ml-20">
+        {/* VISTA: HOME */}
         {currentView === "home" && (
           <h1 className="text-[12vw] p-12 font-black italic leading-[0.8]">
             ENTRENA.
@@ -76,9 +80,10 @@ function App() {
           </h1>
         )}
 
+        {/* VISTA: SELECCIÓN DE UNIVERSOS */}
         {currentView === "universes" && (
           <UniverseSelection
-            heroesData={heroesData} // <-- ESTA LÍNEA ES LA QUE FALTA PASARLE AQUÍ
+            heroesData={heroesData}
             onSelectSerie={(id: number) => {
               setSelectedSerieId(id);
               setCurrentView("catalog");
@@ -86,6 +91,7 @@ function App() {
           />
         )}
 
+        {/* VISTA: CATÁLOGO DE HÉROES */}
         {currentView === "catalog" &&
           (loading ? (
             <div className="p-12 font-mono text-cyan-400 animate-pulse text-2xl">
@@ -94,7 +100,7 @@ function App() {
           ) : (
             <HeroCatalog
               heroesData={heroesData}
-              onSelectHero={(id) => {
+              onSelectHero={(id: number) => {
                 setSelectedHeroId(id);
                 setCurrentView("profile");
               }}
@@ -103,6 +109,7 @@ function App() {
             />
           ))}
 
+        {/* VISTA: PERFIL DETALLADO */}
         {currentView === "profile" && selectedHeroId && (
           <HeroProfile
             hero={
@@ -112,29 +119,13 @@ function App() {
           />
         )}
 
+        {/* VISTA: CONTROL DE BIOCOMBUSTIBLE & SUPLEMENTOS */}
         {currentView === "nutrition" && (
-          <div className="p-12">
-            <h2 className="text-4xl font-bold text-cyan-400 mb-4">
-              Sección de Nutrición
-            </h2>
-            <p className="text-zinc-400 font-mono">
-              Aquí se gestionarán los suplementos y dietas de los héroes de la
-              base de datos.
-            </p>
-          </div>
+          <NutritionDashboard heroesData={heroesData} />
         )}
 
-        {currentView === "facility" && (
-          <div className="p-12">
-            <h2 className="text-4xl font-bold text-cyan-400 mb-4">
-              Instalaciones e Infraestructura
-            </h2>
-            <p className="text-zinc-400 font-mono">
-              Panel de control de zonas de entrenamiento y bitácoras de
-              equipamiento.
-            </p>
-          </div>
-        )}
+        {/* VISTA: INFRAESTRUCTURA Y COMPONENTES (FACILITY) */}
+        {currentView === "facility" && <GymFacility />}
       </main>
     </div>
   );

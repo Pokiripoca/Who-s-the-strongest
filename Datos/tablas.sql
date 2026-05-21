@@ -1,8 +1,9 @@
-DROP DATABASE IF EXISTS gym_heroes;
-CREATE DATABASE gym_heroes;
+create database gym_heroes;
 USE gym_heroes;
 
--- 1. Catálogo de Series (Soporte Front-end: Doble Autor y Color)
+-- SECCIÓN 1: Catálogos e Infraestructura Base (Tablas Independientes)
+
+-- 1. Catálogo de Series (Soporte Front-end: Doble Autor y Color Temático)
 CREATE TABLE Series_origen (
     ID_Serie INT PRIMARY KEY,
     Titulo VARCHAR(100) NOT NULL,
@@ -14,7 +15,7 @@ CREATE TABLE Series_origen (
     Color_Hex VARCHAR(7) DEFAULT '#FFFFFF'
 );
 
--- 2. Catálogo de Biotipos
+-- 2. Catálogo de Biotipos Corporales
 CREATE TABLE cat_tipos_cuerpo (
     ID_Tipo INT PRIMARY KEY,
     Nombre_Tipo VARCHAR(50) NOT NULL,
@@ -24,7 +25,7 @@ CREATE TABLE cat_tipos_cuerpo (
     Dificultad_Hipertrofia VARCHAR(20)
 );
 
--- 3. Catálogo de Facciones
+-- 3. Catálogo de Facciones / Alianzas
 CREATE TABLE cat_facciones (
     ID_Faccion INT PRIMARY KEY,
     Nombre_Faccion VARCHAR(100) NOT NULL,
@@ -34,17 +35,77 @@ CREATE TABLE cat_facciones (
     Objetivo_Principal TEXT
 );
 
--- 4. Catálogo de Estatus de Salud
+-- 4. Catálogo de Estatus de Salud y Restricciones Médicas
 CREATE TABLE cat_estatus_salud (
     ID_Estatus INT PRIMARY KEY,
     Nombre_Estatus VARCHAR(50) NOT NULL,
     Nivel_Riesgo VARCHAR(50),
-    Permite_Entrenar VARCHAR(2),
+    Permite_Entrenar VARCHAR(2), -- Almacena 'SI' o 'NO'
     Accion_Recomendada TEXT,
     Prioridad VARCHAR(20)
 );
 
--- 5. Tabla Principal: Héroes (Relacionada con Salud para el Front)
+-- 5. Catálogo de Alimentos (Unidades y Macronutrientes)
+CREATE TABLE cat_alimentos (
+    ID_Alimento INT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Categoria VARCHAR(50),
+    Unidad_Medida VARCHAR(20),
+    Calorias_U INT,
+    Proteina_g DECIMAL(5,2),
+    Carbo_g DECIMAL(5,2),
+    Grasa_g DECIMAL(5,2),
+    Foto_URL VARCHAR(255) DEFAULT 'default_food.png'
+);
+
+-- 6. Catálogo de Planes de Nutrición Maestros
+CREATE TABLE cat_planes_nutricion (
+    ID_Plan INT PRIMARY KEY,
+    Nombre_Plan VARCHAR(50) NOT NULL,
+    Objetivo_Fisico VARCHAR(100),
+    Total_Calorias_Dia VARCHAR(20), -- Almacena texto como '2500 kcal' protegido por REGEXP en API
+    Ratio_Proteina VARCHAR(20),
+    Descripcion_Menu TEXT
+);
+
+-- 7. Catálogo de Rutinas y Ejercicios
+CREATE TABLE Rutina_ejercicios (
+    ID_Ejerc INT PRIMARY KEY,
+    Nombre_Ejercicio VARCHAR(100) NOT NULL,
+    Tipo_Movimiento VARCHAR(50),
+    Grupo_Muscular VARCHAR(50),
+    Intensidad_Sugerida VARCHAR(50),
+    Gasto_Estimado VARCHAR(50)
+);
+
+-- 8. Catálogo de Suplementos Clínicos
+CREATE TABLE cat_suplementos (
+    ID_Suple INT PRIMARY KEY,
+    Nombre_Suplemento VARCHAR(100) NOT NULL,
+    Marca_Base VARCHAR(100),
+    Tipo_Suple VARCHAR(50),
+    Contenido_Neto VARCHAR(50),
+    Horario_Sugerido VARCHAR(50),
+    Costo_Aprox_USD DECIMAL(10,2),
+    Alergenos VARCHAR(100),
+    Beneficio_Principal TEXT
+);
+
+-- 9. Inventario de Equipamiento de Gym (Tabla Padre de Infraestructura)
+CREATE TABLE Equipamineto (
+    id_equipo INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    condicion VARCHAR(50) NOT NULL, -- Evaluada por el Evento Diario
+    ultimo_mantenimineto DATE NULL,
+    ubicacion VARCHAR(100) NOT NULL
+);
+
+
+
+-- SECCIÓN 2: Entidad Central (HÉROES) y Tablas Dependientes Colectivas
+
+-- 10. Tabla Principal: Héroes
 CREATE TABLE Heroes (
     ID_P INT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
@@ -62,7 +123,7 @@ CREATE TABLE Heroes (
     FOREIGN KEY (ID_Estatus) REFERENCES cat_estatus_salud(ID_Estatus)
 );
 
--- 6. Medidas Físicas
+-- 11. Medidas Físicas Actuales (Ficha Maestra vinculada al TRIGGER de Auditoría)
 CREATE TABLE Medidas_Fisicas (
     ID_Medida INT PRIMARY KEY,
     ID_P INT,
@@ -75,7 +136,7 @@ CREATE TABLE Medidas_Fisicas (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 7. Seguimiento Antropométrico
+-- 12. Historial de Seguimiento Antropométrico (Evolutivo Clínico)
 CREATE TABLE seguimiento_antropometrico (
     ID_Seg INT PRIMARY KEY,
     ID_P INT,
@@ -88,30 +149,7 @@ CREATE TABLE seguimiento_antropometrico (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 8. Catálogo de Alimentos
-CREATE TABLE cat_alimentos (
-    ID_Alimento INT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Categoria VARCHAR(50),
-    Unidad_Medida VARCHAR(20),
-    Calorias_U INT,
-    Proteina_g DECIMAL(5,2),
-    Carbo_g DECIMAL(5,2),
-    Grasa_g DECIMAL(5,2),
-    Foto_URL VARCHAR(255) DEFAULT 'default_food.png'
-);
-
--- 9. Catálogo de Planes de Nutrición
-CREATE TABLE cat_planes_nutricion (
-    ID_Plan INT PRIMARY KEY,
-    Nombre_Plan VARCHAR(50) NOT NULL,
-    Objetivo_Fisico VARCHAR(100),
-    Total_Calorias_Dia VARCHAR(20),
-    Ratio_Proteina VARCHAR(20),
-    Descripcion_Menu TEXT
-);
-
--- 10. Asignación de Dietas
+-- 13. Asignación de Dietas Detallada (Tabla de Rompimiento de Muchos a Muchos)
 CREATE TABLE asignacion_dietas_detalle (
     ID_Asig_D INT PRIMARY KEY,
     ID_P INT,
@@ -124,17 +162,7 @@ CREATE TABLE asignacion_dietas_detalle (
     FOREIGN KEY (ID_Alimento) REFERENCES cat_alimentos(ID_Alimento)
 );
 
--- 11. Rutina de Ejercicios
-CREATE TABLE Rutina_ejercicios (
-    ID_Ejerc INT PRIMARY KEY,
-    Nombre_Ejercicio VARCHAR(100) NOT NULL,
-    Tipo_Movimiento VARCHAR(50),
-    Grupo_Muscular VARCHAR(50),
-    Intensidad_Sugerida VARCHAR(50),
-    Gasto_Estimado VARCHAR(50)
-);
-
--- 12. Bitácora de Entrenamiento
+-- 14. Bitácora Transaccional de Entrenamiento (Alimentada por el SP_Registrar)
 CREATE TABLE bitacora_entrenamiento (
     ID_Bit INT PRIMARY KEY,
     ID_P INT,
@@ -147,20 +175,7 @@ CREATE TABLE bitacora_entrenamiento (
     FOREIGN KEY (ID_Ejerc) REFERENCES Rutina_ejercicios(ID_Ejerc)
 );
 
--- 13. Catálogo de Suplementos
-CREATE TABLE cat_suplementos (
-    ID_Suple INT PRIMARY KEY,
-    Nombre_Suplemento VARCHAR(100) NOT NULL,
-    Marca_Base VARCHAR(100),
-    Tipo_Suple VARCHAR(50),
-    Contenido_Neto VARCHAR(50),
-    Horario_Sugerido VARCHAR(50),
-    Costo_Aprox_USD DECIMAL(10,2),
-    Alergenos VARCHAR(100),
-    Beneficio_Principal TEXT
-);
-
--- 14. Asignación de Suplementos
+-- 15. Asignación de Suplementos por Objetivo
 CREATE TABLE asignacion_suplementos (
     ID_Asig_S INT PRIMARY KEY,
     ID_P INT,
@@ -172,21 +187,11 @@ CREATE TABLE asignacion_suplementos (
     FOREIGN KEY (ID_Suple) REFERENCES cat_suplementos(ID_Suple)
 );
 
--- 15. Equipamiento de Gym (Tabla Padre)
-CREATE TABLE Equipamineto (
-    id_equipo INT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    categoria VARCHAR(50) NOT NULL,
-    condicion VARCHAR(50) NOT NULL,
-    ultimo_mantenimineto DATE NULL,
-    ubicacion VARCHAR(100) NOT NULL
-);
-
--- 16. Registro de Uso (Tabla Hija que se conecta a Equipamineto)
+-- 16. Registro Transaccional de Uso de Equipamiento (Relación Máquina-Héroe)
 CREATE TABLE Uso_Equipamiento (
     id_uso INT PRIMARY KEY,
     id_equipo INT,
-    id_heroe INT,
+    id_heroe INT, -- Declarada e indexada correctamente desde el inicio
     fecha DATETIME NOT NULL,
     duracion_min INT NOT NULL,
     estado_ini VARCHAR(50) NOT NULL,
@@ -196,7 +201,8 @@ CREATE TABLE Uso_Equipamiento (
     FOREIGN KEY (id_equipo) REFERENCES Equipamineto(id_equipo),
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
--- 17. Auditoría de Peso (Historial detallado de cambios)
+
+-- 17. Tabla de Registro Histórico de Cambios de Peso (Poblada exclusivamente por el TRIGGER)
 CREATE TABLE auditoria_peso (
     id_auditoria INT PRIMARY KEY,
     id_heroe INT,
@@ -206,15 +212,12 @@ CREATE TABLE auditoria_peso (
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
 
--- 18. Credenciales de Acceso (Para el sistema del Front-end)
+-- 18. Seguridad de Sistema: Credenciales de Acceso para Login del Front-end
 CREATE TABLE credenciales_access (
     id_credenciales INT PRIMARY KEY,
     id_heroe INT,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL, -- Soporta cadenas HASH seguras (bcrypt/argon2) de la API
     ultimo_acceso DATETIME,
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
-
-ALTER TABLE Uso_Equipamiento ADD COLUMN id_heroe INT;
-ALTER TABLE Uso_Equipamiento ADD FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P);

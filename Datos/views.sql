@@ -1,3 +1,5 @@
+USE gym_heroes;
+
 -- VISTA 1: Roster Filtrable de Personajes
 -- Entrega un catálogo para alimentar buscadores y
 -- sidebars con filtros rápidos por facción, serie y estado médico.
@@ -226,3 +228,4 @@ LEFT JOIN cat_estatus_salud e ON h.ID_Estatus = e.ID_Estatus
 LEFT JOIN cat_tipos_cuerpo b ON h.ID_Biotipo = b.ID_Tipo
 LEFT JOIN cat_facciones f ON h.ID_Faccion = f.ID_Faccion
 LEFT JOIN medidas_fisicas mf ON h.ID_P = mf.ID_P;
+

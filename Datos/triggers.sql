@@ -1,3 +1,5 @@
+USE gym_heroes;
+
 -- TRIGGER 1: Auditoría Automática de Modificación de Peso
 -- Tabla Afectada: Medidas_Fisicas (AFTER UPDATE)
 -- Propósito: Monitorea variaciones reales en el kilaje de los héroes y registra

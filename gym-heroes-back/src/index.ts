@@ -6,14 +6,10 @@ app.use(cors());
 app.use(express.json());
 
 async function startServer() {
-  // Importamos el pool de conexiones de tu archivo de base de datos
   const { pool } = await import("./db/index.ts");
 
-  console.log("⚙️ Registrando rutas en Express...");
+  console.log(" Registrando rutas en Express...");
 
-  // ==========================================
-  // 1. ENDPOINT: CATÁLOGO DE HÉROES
-  // ==========================================
   app.get("/api/heroes", async (req, res) => {
     try {
       const [rows]: any = await pool.query(`
@@ -69,18 +65,15 @@ async function startServer() {
 
       res.json(processedHeroes);
     } catch (error: any) {
-      console.error("❌ Error en GET /api/heroes:", error);
+      console.error(" Error en GET /api/heroes:", error);
       res
         .status(500)
         .json({ error: "Internal Server Error", detalle: error.message });
     }
   });
-  // ==========================================
-  // 2. ENDPOINT CORREGIDO: EXTRACCIÓN, LIMPIEZA Y CÁLCULO DE RESPALDO
-  // ==========================================
   app.get("/api/nutrition/all", async (req, res) => {
     try {
-      console.log("📞 Petición recibida en GET /api/nutrition/all");
+      console.log("Petición recibida en GET /api/nutrition/all");
 
       const [rows]: any = await pool.query(`
         SELECT 
@@ -115,7 +108,6 @@ async function startServer() {
           porcion: Number(row.porcion),
           frecuencia: row.frecuencia,
 
-          // 🎯 Mapeo directo usando tus nombres exactos de base de datos
           calorias: cleanNutritionValue(row.Calorias_U),
           proteinas: cleanNutritionValue(row.Proteina_g),
           carbohidratos: cleanNutritionValue(row.Carbo_g),
@@ -125,19 +117,16 @@ async function startServer() {
 
       res.json(processedRows);
     } catch (error: any) {
-      console.error("❌ Error crítico en GET /api/nutrition/all:", error);
+      console.error(" Error crítico en GET /api/nutrition/all:", error);
       res
         .status(500)
         .json({ error: "Error en base de datos", detalle: error.message });
     }
   });
 
-  // ==========================================
-  // 3. ENDPOINT: SUPLEMENTOS MAESTROS
-  // ==========================================
   app.get("/api/nutrition/supplements", async (req, res) => {
     try {
-      console.log("📞 Petición recibida en GET /api/nutrition/supplements");
+      console.log(" Petición recibida en GET /api/nutrition/supplements");
 
       const [rows]: any = await pool.query(`
         SELECT 
@@ -155,21 +144,17 @@ async function startServer() {
       `);
       res.json(rows);
     } catch (error: any) {
-      console.error("❌ Error en GET /api/nutrition/supplements:", error);
+      console.error(" Error en GET /api/nutrition/supplements:", error);
       res
         .status(500)
         .json({ error: "Error en suplementos", detalle: error.message });
     }
   });
 
-  // ==========================================
-  // 4. ENDPOINT OPTIMIZADO: INFRAESTRUCTURA (Equipos)
-  // ==========================================
   app.get("/api/facility/equipment", async (req, res) => {
     try {
-      console.log("📞 Petición recibida en GET /api/facility/equipment");
+      console.log(" Petición recibida en GET /api/facility/equipment");
 
-      // Forzamos alias en minúsculas para neutralizar la sensibilidad a mayúsculas de SQL
       const [rows]: any = await pool.query(`
         SELECT 
           ID_Equipo AS id_equipo, 
@@ -189,7 +174,6 @@ async function startServer() {
         let zonaReal = ubicacionRaw || "Zona Común";
         let fechaReal = eq.ultimo_mantenimineto;
 
-        // Limpieza de emergencia por si las columnas vinieron invertidas en BD
         if (tieneFechaEnUbicacion) {
           fechaReal = ubicacionRaw;
           const catLower = (eq.categoria || "").toLowerCase();
@@ -215,7 +199,7 @@ async function startServer() {
 
       res.json(fixedEquipment);
     } catch (error: any) {
-      console.error("❌ Error en GET /api/facility/equipment:", error);
+      console.error(" Error en GET /api/facility/equipment:", error);
       res.status(500).json({
         error: "Error al mapear infraestructura",
         detalle: error.message,
@@ -223,12 +207,9 @@ async function startServer() {
     }
   });
 
-  // ==========================================
-  // 5. ENDPOINT OPTIMIZADO: HISTORIAL DE USO
-  // ==========================================
   app.get("/api/facility/usage", async (req, res) => {
     try {
-      console.log("📞 Petición recibida en GET /api/facility/usage");
+      console.log(" Petición recibida en GET /api/facility/usage");
 
       // Estandarizamos todas las columnas a minúsculas con AS
       const [rows]: any = await pool.query(`

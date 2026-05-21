@@ -33,6 +33,6 @@ export const useHeroes = () => {
     heroes,
     loading,
     error,
-    refetch: fetchHeroes, // Por si necesitas recargar tras un cambio antropométrico
+    refetch: fetchHeroes,
   };
 };

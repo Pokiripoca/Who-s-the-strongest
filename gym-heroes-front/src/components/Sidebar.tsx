@@ -64,7 +64,6 @@ export const Sidebar = ({
   );
 };
 
-// INTERFAZ EXPLÍCITA PARA TU SUB-COMPONENTE ORIGINAL
 interface SidebarButtonProps {
   onClick: () => void;
   icon: React.ReactNode;

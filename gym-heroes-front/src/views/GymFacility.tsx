@@ -1,13 +1,11 @@
-// src/views/GymFacility.tsx
 import React, { useState } from "react";
 
-// Interfaces basadas estrictamente en las columnas reales de tus tablas SQL
 export interface EquipamientoSQL {
   id_equipo: number;
   nombre: string;
   categoria: string;
   condicion: string;
-  ultimo_mantenimineto: string; // Respetando el typo original de tu BD
+  ultimo_mantenimineto: string;
   ubicacion: string;
 }
 
@@ -19,7 +17,7 @@ export interface UsoEquipamientoSQL {
   duracion_min: number;
   estado_ini: string;
   estado_final: string;
-  limpio: number; // Tinyint / Int en MySQL (0 o 1)
+  limpio: number;
   notas_adicionales: string;
   heroe_nombre?: string;
 }
@@ -37,7 +35,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
 }) => {
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>("TODOS");
 
-  // Mapeo dinámico y seguro de categorías directo de lo que responda la base de datos
   const categoriasUnicas = [
     "TODOS",
     ...new Set(
@@ -47,14 +44,12 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
     ),
   ];
 
-  // Filtrado reactivo en memoria frontend con soporte de fallbacks nulos
   const equiposFiltrados = equipamientoData.filter((e) => {
     if (!e) return false;
     const cat = e.categoria?.toUpperCase() || "GENERAL";
     return categoriaFiltro === "TODOS" || cat === categoriaFiltro;
   });
 
-  // Filtrado de incidencias/alertas dinámicas según SQL
   const incidenciasCriticas = usoData.filter((log) => {
     if (!log) return false;
     const estadoFinal = log.estado_final?.toLowerCase() || "";
@@ -71,14 +66,11 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
 
   return (
     <div className="p-12 space-y-8 bg-zinc-950 text-white min-h-screen selection:bg-orange-500 selection:text-black">
-      {/* HEADER LOGÍSTICO */}
+      {/* HEADER  */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-6">
         <div>
-          <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
-            REAL_TIME_FACILITY_HARDWARE_LOGS_
-          </h2>
           <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
-            Estatus del Complejo
+            Nuestro Gimnasio{" "}
           </h1>
         </div>
         <div className="flex items-center gap-4 font-mono text-xs">
@@ -116,7 +108,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {equiposFiltrados.map((equipo) => {
-                // Doble escudo por si la propiedad llega corregida o con typo desde el backend
                 const mantenimientoStr =
                   equipo.ultimo_mantenimineto ||
                   (equipo as any).ultimo_mantenimiento ||
@@ -179,7 +170,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
           {/* BITÁCORA EN VIVO DE LA TABLA USO_EQUIPAMIENTO */}
           <div className="pt-6 space-y-4">
             <div className="font-mono text-xs text-white font-bold flex items-center gap-2">
-              <span className="text-orange-500">📋</span>{" "}
               LIVE_USO_EQUIPAMIENTO_LOG_
             </div>
 
@@ -250,7 +240,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
         {/* COLUMNA DERECHA: ALERTAS Y UBICACIONES AUTOMATIZADAS */}
         <div className="space-y-4 font-mono">
           <div className="text-xs text-white font-bold flex items-center gap-2">
-            <span className="text-orange-500">⚡</span> INCIDENTES_Y_REPORTES_
+            <span className="text-orange-500"></span> INCIDENTES_Y_REPORTES_
           </div>
 
           {incidenciasCriticas.length === 0 ? (

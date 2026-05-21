@@ -18,18 +18,15 @@ type View =
   | "nutrition";
 
 export default function App() {
-  // --- ESTADOS DE CONTROL DE NAVEGACIÓN Y HÉROES ---
   const [currentView, setCurrentView] = useState<View>("home");
   const [heroes, setHeroes] = useState<Hero[]>([]);
   const [selectedSerieId, setSelectedSerieId] = useState<number | null>(null);
   const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
 
-  // --- ESTADOS DE NUTRICIÓN (CONECTADOS A TU BACKEND REAL) ---
   const [backendAlimentos, setBackendAlimentos] = useState<any[]>([]);
   const [backendSuplementos, setBackendSuplementos] = useState<any[]>([]);
   const [isNutritionLoading, setIsNutritionLoading] = useState<boolean>(false);
 
-  // --- ESTADOS DE INFRAESTRUCTURA ---
   const [backendEquipamiento, setBackendEquipamiento] = useState<
     EquipamientoSQL[]
   >([]);
@@ -37,10 +34,7 @@ export default function App() {
     [],
   );
   const [isFacilityLoading, setIsFacilityLoading] = useState<boolean>(false);
-
-  // ==========================================
-  // EFFECT 1: CARGA GLOBAL DE HÉROES
-  // ==========================================
+  //  CARGA GLOBAL DE HÉROES
   useEffect(() => {
     const fetchGlobalHeroes = async () => {
       try {
@@ -56,9 +50,7 @@ export default function App() {
     fetchGlobalHeroes();
   }, []);
 
-  // ==========================================
-  // EFFECT 2: CARGA REAL DE NUTRICIÓN DESDE TU DB
-  // ==========================================
+  // CARGA REAL DE NUTRICIÓN DESDE TU DB
   useEffect(() => {
     if (currentView === "nutrition") {
       const fetchNutritionData = async () => {
@@ -90,9 +82,7 @@ export default function App() {
     }
   }, [currentView]);
 
-  // ==========================================
-  // EFFECT 3: CARGA DE DATOS DEL GIMNASIO
-  // ==========================================
+  //  CARGA DE DATOS DEL GIMNASIO
   useEffect(() => {
     if (currentView === "facility") {
       const fetchFacilityData = async () => {

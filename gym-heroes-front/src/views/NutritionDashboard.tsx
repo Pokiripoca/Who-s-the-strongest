@@ -1,4 +1,3 @@
-// src/views/NutritionDashboard.tsx
 import React, { useState, useMemo } from "react";
 
 export interface AlimentoSQL {
@@ -49,7 +48,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
   const [selectedHeroId, setSelectedHeroId] = useState<number | string>("");
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>("TODOS");
 
-  // 1. Catálogo General de Alimentos (Valores Únicos)
   const listaAlimentosUnicos = useMemo(() => {
     const vistos = new Set();
     return alimentosData.filter((item) => {
@@ -59,7 +57,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
     });
   }, [alimentosData]);
 
-  // Generación dinámica de categorías para el selector
   const categoriasUnicas = useMemo(() => {
     return [
       "TODOS",
@@ -69,7 +66,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
     ];
   }, [listaAlimentosUnicos]);
 
-  // Alimentos filtrados por el selector del Frontend
   const alimentosFiltrados = useMemo(() => {
     return listaAlimentosUnicos.filter(
       (a) =>
@@ -78,7 +74,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
     );
   }, [listaAlimentosUnicos, categoriaFiltro]);
 
-  // 2. Catálogo General de Suplementos (Valores Únicos)
   const listaSuplementosUnicos = useMemo(() => {
     const vistos = new Set();
     return suplementosData.filter((item) => {
@@ -88,7 +83,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
     });
   }, [suplementosData]);
 
-  // 3. Auditoría en tiempo real del Héroe seleccionado
   const dietaDelHeroe = useMemo(() => {
     if (!selectedHeroId) return null;
     const comidas = alimentosData.filter(
@@ -110,9 +104,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
 
   if (loading) {
     return (
-      <div className="p-12 bg-zinc-950 text-zinc-500 font-mono text-xs tracking-widest uppercase animate-pulse">
-        Executing_Nutrition_Queries... // Fetching_Live_SQL_Feed
-      </div>
+      <div className="p-12 bg-zinc-950 text-zinc-500 font-mono text-xs tracking-widest uppercase animate-pulse"></div>
     );
   }
 
@@ -121,33 +113,22 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
       {/* HEADER LOGÍSTICO */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-6">
         <div>
-          <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
-            REAL_TIME_NUTRITION_DIET_LOGS_
-          </h2>
           <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
-            Logística de Macronutrientes
+            Come cómo tu heroe
           </h1>
         </div>
         <div className="flex items-center gap-4 font-mono text-xs">
-          <div className="text-right">
-            <p className="text-[10px] text-zinc-500 uppercase">
-              SISTEMA_ESTADO
-            </p>
-            <p className="text-cyan-400 font-bold flex items-center gap-1.5 justify-end">
-              <span className="animate-ping text-[6px]">●</span> LIVE_DIET_FEED
-            </p>
-          </div>
+          <div className="text-right"></div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* PANEL IZQUIERDO Y CENTRAL: TABLAS MAESTRAS DE ALMACÉN */}
         <div className="lg:col-span-2 space-y-8">
-          {/* SECCIÓN 1: ALIMENTOS EN ALMACÉN */}
+          {/*  ALIMENTOS EN ALMACÉN */}
           <div className="space-y-4">
             <div className="flex justify-between items-center font-mono text-xs">
               <span className="flex items-center gap-2 text-white font-bold">
-                [ ] CAT_ALIMENTOS_REGISTRADOS ({alimentosFiltrados.length})
+                [ ] ALIMENTOS_REGISTRADOS ({alimentosFiltrados.length})
               </span>
               <select
                 className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 text-zinc-400 focus:outline-none focus:border-zinc-700 uppercase font-mono text-xs"
@@ -208,10 +189,10 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
             </div>
           </div>
 
-          {/* SECCIÓN 2: SUPLEMENTOS AMPLILADOS EN ACADEMIA */}
+          {/* UPLEMENTOS AMPLILADOS EN ACADEMIA */}
           <div className="space-y-4">
             <div className="font-mono text-xs text-white font-bold flex items-center gap-2">
-              [ ] CAT_SUPLEMENTOS_DISPONIBLES ({listaSuplementosUnicos.length})
+              [ ] SUPLEMENTOS_DISPONIBLES ({listaSuplementosUnicos.length})
             </div>
 
             <div className="bg-zinc-900/40 border border-zinc-800/80 overflow-x-auto max-h-64 overflow-y-auto">
@@ -228,14 +209,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
                 </thead>
                 <tbody className="divide-y divide-zinc-850/40 text-zinc-300">
                   {listaSuplementosUnicos.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="p-8 text-center text-zinc-600 uppercase tracking-widest"
-                      >
-                        No_Supplements_Stored_In_Database
-                      </td>
-                    </tr>
+                    <tr></tr>
                   ) : (
                     listaSuplementosUnicos.map((suple, idx) => (
                       <tr
@@ -292,7 +266,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
             </select>
           </div>
 
-          {/* TARJETA ADYACENTE: DIETA ESPECÍFICA DETALLADA */}
+          {/* DIETA ESPECÍFICA DETALLADA */}
           <div className="space-y-2">
             <div className="text-xs text-white font-bold uppercase tracking-wider">
               Asignación Nutricional Específica
@@ -368,9 +342,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
                 )}
               </div>
             ) : (
-              <div className="bg-zinc-900/20 border border-zinc-800/60 p-8 text-[11px] text-zinc-600 uppercase tracking-widest text-center">
-                Awaiting_Hero_Selection_For_Diet_Audit
-              </div>
+              <div className="bg-zinc-900/20 border border-zinc-800/60 p-8 text-[11px] text-zinc-600 uppercase tracking-widest text-center"></div>
             )}
           </div>
         </div>

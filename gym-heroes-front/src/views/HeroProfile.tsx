@@ -75,27 +75,26 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
                 style={{ color: color_hex }}
                 className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase"
               >
-                {text_titulo}{" "}
-                {/* 🎯 CORREGIDO: Muestra el nombre real del universo */}
+                {text_titulo} {/* */}
               </span>
               <h2 className="text-3xl font-black italic tracking-tight uppercase mt-1">
                 {nombre}
               </h2>
               <p className="text-xs font-mono text-zinc-500 lowercase">
-                @{alias || "no_alias"}
+                {alias || "no_alias"}
               </p>
             </div>
           </div>
 
           <div className="pt-4 border-t border-zinc-850/60 space-y-2 font-mono text-xs">
             <div className="flex justify-between">
-              <span className="text-zinc-550 uppercase">FACCCIÓN_</span>
+              <span className="text-zinc-550 uppercase">FACCCIÓN</span>
               <span className="text-zinc-300 font-bold uppercase">
                 {faccion}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-zinc-550 uppercase">BIOTIPO_</span>
+              <span className="text-zinc-550 uppercase">BIOTIPO</span>
               <span className="text-zinc-300 font-bold uppercase">
                 {tipo_cuerpo}
               </span>
@@ -175,7 +174,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
                     : "text-rose-500"
                 }`}
               >
-                <span className="text-sm">●</span>{" "}
+                <span className="text-sm">*</span>{" "}
                 {permite_entrenar === "Sí" ? "CLEAR TO TRAIN" : "RESTRICTED"}
               </span>
             </div>

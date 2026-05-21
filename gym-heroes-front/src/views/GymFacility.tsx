@@ -31,7 +31,6 @@ interface GymFacilityProps {
 export const GymFacility: React.FC<GymFacilityProps> = ({
   equipamientoData = [],
   usoData = [],
-  loading = false,
 }) => {
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>("TODOS");
 
@@ -55,14 +54,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
     const estadoFinal = log.estado_final?.toLowerCase() || "";
     return estadoFinal === "desgastado" || log.limpio === 0;
   });
-
-  if (loading) {
-    return (
-      <div className="p-12 bg-zinc-950 text-zinc-500 font-mono text-xs tracking-widest uppercase animate-pulse">
-        Executing_Facility_Queries... // Fetching_Live_SQL_Feed
-      </div>
-    );
-  }
 
   return (
     <div className="p-12 space-y-8 bg-zinc-950 text-white min-h-screen selection:bg-orange-500 selection:text-black">
@@ -102,9 +93,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
 
           {/* GRID TÁCTICO RECTANGULAR DE MAQUINARIAS */}
           {equiposFiltrados.length === 0 ? (
-            <div className="p-8 border border-zinc-900 bg-zinc-900/10 text-center font-mono text-xs text-zinc-600 uppercase tracking-widest">
-              No_Equipment_Data_Returned_From_Query
-            </div>
+            <div className="p-8 border border-zinc-900 bg-zinc-900/10 text-center font-mono text-xs text-zinc-600 uppercase tracking-widest"></div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {equiposFiltrados.map((equipo) => {
@@ -158,7 +147,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
                               : "text-orange-400"
                         }`}
                       >
-                        ● {condicionStr.toUpperCase()}
+                        *{condicionStr.toUpperCase()}
                       </span>
                     </div>
                   </div>
@@ -170,7 +159,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
           {/* BITÁCORA EN VIVO DE LA TABLA USO_EQUIPAMIENTO */}
           <div className="pt-6 space-y-4">
             <div className="font-mono text-xs text-white font-bold flex items-center gap-2">
-              LIVE_USO_EQUIPAMIENTO_LOG_
+              USO_EQUIPAMIENTO
             </div>
 
             <div className="bg-zinc-900/40 border border-zinc-800/80 overflow-x-auto">
@@ -181,21 +170,12 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
                     <th className="p-4">Timestamp_SQL</th>
                     <th className="p-4 text-center">Duración</th>
                     <th className="p-4 text-center">Sanidad</th>
-                    <th className="p-4">
-                      Registro Operativo / Notas Adicionales
-                    </th>
+                    <th className="p-4">Notas Adicionales</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-850/40 text-zinc-300">
                   {usoData.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="p-8 text-center text-zinc-600 uppercase tracking-widest"
-                      >
-                        No_Usage_Records_Stored_In_Database
-                      </td>
-                    </tr>
+                    <tr></tr>
                   ) : (
                     usoData.map((log) => (
                       <tr
@@ -240,12 +220,12 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
         {/* COLUMNA DERECHA: ALERTAS Y UBICACIONES AUTOMATIZADAS */}
         <div className="space-y-4 font-mono">
           <div className="text-xs text-white font-bold flex items-center gap-2">
-            <span className="text-orange-500"></span> INCIDENTES_Y_REPORTES_
+            <span className="text-orange-500"></span> INCIDENTES_Y_REPORTES
           </div>
 
           {incidenciasCriticas.length === 0 ? (
             <div className="bg-zinc-900/20 border border-zinc-800/60 p-4 text-[11px] text-zinc-500 uppercase tracking-widest text-center">
-              All_Systems_Nominal // No_Alerts
+              SIN_ALERTAS
             </div>
           ) : (
             incidenciasCriticas.map((inc) => (
@@ -254,7 +234,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
                 className="bg-orange-950/20 border border-orange-900/40 p-4 text-[11px] text-orange-400 space-y-1"
               >
                 <p className="font-bold uppercase tracking-wider">
-                  ▲ REGISTRO_CRÍTICO_# {inc.id_uso}
+                  ¡REGISTRO_CRÍTICO! # {inc.id_uso}
                 </p>
                 <p className="leading-relaxed text-zinc-300 text-[10px]">
                   El equipo{" "}

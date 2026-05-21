@@ -30,9 +30,9 @@ export const UniverseSelection: React.FC<UniverseSelectionProps> = ({
   return (
     <div className="p-12 space-y-8 bg-zinc-950 min-h-screen font-mono text-white">
       <div className="space-y-1">
-        <h2 className="text-xs tracking-[0.4em] text-zinc-500 uppercase">
-          SELECT_ORIGIN_UNIVERSE_
-        </h2>
+        <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
+          Universos{" "}
+        </h1>
       </div>
 
       {/* GRILLA TÁCTICA DE UNIVERSOS */}

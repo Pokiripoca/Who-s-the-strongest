@@ -3,21 +3,19 @@ import type { Hero } from "../types/hero_types";
 
 export interface HeroCatalogProps {
   heroes: Hero[];
-  selectedSerieId: number | null; // 🎯 CORREGIDO: "Id" con I mayúscula
+  selectedSerieId: number | null;
   onViewProfile: (id: number) => void;
 }
 
 export const HeroCatalog: React.FC<HeroCatalogProps> = ({
   heroes = [],
-  selectedSerieId = null, // 🎯 CORREGIDO: "Id" con I mayúscula
+  selectedSerieId = null,
   onViewProfile,
 }) => {
-  // 1. Filtrado usando el nombre de prop corregido
   const heroesFiltrados = selectedSerieId
     ? heroes.filter((h) => h.id_serie === selectedSerieId)
     : heroes;
 
-  // 2. Agrupación usando la llave del backend ('text_titulo')
   const heroesPorUniverso = heroesFiltrados.reduce(
     (acc, hero) => {
       const universoKey = hero.text_titulo || "Universo Desconocido";
@@ -33,9 +31,7 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
   return (
     <div className="p-12 space-y-12 bg-zinc-950 min-h-screen text-white font-mono">
       {Object.keys(heroesPorUniverso).length === 0 ? (
-        <div className="text-center text-zinc-600 text-xs tracking-widest uppercase py-12 border border-dashed border-zinc-900">
-          No_Heroes_Registered_In_Selected_Sector
-        </div>
+        <div className="text-center text-zinc-600 text-xs tracking-widest uppercase py-12 border border-dashed border-zinc-900"></div>
       ) : (
         Object.entries(heroesPorUniverso).map(
           ([universoNombre, listaDeHeroes]) => (
@@ -56,7 +52,7 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
                 </span>
               </div>
 
-              {/* GRILLA TÁCTICA */}
+              {/* cuaditos */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {listaDeHeroes.map((hero) => (
                   <div

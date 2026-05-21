@@ -5,7 +5,9 @@ import { HeroCatalog } from "./views/HeroCatalog";
 import { HeroProfile } from "./views/HeroProfile";
 import { NutritionDashboard } from "./views/NutritionDashboard";
 import { GymFacility } from "./views/GymFacility";
+
 import type { Hero } from "./types/hero_types";
+import type { EquipamientoSQL, UsoEquipamientoSQL } from "./views/GymFacility";
 
 type View =
   | "home"
@@ -15,78 +17,137 @@ type View =
   | "facility"
   | "nutrition";
 
-function App() {
+export default function App() {
+  // --- ESTADOS DE CONTROL DE NAVEGACIÓN Y HÉROES ---
   const [currentView, setCurrentView] = useState<View>("home");
-  const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
-  // 1. Añadido el estado que faltaba para guardar la serie seleccionada
+  const [heroes, setHeroes] = useState<Hero[]>([]);
   const [selectedSerieId, setSelectedSerieId] = useState<number | null>(null);
-  const [heroesData, setHeroesData] = useState<Hero[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
 
+  // --- ESTADOS DE NUTRICIÓN (CONECTADOS A TU BACKEND REAL) ---
+  const [backendAlimentos, setBackendAlimentos] = useState<any[]>([]);
+  const [backendSuplementos, setBackendSuplementos] = useState<any[]>([]);
+  const [isNutritionLoading, setIsNutritionLoading] = useState<boolean>(false);
+
+  // --- ESTADOS DE INFRAESTRUCTURA ---
+  const [backendEquipamiento, setBackendEquipamiento] = useState<
+    EquipamientoSQL[]
+  >([]);
+  const [backendUsoLogs, setBackendUsoLogs] = useState<UsoEquipamientoSQL[]>(
+    [],
+  );
+  const [isFacilityLoading, setIsFacilityLoading] = useState<boolean>(false);
+
+  // ==========================================
+  // EFFECT 1: CARGA GLOBAL DE HÉROES
+  // ==========================================
   useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:5000/api/heroes")
-      .then((res) => {
-        if (!res.ok) throw new Error("Error de conexión al ecosistema API");
-        return res.json();
-      })
-      .then((data) => {
-        setHeroesData(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Falla crítica al conectar con el backend:", err);
-        setLoading(false);
-      });
+    const fetchGlobalHeroes = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/heroes");
+        if (response.ok) {
+          const data = await response.json();
+          setHeroes(data);
+        }
+      } catch (error) {
+        console.error("❌ Error cargando héroes desde SQL:", error);
+      }
+    };
+    fetchGlobalHeroes();
+  }, []);
+
+  // ==========================================
+  // EFFECT 2: CARGA REAL DE NUTRICIÓN DESDE TU DB
+  // ==========================================
+  useEffect(() => {
+    if (currentView === "nutrition") {
+      const fetchNutritionData = async () => {
+        setIsNutritionLoading(true);
+        try {
+          const [resAlimentos, resSuplementos] = await Promise.all([
+            fetch("http://localhost:5000/api/nutrition/all"),
+            fetch("http://localhost:5000/api/nutrition/supplements"),
+          ]);
+
+          if (resAlimentos.ok) {
+            const dataAlimentos = await resAlimentos.json();
+            setBackendAlimentos(dataAlimentos);
+          }
+          if (resSuplementos.ok) {
+            const dataSuplementos = await resSuplementos.json();
+            setBackendSuplementos(dataSuplementos);
+          }
+        } catch (error) {
+          console.error(
+            "❌ Error consultando base de datos de nutrición:",
+            error,
+          );
+        } finally {
+          setIsNutritionLoading(false);
+        }
+      };
+      fetchNutritionData();
+    }
+  }, [currentView]);
+
+  // ==========================================
+  // EFFECT 3: CARGA DE DATOS DEL GIMNASIO
+  // ==========================================
+  useEffect(() => {
+    if (currentView === "facility") {
+      const fetchFacilityData = async () => {
+        setIsFacilityLoading(true);
+        try {
+          const resEquipamiento = await fetch(
+            "http://localhost:5000/api/facility/equipment",
+          );
+          const resUso = await fetch(
+            "http://localhost:5000/api/facility/usage",
+          );
+
+          if (resEquipamiento.ok)
+            setBackendEquipamiento(await resEquipamiento.json());
+          if (resUso.ok) setBackendUsoLogs(await resUso.json());
+        } catch (error) {
+          console.error("❌ Error consultando logs de infraestructura:", error);
+        } finally {
+          setIsFacilityLoading(false);
+        }
+      };
+      fetchFacilityData();
+    }
   }, [currentView]);
 
   return (
-    <div className="flex bg-zinc-950 min-h-screen text-white">
-      {/* SIDEBAR OPERATIVO */}
+    <div className="flex min-h-screen bg-zinc-950 text-white selection:bg-cyan-500 selection:text-black antialiased">
       <Sidebar
         activeView={currentView}
         onGoHome={() => setCurrentView("home")}
         onGoUniverses={() => setCurrentView("universes")}
-        onGoNutrition={() => setCurrentView("nutrition")}
         onGoFacility={() => setCurrentView("facility")}
+        onGoNutrition={() => setCurrentView("nutrition")}
       />
 
-      {/* CONTENEDOR DE RENDERS DINÁMICOS */}
-      <main className="flex-1 ml-20">
-        {/* Agregamos esto para consumir el estado loading de forma productiva */}
-        {loading && (
-          <div className="fixed top-4 right-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs px-3 py-1.5 rounded-full font-mono animate-pulse z-50">
-            Sincronizando Base de Datos...
-          </div>
-        )}
-
-        {/* VISTA 1: HERO CANVAS HOME */}
+      <main className="flex-1 min-h-screen pl-20 overflow-y-auto transition-all duration-300">
+        {/* VISTA 1: HOME */}
         {currentView === "home" && (
-          <div className="relative min-h-[calc(screen-100px)] flex flex-col items-center justify-center text-center p-12 overflow-hidden select-none">
-            {/* Fondo Técnico Sutil (Líneas de Escaneo / Cuadrícula en CSS) */}
+          <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-6 md:p-12 overflow-hidden select-none">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
-            {/* Contenedor Central con la Frase Imponente */}
-            <div className="relative z-10 max-w-5xl space-y-6">
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.9] text-white">
+            <div className="relative z-10 max-w-5xl space-y-6 my-auto">
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.9] text-white">
                 FORJAMOS{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-400 to-zinc-600">
                   LEYENDAS.
                 </span>
                 <br />
-                <span className="text-cyan-400 text-3xl md:text-4xl font-mono tracking-[0.2em] not-italic block my-4 uppercase">
+                <span className="text-cyan-400 text-2xl md:text-4xl font-mono tracking-[0.2em] not-italic block my-4 uppercase">
                   CENTRALIZAMOS TU PROGRESO.
                 </span>
                 DOMINA TU POTENCIAL HÉROE.
               </h1>
 
-              <p className="font-mono text-xs md:text-sm text-zinc-550 max-w-xl mx-auto tracking-widest uppercase leading-relaxed">
-                The ultimate data platform to track and optimize your physical
-                and nutritional evolution.
-              </p>
-
-              {/* Botón Estilo Neón Reactivo */}
-              <div className="pt-8">
+              <div className="pt-6">
                 <button
                   onClick={() => setCurrentView("universes")}
                   className="relative group px-8 py-3 bg-cyan-950/20 border border-cyan-500/40 text-cyan-400 font-mono text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.4)]"
@@ -95,7 +156,6 @@ function App() {
                     INITIALIZE_SYSTEM_{" "}
                     <span className="font-sans font-bold">→</span>
                   </span>
-                  {/* Esquinas decorativas de interfaz táctica */}
                   <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
                   <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
                 </button>
@@ -107,45 +167,57 @@ function App() {
         {/* VISTA 2: SELECCIÓN DE UNIVERSOS */}
         {currentView === "universes" && (
           <UniverseSelection
-            heroesData={heroesData}
-            onSelectSerie={(id: number) => {
-              setSelectedSerieId(id); // ¡Ahora sí existe!
+            heroesData={heroes}
+            onSelectSerie={(id) => {
+              setSelectedSerieId(id);
               setCurrentView("catalog");
             }}
           />
         )}
 
-        {/* VISTA 3: ROSTER COMPLETO FILTRABLE */}
+        {/* VISTA 3: CATÁLOGO DE HÉROES */}
         {currentView === "catalog" && (
           <HeroCatalog
-            selectedSerieId={selectedSerieId} // Se lo pasamos por si quieres filtrar el catálogo por el universo clickeado
+            heroes={heroes}
+            selectedSerieId={selectedSerieId}
             onViewProfile={(id: number) => {
-              setSelectedHeroId(id);
+              const targetHero = heroes.find((h) => h.id_p === id) || null;
+              setSelectedHero(targetHero);
               setCurrentView("profile");
             }}
           />
         )}
 
-        {/* VISTA 4: EXPEDIENTE CLÍNICO INDIVIDUAL */}
-        {currentView === "profile" && selectedHeroId !== null && (
+        {/* VISTA 4: PERFIL DEL HÉROE */}
+        {currentView === "profile" && selectedHero && (
           <HeroProfile
-            hero={
-              heroesData.find((h) => h.id_p === selectedHeroId) || heroesData[0]
-            }
-            onBack={() => setCurrentView("catalog")}
+            hero={selectedHero}
+            onBack={() => {
+              setSelectedHero(null);
+              setCurrentView("catalog");
+            }}
           />
         )}
 
-        {/* VISTA 5: MONITOREO ENERGÉTICO Y SUPLEMENTOS */}
-        {currentView === "nutrition" && (
-          <NutritionDashboard heroesData={heroesData} />
+        {/* VISTA 5: MONITOREO DE INFRAESTRUCTURA */}
+        {currentView === "facility" && (
+          <GymFacility
+            equipamientoData={backendEquipamiento}
+            usoData={backendUsoLogs}
+            loading={isFacilityLoading}
+          />
         )}
 
-        {/* VISTA 6: LOGS DE LOGÍSTICA Y MAQUINARIA */}
-        {currentView === "facility" && <GymFacility />}
+        {/* VISTA 6: CONTROL DE DIETAS */}
+        {currentView === "nutrition" && (
+          <NutritionDashboard
+            alimentosData={backendAlimentos}
+            suplementosData={backendSuplementos}
+            heroesData={heroes}
+            loading={isNutritionLoading}
+          />
+        )}
       </main>
     </div>
   );
 }
-
-export default App;

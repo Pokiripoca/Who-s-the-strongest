@@ -1,4 +1,4 @@
-// src/views/UniverseSelection.tsx
+import React from "react";
 import type { Hero } from "../types/hero_types";
 
 interface UniverseSelectionProps {
@@ -6,42 +6,59 @@ interface UniverseSelectionProps {
   onSelectSerie: (id: number) => void;
 }
 
-export const UniverseSelection = ({
-  heroesData,
+export const UniverseSelection: React.FC<UniverseSelectionProps> = ({
+  heroesData = [],
   onSelectSerie,
-}: UniverseSelectionProps) => {
-  const seriesUnicas = Array.from(
-    new Map(
-      heroesData.map((h) => [
-        h.id_serie,
-        { id: h.id_serie, titulo: h.serie_titulo, color: h.color_hex },
-      ]),
-    ).values(),
+}) => {
+  const universosUnicos = heroesData.reduce(
+    (acc, hero) => {
+      const titulo = hero.text_titulo;
+      const idSerie = hero.id_serie;
+
+      if (idSerie && titulo && !acc.some((u) => u.id === idSerie)) {
+        acc.push({
+          id: idSerie,
+          titulo: titulo,
+          color: hero.color_hex || "#22d3ee",
+        });
+      }
+      return acc;
+    },
+    [] as { id: number; titulo: string; color: string }[],
   );
 
   return (
-    <div className="p-12 space-y-8">
-      <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
-        Select_Origin_Universe_
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {seriesUnicas.map((serie) => (
+    <div className="p-12 space-y-8 bg-zinc-950 min-h-screen font-mono text-white">
+      <div className="space-y-1">
+        <h2 className="text-xs tracking-[0.4em] text-zinc-500 uppercase">
+          SELECT_ORIGIN_UNIVERSE_
+        </h2>
+      </div>
+
+      {/* GRILLA TÁCTICA DE UNIVERSOS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {universosUnicos.map((universo) => (
           <div
-            key={serie.id}
-            onClick={() => onSelectSerie(serie.id)}
-            className="p-8 border border-white/10 bg-zinc-900/50 hover:bg-zinc-900 cursor-pointer transition-all relative overflow-hidden group"
-            style={{ borderColor: `${serie.color}20` }}
+            key={universo.id}
+            onClick={() => onSelectSerie(universo.id)}
+            className="bg-zinc-900/20 border border-zinc-900 p-6 relative cursor-pointer hover:border-zinc-800 transition-all duration-200 group h-32 flex flex-col justify-between"
           >
-            <div
-              className="absolute top-0 left-0 w-1 h-full transition-all group-hover:w-2"
-              style={{ backgroundColor: serie.color }}
+            {/* Indicador de color lateral */}
+            <span
+              className="absolute left-0 top-0 bottom-0 w-1"
+              style={{ backgroundColor: universo.color }}
             />
-            <h3 className="text-2xl font-black italic uppercase text-white group-hover:text-cyan-400 transition-colors">
-              {serie.titulo}
-            </h3>
-            <p className="text-[10px] font-mono text-zinc-500 mt-2 tracking-widest uppercase">
-              Ver Expedientes →
-            </p>
+
+            {/* TÍTULO DEL UNIVERSO (Ahora sí aparecerá) */}
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-wider text-zinc-100 group-hover:text-cyan-400 transition-colors">
+                {universo.titulo}
+              </h3>
+            </div>
+
+            <div className="flex justify-between items-center text-[10px] text-zinc-500 tracking-widest uppercase">
+              <span>VER EXPEDIENTES →</span>
+            </div>
           </div>
         ))}
       </div>

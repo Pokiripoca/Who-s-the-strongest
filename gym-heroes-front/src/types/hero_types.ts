@@ -4,7 +4,7 @@ export interface Hero {
   alias: string;
   imagen_url: string;
   id_serie: number;
-  serie_titulo: string;
+  text_titulo: string;
   color_hex: string;
   estatus_salud: string;
   permite_entrenar: string;

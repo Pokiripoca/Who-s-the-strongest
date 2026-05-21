@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import React from "react";
 import { Home, LayoutGrid, Utensils, Activity } from "lucide-react";
 
@@ -61,14 +60,6 @@ export const Sidebar = ({
           active={activeView === "nutrition"}
         />
       </nav>
-
-      {/* STATUS INDICATOR AL FINAL */}
-      <div className="mt-auto mb-4 flex flex-col items-center gap-2">
-        <div className="w-1 h-1 rounded-full bg-cyan-500 animate-ping"></div>
-        <span className="text-[8px] font-mono text-zinc-600 uppercase vertical-text tracking-widest">
-          Live
-        </span>
-      </div>
     </aside>
   );
 };

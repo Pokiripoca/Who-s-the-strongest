@@ -11,7 +11,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
     nombre,
     alias,
     rango,
-    serie_titulo,
+    text_titulo, // 🎯 CORREGIDO: Cambiado de 'serie_titulo' a 'text_titulo'
     color_hex,
     estatus_salud,
     permite_entrenar,
@@ -75,7 +75,8 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
                 style={{ color: color_hex }}
                 className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase"
               >
-                {serie_titulo}
+                {text_titulo}{" "}
+                {/* 🎯 CORREGIDO: Muestra el nombre real del universo */}
               </span>
               <h2 className="text-3xl font-black italic tracking-tight uppercase mt-1">
                 {nombre}
@@ -114,7 +115,6 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
               </p>
             </div>
 
-            {/* CUADROS RECTOS E IDÉNTICOS A TU INTERFAZ */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-zinc-950/60 border border-zinc-850 p-4 font-mono">
                 <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
@@ -148,7 +148,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
                   PCT_GRASA
                 </p>
                 <p className="text-2xl font-black tracking-tight text-cyan-400 mt-1">
-                  {grasa_pct}
+                  {grasa_pct}%
                 </p>
               </div>
             </div>

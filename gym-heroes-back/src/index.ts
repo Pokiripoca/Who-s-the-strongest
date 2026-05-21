@@ -6,7 +6,10 @@ app.use(cors());
 app.use(express.json());
 
 async function startServer() {
+  // Importamos el pool de conexiones de tu archivo de base de datos
   const { pool } = await import("./db/index.ts");
+
+  console.log("⚙️ Registrando rutas en Express...");
 
   // ==========================================
   // 1. ENDPOINT: CATÁLOGO DE HÉROES
@@ -50,7 +53,7 @@ async function startServer() {
           alias: hero.alias || "Héroe en Entrenamiento",
           imagen_url: hero.imagen_url || "assets/heroes/default.png",
           id_serie: Number(hero.id_serie),
-          serie_titulo: hero.serie_titulo,
+          text_titulo: hero.serie_titulo,
           color_hex: hero.color_hex,
           estatus_salud: hero.estatus_salud,
           permite_entrenar: hero.permite_entrenar,
@@ -72,31 +75,57 @@ async function startServer() {
         .json({ error: "Internal Server Error", detalle: error.message });
     }
   });
-
   // ==========================================
-  // 2. ENDPOINT: NUTRICIÓN GENERAL (Para el Dashboard Colectivo)
+  // 2. ENDPOINT CORREGIDO: EXTRACCIÓN, LIMPIEZA Y CÁLCULO DE RESPALDO
   // ==========================================
   app.get("/api/nutrition/all", async (req, res) => {
     try {
+      console.log("📞 Petición recibida en GET /api/nutrition/all");
+
       const [rows]: any = await pool.query(`
         SELECT 
-          add_d.ID_P AS id_p,
-          p.Nombre_Plan AS plan_nombre,
-          p.Objetivo_Fisico AS objetivo,
-          p.Total_Calorias_Dia AS calorias,
-          p.Ratio_Proteina AS ratio_proteina,
-          p.Descripcion_Menu AS descripcion,
-          a.Nombre AS alimento_nombre,
-          a.Categoria AS alimento_categoria,
-          add_d.Porcion_Gramos AS porcion,
-          add_d.Frecuencia_Dia AS frecuencia
-        FROM asignacion_dietas_detalle add_d
-        INNER JOIN cat_planes_nutricion p ON add_d.ID_Plan = p.ID_Plan
-        INNER JOIN cat_alimentos a ON add_d.ID_Alimento = a.ID_Alimento
+          COALESCE(add_d.ID_P, 0) AS id_p,
+          COALESCE(p.Nombre_Plan, 'Plan Temporal') AS plan_nombre,
+          COALESCE(p.Objetivo_Fisico, 'Mantenimiento') AS objetivo,
+          a.Nombre AS aliento_nombre,
+          a.Categoria AS aliento_categoria,
+          COALESCE(add_d.Porcion_Gramos, 100) AS porcion,
+          COALESCE(add_d.Frecuencia_Dia, '1 vez al día') AS frecuencia,
+          a.*
+        FROM cat_alimentos a
+        LEFT JOIN asignacion_dietas_detalle add_d ON a.ID_Alimento = add_d.ID_Alimento
+        LEFT JOIN cat_planes_nutricion p ON add_d.ID_Plan = p.ID_Plan
       `);
-      res.json(rows);
+
+      const cleanNutritionValue = (val: any): number => {
+        if (val === null || val === undefined) return 0;
+        const str = String(val).toLowerCase();
+        const cleaned = str.replace(/[^\d.]/g, "");
+        const num = Number(cleaned);
+        return isNaN(num) ? 0 : num;
+      };
+
+      const processedRows = rows.map((row: any) => {
+        return {
+          id_p: Number(row.id_p),
+          plan_nombre: row.plan_nombre,
+          objetivo: row.objetivo,
+          aliento_nombre: row.aliento_nombre || "Alimento sin nombre",
+          aliento_categoria: row.aliento_categoria || "General",
+          porcion: Number(row.porcion),
+          frecuencia: row.frecuencia,
+
+          // 🎯 Mapeo directo usando tus nombres exactos de base de datos
+          calorias: cleanNutritionValue(row.Calorias_U),
+          proteinas: cleanNutritionValue(row.Proteina_g),
+          carbohidratos: cleanNutritionValue(row.Carbo_g),
+          grasas: cleanNutritionValue(row.Grasa_g),
+        };
+      });
+
+      res.json(processedRows);
     } catch (error: any) {
-      console.error("❌ Error en GET /api/nutrition/all:", error);
+      console.error("❌ Error crítico en GET /api/nutrition/all:", error);
       res
         .status(500)
         .json({ error: "Error en base de datos", detalle: error.message });
@@ -104,78 +133,80 @@ async function startServer() {
   });
 
   // ==========================================
-  // 3. ENDPOINT: DIAGNÓSTICO DE DIETAS POR ID
+  // 3. ENDPOINT: SUPLEMENTOS MAESTROS
   // ==========================================
-  app.get("/api/nutrition/:id", async (req, res) => {
+  app.get("/api/nutrition/supplements", async (req, res) => {
     try {
+      console.log("📞 Petición recibida en GET /api/nutrition/supplements");
+
       const [rows]: any = await pool.query(`
         SELECT 
-          add_d.ID_P AS id_p,
-          p.Nombre_Plan AS plan_nombre,
-          p.Objetivo_Fisico AS objetivo,
-          p.Total_Calorias_Dia AS calorias,
-          p.Ratio_Proteina AS ratio_proteina,
-          p.Descripcion_Menu AS descripcion,
-          a.Nombre AS alimento_nombre,
-          a.Categoria AS alimento_categoria,
-          add_d.Porcion_Gramos AS porcion,
-          add_d.Frecuencia_Dia AS frecuencia
-        FROM asignacion_dietas_detalle add_d
-        INNER JOIN cat_planes_nutricion p ON add_d.ID_Plan = p.ID_Plan
-        INNER JOIN cat_alimentos a ON add_d.ID_Alimento = a.ID_Alimento
+          COALESCE(asu.ID_P, 0) AS id_p,
+          cs.Nombre_Suplemento AS nombre,
+          COALESCE(cs.Marca_Base, 'Genérico') AS marca,
+          COALESCE(cs.Tipo_Suple, 'Polvo') AS tipo,
+          COALESCE(cs.Contenido_Neto, 'N/A') AS contenido,
+          COALESCE(cs.Costo_Aprox_USD, 0.0) AS costo,
+          COALESCE(cs.Beneficio_Principal, 'Suplementación Base') AS objetivo,
+          COALESCE(asu.Cantidad_Dosis, '1 porción') AS porcion,
+          COALESCE(asu.Frecuencia, 'Post-Entreno') AS timing
+        FROM cat_suplementos cs
+        LEFT JOIN asignacion_suplementos asu ON cs.ID_Suple = asu.ID_Suple
       `);
       res.json(rows);
     } catch (error: any) {
+      console.error("❌ Error en GET /api/nutrition/supplements:", error);
       res
         .status(500)
-        .json({ error: "Error en diagnóstico", detalle: error.message });
+        .json({ error: "Error en suplementos", detalle: error.message });
     }
   });
 
   // ==========================================
-  // 4. ENDPOINT: INFRAESTRUCTURA (Mapeado e Intercambio de Columnas)
+  // 4. ENDPOINT OPTIMIZADO: INFRAESTRUCTURA (Equipos)
   // ==========================================
   app.get("/api/facility/equipment", async (req, res) => {
     try {
+      console.log("📞 Petición recibida en GET /api/facility/equipment");
+
+      // Forzamos alias en minúsculas para neutralizar la sensibilidad a mayúsculas de SQL
       const [rows]: any = await pool.query(`
         SELECT 
-          id_equipo,
-          nombre,
-          categoria,
-          condicion,
-          ultimo_mantenimineto,
-          ubicacion
+          ID_Equipo AS id_equipo, 
+          Nombre AS nombre, 
+          Categoria AS categoria, 
+          Condicion AS condicion, 
+          Ultimo_Mantenimineto AS ultimo_mantenimineto, 
+          Ubicacion AS ubicacion 
         FROM equipamineto
       `);
 
       const fixedEquipment = rows.map((eq: any) => {
+        const ubicacionRaw = eq.ubicacion;
         const tieneFechaEnUbicacion =
-          eq.ubicacion && String(eq.ubicacion).includes("-");
+          ubicacionRaw && String(ubicacionRaw).includes("-");
 
-        let zonaReal = eq.ubicacion;
+        let zonaReal = ubicacionRaw || "Zona Común";
         let fechaReal = eq.ultimo_mantenimineto;
 
+        // Limpieza de emergencia por si las columnas vinieron invertidas en BD
         if (tieneFechaEnUbicacion) {
-          fechaReal = eq.ubicacion;
-
-          if (eq.categoria.toLowerCase().includes("libre"))
-            zonaReal = "Sector Pesos Libres";
-          else if (eq.categoria.toLowerCase().includes("cardio"))
+          fechaReal = ubicacionRaw;
+          const catLower = (eq.categoria || "").toLowerCase();
+          if (catLower.includes("libre")) zonaReal = "Sector Pesos Libres";
+          else if (catLower.includes("cardio"))
             zonaReal = "Cuadrante de Cardio";
-          else if (eq.categoria.toLowerCase().includes("recupera"))
+          else if (catLower.includes("recupera"))
             zonaReal = "Módulo de Sanación";
-          else if (
-            eq.categoria.toLowerCase().includes("ia") ||
-            eq.categoria.toLowerCase().includes("mística")
-          )
+          else if (catLower.includes("ia") || catLower.includes("mística"))
             zonaReal = "Cámara de Simulación";
           else zonaReal = "Área Operativa Central";
         }
 
         return {
-          id_equipo: eq.id_equipo,
-          nombre: eq.nombre,
-          categoria: eq.categoria,
+          id_equipo: eq.id_equipo ? Number(eq.id_equipo) : 0,
+          nombre: eq.nombre || "Dispositivo no identificado",
+          categoria: eq.categoria || "General",
           condicion: eq.condicion || "Operativo",
           ultimo_mantenimineto: fechaReal || "No registrado",
           ubicacion: zonaReal,
@@ -192,12 +223,43 @@ async function startServer() {
     }
   });
 
-  // ESCUCHA DEL SERVIDOR (Ubicado correctamente dentro de la función asíncrona)
+  // ==========================================
+  // 5. ENDPOINT OPTIMIZADO: HISTORIAL DE USO
+  // ==========================================
+  app.get("/api/facility/usage", async (req, res) => {
+    try {
+      console.log("📞 Petición recibida en GET /api/facility/usage");
+
+      // Estandarizamos todas las columnas a minúsculas con AS
+      const [rows]: any = await pool.query(`
+        SELECT 
+          ID_Uso AS id_uso, 
+          ID_Equipo AS id_equipo, 
+          ID_Heroe AS id_heroe, 
+          DATE_FORMAT(Fecha, '%Y-%m-%d %H:%i:%s') AS fecha, 
+          Duracion_Min AS duracion_min, 
+          Estado_Ini AS estado_ini, 
+          Estado_Final AS estado_final, 
+          Limpio AS limpio, 
+          Notas_Adicionales AS notas_adicionales 
+        FROM uso_equipamiento
+        ORDER BY Fecha DESC
+      `);
+
+      res.json(rows);
+    } catch (error: any) {
+      console.error("❌ Error en GET /api/facility/usage:", error);
+      res.status(500).json({
+        error: "Error al consultar bitácora",
+        detalle: error.message,
+      });
+    }
+  });
+
   const PORT = 5000;
   app.listen(PORT, () => {
     console.log(`🚀 Servidor activo y conectado en http://localhost:${PORT}`);
   });
 }
 
-// INICIALIZACIÓN FUERA DEL CUERPO DE LA FUNCIÓN
 startServer().catch((err) => console.error("❌ Error de arranque:", err));

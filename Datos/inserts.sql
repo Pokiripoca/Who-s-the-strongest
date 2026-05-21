@@ -21,53 +21,6 @@ VALUES
 (8, 'Avatar', 'Michael Dante DiMartino', 'Bryan Konietzko', 'Nickelodeon Animation Studio', 'EUA', 2005, '#00ffff'),
 (9, 'Dragon Ball', 'Akira Toriyama', NULL, 'Toei Animation', 'Japón', 1986, '#ff4500'),
 (10, 'Baki de Grappler', 'Keisuke Itagaki', NULL, 'TMS Entertainment', 'Japón', 2001, '#8B0000');
-INSERT INTO Heroes (ID_P, Nombre, Genero, ID_Serie, ID_Biotipo, ID_Estatus, ID_Faccion, Rol_Ocupacion, Rango_Poder, Imagen_URL) VALUES
-(1, 'All Might', 'M', 1, 4, 6, 1, 'Símbolo de Paz', 'S', 'assets/heroes/all_might.png'),
-(2, 'Endeavor', 'M', 1, 3, 1, 1, 'Héroe No. 1', 'S', 'assets/heroes/endeavor.png'),
-(3, 'Bakugo', 'M', 1, 2, 1, 1, 'Estudiante', 'S', 'assets/heroes/bakugo.png'),
-(4, 'Kirishima', 'M', 1, 2, 1, 1, 'Estudiante', 'A', 'assets/heroes/kirishima.png'),
-(5, 'Shoto Todoroki', 'M', 1, 2, 1, 1, 'Estudiante', 'S', 'assets/heroes/todoroki.png'),
-(6, 'Deku (Izuku)', 'M', 1, 2, 1, 1, 'Estudiante', 'S', 'assets/heroes/deku.png'),
-(7, 'Goku', 'M', 9, 4, 1, 3, 'Guerrero Z', 'SS', 'assets/heroes/goku.png'),
-(8, 'Vegeta', 'M', 9, 4, 1, 3, 'Príncipe Saiyan', 'SS', 'assets/heroes/vegeta.png'),
-(9, 'Trunks', 'M', 9, 2, 1, 3, 'Guerrero del Futuro', 'SS', 'assets/heroes/trunks.png'),
-(10, 'Portgas D. Ace', 'M', 3, 2, 1, 6, 'Comandante Pirata', 'S', 'assets/heroes/ace.png'),
-(11, 'Gyomei Himejima', 'M', 2, 4, 1, 4, 'Pilar de la Roca', 'A', 'assets/heroes/gyomei.png'),
-(12, 'Tengen Uzui', 'M', 2, 4, 1, 4, 'Pilar del Sonido', 'A', 'assets/heroes/tengen.png'),
-(13, 'Giyu Tomioka', 'M', 2, 2, 1, 4, 'Pilar del Agua', 'A', 'assets/heroes/giyu.png'),
-(14, 'Tanjiro Kamado', 'M', 2, 2, 1, 4, 'Cazador', 'A', 'assets/heroes/tanjiro.png'),
-(15, 'Inosuke', 'M', 2, 2, 1, 4, 'Cazador', 'B', 'assets/heroes/inosuke.png'),
-(16, 'Maki Zenin', 'F', 4, 2, 1, 5, 'Hechicera', 'A', 'assets/heroes/maki.png'),
-(17, 'Baki Hanma', 'M', 10, 4, 1, 10, 'Luchador', 'A', 'assets/heroes/baki.png'),
-(18, 'Doppo Orochi', 'M', 10, 3, 10, 10, 'Maestro Karate', 'B', 'assets/heroes/doppo.png'),
-(19, 'Roronoa Zoro', 'M', 3, 4, 2, 6, 'Espadachín', 'S', 'assets/heroes/zoro.png'),
-(20, 'Sanji', 'M', 3, 2, 1, 6, 'Cocinero/Luchador', 'S', 'assets/heroes/sanji.png'),
-(21, 'Trafalgar Law', 'M', 3, 1, 3, 6, 'Cirujano', 'S', 'assets/heroes/law.png'),
-(22, 'Miruko', 'F', 1, 2, 1, 1, 'Héroe Profesional', 'A', 'assets/heroes/miruko.png'),
-(23, 'Satoru Gojo', 'M', 4, 1, 1, 5, 'Hechicero Grado Esp.', 'SS', 'assets/heroes/gojo.png'),
-(24, 'Yuji Itadori', 'M', 4, 2, 1, 5, 'Recipiente', 'A', 'assets/heroes/itadori.png'),
-(25, 'Sukuna', 'M', 4, 4, 1, 11, 'Rey de Maldiciones', 'SS', 'assets/heroes/sukuna.png'),
-(26, 'Toji Fushiguro', 'M', 4, 4, 1, 11, 'Asesino de Hechiceros', 'S', 'assets/heroes/toji.png'),
-(27, 'Nanami Kento', 'M', 4, 4, 1, 5, 'Hechicero / Oficinista', 'A', 'assets/heroes/nanami.png'),
-(28, 'Dabi', 'M', 1, 1, 4, 8, 'Villano / Liga', 'S', 'assets/heroes/dabi.png'),
-(29, 'Shota Aizawa', 'M', 1, 1, 1, 1, 'Maestro U.A.', 'B', 'assets/heroes/aizawa.png'),
-(30, 'Hitoshi Shinso', 'M', 1, 1, 1, 2, 'Estudiante Gen Ed', 'B', 'assets/heroes/shinso.png'),
-(31, 'Hawks', 'M', 1, 1, 1, 1, 'Héroe No. 2', 'S', 'assets/heroes/hawks.png'),
-(32, 'Kyoshi', 'F', 8, 1, 1, 9, 'Avatar', 'SS', 'assets/heroes/kyoshi.png'),
-(33, 'Koga', 'F', 5, 2, 1, 11, 'Lider de tribu Lobo', 'A', 'assets/heroes/koga.png'),
-(34, 'Sango', 'F', 5, 1, 1, 12, 'Exterminadora Yokai', 'B', 'assets/heroes/sango.png'),
-(35, 'Inuyasha', 'M', 5, 2, 1, 12, 'Híbrido', 'S', 'assets/heroes/inuyasha.png'),
-(36, 'Toph Beifong', 'F', 8, 1, 1, 9, 'Maestra Tierra', 'A', 'assets/heroes/toph.png'),
-(37, 'Zuko', 'M', 8, 1, 1, 9, 'Principe de la nacion de Fuego', 'A', 'assets/heroes/zuko.png'),
-(38, 'Naruto Uzumaki', 'M', 7, 2, 1, 7, 'Ninja de la aldea de la hoja', 'SS', 'assets/heroes/naruto.png'),
-(39, 'Neji Hyuga', 'M', 7, 2, 1, 7, 'shinobi de elite', 'A', 'assets/heroes/neji.png'),
-(40, 'Sasuke Uchiha', 'M', 7, 2, 1, 7, 'ninja vengador', 'SS', 'assets/heroes/sasuke.png'),
-(41, 'Kakashi Hatake', 'M', 7, 1, 1, 7, 'lider del equipo 7', 'S', 'assets/heroes/kakashi.png'),
-(42, 'Rock Lee', 'M', 7, 1, 5, 7, 'Maestro de taijutsu', 'A', 'assets/heroes/rock_lee.png'),
-(43, 'Tsunade', 'F', 7, 4, 1, 7, 'Quinta Hokage', 'S', 'assets/heroes/tsunade.png'),
-(44, 'Ranma Saotome', 'M', 6, 1, 1, 13, 'Maestro de artes marciales', 'B', 'assets/heroes/ranma.png'),
-(45, 'Ryoga Hibiki', 'M', 6, 2, 1, 13, 'Artista marcial', 'B', 'assets/heroes/ryoga.png'),
-(46, 'Akane Tendo', 'F', 6, 1, 1, 13, 'estudiante de artes marciales', 'B', 'assets/heroes/akane.png');
 INSERT INTO Heroes (ID_P, Nombre, Genero, ID_Serie, ID_Biotipo, ID_Faccion, ID_Estatus, Rol_Ocupacion, Rango_Poder)
 VALUES
 (1, 'All Might', 'M', 1, 4, 1, 6, 'Símbolo de Paz', 'S'), -- Recuperación
@@ -251,77 +204,87 @@ VALUES
 (5, 'Recovery BCAA', 'Aminoácidos', 'Anti-Catabólico', '10g', 'Durante Entreno', 35.00, 'Ninguno', 'Protección del tejido muscular durante el esfuerzo.'),
 (6, 'Vital-Vits', 'Multivitamínico', 'Salud General', '1 cápsula', 'Mañana', 30.00, 'Ninguno', 'Soporte inmunológico y micronutrientes esenciales.');
 
+REPLACE INTO cat_planes_nutricion (ID_Plan, Nombre_Plan, Objetivo_Fisico, Total_Calorias_Dia, Ratio_Proteina, Descripcion_Menu)
+VALUES
+(1, 'Volumen Sucio', 'Ganancia masiva de masa', '5,000+ kcal', '30%', 'Altas grasas y carbohidratos'),
+(2, 'Definición Extrema', 'Marcar músculo (Ripped)', '2,200 kcal', '50%', 'Baja en carbohidratos, alta en fibra'),
+(3, 'Mantenimiento Atlético', 'Resistencia y agilidad', '3,000 kcal', '35%', 'Balanceado para guerreros híbridos'),
+(4, 'Ayuno de Combate', 'Claridad mental y ligereza', '1,800 kcal', '40%', 'Ventanas de 16 horas sin comer'),
+(5, 'Dieta de Regeneración', 'Recuperación de lesiones', '3,500 kcal', '45%', 'Alta en colágeno y micronutrientes'),
+(6, 'Superávit Limpio', 'Músculo sin grasa', '3,800 kcal', '40%', 'Carbohidratos complejos y proteína magra');
+
+TRUNCATE TABLE asignacion_dietas_detalle;
+
 INSERT INTO asignacion_dietas_detalle (ID_Asig_D, ID_P, ID_Plan, ID_Alimento, Porcion_Gramos, Frecuencia_Dia)
 VALUES
-(1, 1, 1, 8, 800, '4 veces'),   -- All Might: Volumen Sucio con Carne de Res
-(2, 2, 6, 1, 300, '3 veces'),   -- Endeavor: Superávit Limpio con Pollo
-(3, 3, 2, 1, 250, '4 veces'),   -- Bakugo: Definición con Pollo
-(4, 4, 3, 8, 400, '3 veces'),   -- Kirishima: Mantenimiento con Res
-(5, 5, 2, 2, 200, '3 veces'),   -- Shoto: Definición con Salmón
-(6, 6, 6, 7, 150, '5 veces'),   -- Deku: Superávit con Huevo
-(7, 7, 1, 3, 500, '4 veces'),   -- Goku: Volumen con Arroz (Carbohidratos para entrenar)
-(8, 8, 6, 1, 150, '2 veces'),   -- Vegeta: Superávit Limpio con Pollo
-(9, 9, 3, 2, 200, '3 veces'),   -- Trunks: Mantenimiento con Salmón
-(10, 10, 3, 4, 200, '2 veces'),  -- Ace: Mantenimiento con Camote
-(11, 11, 1, 8, 1000, '3 veces'), -- Gyomei: Volumen masivo con Res (1kg por comida)
-(12, 12, 6, 1, 300, '4 veces'),  -- Tengen: Superávit con Pollo
-(13, 13, 3, 2, 250, '2 veces'),  -- Tomioka: Mantenimiento con Salmón
-(14, 14, 3, 3, 400, '4 veces'),  -- Tanjiro: Mantenimiento con Arroz
-(15, 15, 1, 8, 600, '3 veces'),  -- Inosuke: Volumen con Res
-(16, 16, 2, 3, 300, '3 veces'),  -- Maki: Definición con Arroz
-(17, 17, 1, 8, 700, '4 veces'),  -- Baki: Volumen con Res
-(18, 18, 1, 4, 250, '2 veces'),  -- Doppo: Volumen con Camote
-(19, 19, 6, 2, 350, '3 veces'),  -- Zoro: Superávit con Salmón
-(20, 20, 3, 8, 500, '3 veces'),  -- Sanji: Mantenimiento con Res
-(21, 21, 5, 5, 60, '2 veces'),   -- Law: Regeneración con Batido de Proteína
-(22, 22, 2, 1, 300, '4 veces'),  -- Miruko: Definición con Pollo
-(23, 23, 6, 5, 80, '3 veces'),   -- Gojo: Superávit con Batido
-(24, 24, 3, 4, 100, '1 vez'),    -- Itadori: Mantenimiento con Camote
-(25, 25, 1, 8, 900, '3 veces'),  -- Sukuna: Volumen con Res
-(26, 26, 6, 1, 200, '3 veces'),  -- Toji: Superávit con Pollo
-(27, 27, 3, 3, 200, '3 veces'),  -- Nanami: Mantenimiento con Arroz
-(28, 28, 5, 7, 120, '2 veces'),  -- Dabi: Regeneración con Huevo
-(29, 29, 3, 8, 400, '2 veces'),  -- Aizawa: Mantenimiento con Res
-(30, 30, 3, 3, 250, '3 veces');  -- Shinso: Mantenimiento con Arroz
-
+(1, 1, 1, 8, 800, '4 veces al día'),   -- All Might
+(2, 2, 6, 1, 300, '3 veces al día'),   -- Endeavor
+(3, 3, 2, 1, 250, '4 veces al día'),   -- Bakugo
+(4, 4, 3, 8, 400, '3 veces al día'),   -- Kirishima
+(5, 5, 2, 2, 200, '3 veces al día'),   -- Shoto
+(6, 6, 6, 7, 150, '5 veces al día'),   -- Deku
+(7, 7, 1, 3, 500, '4 veces al día'),   -- Goku
+(8, 8, 6, 1, 150, '2 veces al día'),   -- Vegeta
+(9, 9, 3, 2, 200, '3 veces al día'),   -- Trunks
+(10, 10, 3, 4, 200, '2 veces al día'),  -- Ace
+(11, 11, 1, 8, 1000, '3 veces al día'), -- Gyomei
+(12, 12, 6, 1, 300, '4 veces al día'),  -- Tengen
+(13, 13, 3, 2, 250, '2 veces al día'),  -- Tomioka
+(14, 14, 3, 3, 400, '4 veces al día'),  -- Tanjiro
+(15, 15, 1, 8, 600, '3 veces al día'),  -- Inosuke
+(16, 16, 2, 3, 300, '3 veces al día'),  -- Maki
+(17, 17, 1, 8, 700, '4 veces al día'),  -- Baki
+(18, 18, 1, 4, 250, '2 veces al día'),  -- Doppo
+(19, 19, 6, 2, 350, '3 veces al día'),  -- Zoro
+(20, 20, 3, 8, 500, '3 veces al día'),  -- Sanji
+(21, 21, 5, 5, 60, '2 veces al día'),   -- Law
+(22, 22, 2, 1, 300, '4 veces al día'),  -- Miruko
+(23, 23, 6, 5, 80, '3 veces al día'),   -- Gojo
+(24, 24, 3, 4, 100, '1 vez al día'),    -- Itadori
+(25, 25, 1, 8, 900, '3 veces al día'),  -- Sukuna
+(26, 26, 6, 1, 200, '3 veces al día'),  -- Toji
+(27, 27, 3, 3, 200, '3 veces al día'),  -- Nanami
+(28, 28, 5, 7, 120, '2 veces al día'),  -- Dabi
+(29, 29, 3, 8, 400, '2 veces al día'),  -- Aizawa
+(30, 30, 3, 3, 250, '3 veces al día');  -- Shinso
 
 INSERT INTO bitacora_entrenamiento (ID_Bit, ID_P, ID_Ejerc, Series, Repeticiones, Carga_Intensidad, Fecha_Entreno)
 VALUES
-(1, 1, 9, 5, 5, '500 kg', '2026-03-01'),
-(2, 2, 1, 4, 8, '140 kg', '2026-03-01'),
-(3, 3, 3, 4, 12, 'Lastre 30 kg', '2026-03-01'),
-(4, 4, 2, 5, 5, '220 kg', '2026-03-01'), 
-(5, 5, 6, 4, 1, 'Resistencia Térmica', '2026-03-01'),
-(6, 6, 7, 5, 10, '180 kg (Shoot Style)', '2026-03-01'), 
-(7, 7, 2, 10, 1, '10,000 kg (Gravedad)', '2026-03-02'), 
-(8, 8, 9, 8, 3, '8,000 kg', '2026-03-02'),
-(9, 9, 11, 4, 10, '100 kg', '2026-03-02'),
-(10, 10, 1, 4, 12, '80 kg', '2026-03-02'),
-(11, 11, 2, 3, 1, '400 kg (Roca)', '2026-03-02'),
-(12, 12, 10, 4, 15, 'Extravagante', '2026-03-02'), 
-(13, 13, 3, 5, 20, 'Calistenia Fluida', '2026-03-02'),
-(14, 14, 9, 4, 10, '90 kg', '2026-03-02'),
-(15, 15, 7, 6, 15, '140 kg (Montaña)', '2026-03-02'),
-(16, 16, 3, 5, 15, 'Lastre 40 kg', '2026-03-03'),
-(17, 17, 10, 10, 50, 'Peso Corporal', '2026-03-03'),
-(18, 18, 9, 3, 5, '160 kg', '2026-03-03'),
-(19, 19, 11, 5, 5, '250 kg (Agarre)', '2026-03-03'), 
-(20, 20, 7, 8, 20, 'Pierna del Diablo', '2026-03-03'),
-(21, 21, 6, 3, 2, 'Precisión Quirúrgica', '2026-03-03'), 
-(22, 22, 7, 5, 5, '200 kg (Explosivo)', '2026-03-03'), 
-(23, 23, 6, 1, 0, 'Infinito', '2026-03-04'),
-(24, 24, 9, 5, 5, '180 kg (Divergente)', '2026-03-04'), 
-(25, 25, 2, 1, 1, '1,000 kg', '2026-03-04'),
-(26, 26, 3, 5, 30, 'Sin Energía Maldita', '2026-03-04'), 
-(27, 27, 11, 4, 10, '110 kg (Hora Extra)', '2026-03-04'), 
-(28, 28, 1, 3, 8, '60 kg', '2026-03-04'),
-(29, 29, 3, 4, 15, 'Agarre de Bufanda', '2026-03-04'), 
-(30, 30, 6, 3, 2, 'Control Mental', '2026-03-04'), 
-(31, 31, 4, 10, 10, 'Alta Velocidad', '2026-03-05'), 
-(32, 32, 9, 4, 8, '85 kg', '2026-03-05'),
-(33, 33, 10, 4, 12, 'Hilo de Acero', '2026-03-05'),
-(34, 34, 3, 6, 20, 'Élite Ackerman', '2026-03-05'),
-(35, 35, 2, 5, 5, '150 kg (Híbrido)', '2026-03-05');
+(1, 1, 9, 5, 5, '500 kg', '2026-03-01'),           -- All Might: Press de Banca
+(2, 2, 1, 4, 8, '140 kg', '2026-03-01'),           -- Endeavor: Press Militar
+(3, 3, 3, 4, 12, 'Lastre 30 kg', '2026-03-01'),    -- Bakugo: Dominadas
+(4, 4, 2, 5, 5, '220 kg', '2026-03-01'),           -- Kirishima: Peso Muerto
+(5, 5, 6, 4, 1, 'Resistencia Térmica', '2026-03-01'), -- Shoto: Plancha (1 min)
+(6, 6, 7, 5, 10, '180 kg (Shoot Style)', '2026-03-01'), -- Deku: Sentadilla Búlgara
+(7, 7, 2, 10, 1, '10,000 kg (Gravedad)', '2026-03-02'), -- Goku: Peso Muerto
+(8, 8, 9, 8, 3, '8,000 kg', '2026-03-02'),         -- Vegeta: Press de Banca
+(9, 9, 11, 4, 10, '100 kg', '2026-03-02'),         -- Trunks: Remo con Barra
+(10, 10, 1, 4, 12, '80 kg', '2026-03-02'),         -- Ace: Press Militar
+(11, 11, 2, 3, 1, '400 kg (Roca)', '2026-03-02'),  -- Gyomei: Peso Muerto
+(12, 12, 10, 4, 15, 'Extravagante', '2026-03-02'), -- Tengen: Rompecráneos
+(13, 13, 3, 5, 20, 'Calistenia Fluida', '2026-03-02'), -- Tomioka: Dominadas
+(14, 14, 9, 4, 10, '90 kg', '2026-03-02'),         -- Tanjiro: Press de Banca
+(15, 15, 7, 6, 15, '140 kg (Montaña)', '2026-03-02'), -- Inosuke: Sentadilla Búlgara
+(16, 16, 3, 5, 15, 'Lastre 40 kg', '2026-03-03'),  -- Maki: Dominadas
+(17, 17, 10, 10, 50, 'Peso Corporal', '2026-03-03'), -- Baki: Rompecráneos
+(18, 18, 9, 3, 5, '160 kg', '2026-03-03'),         -- Doppo: Press de Banca
+(19, 19, 11, 5, 5, '250 kg (Agarre)', '2026-03-03'), -- Zoro: Remo con Barra
+(20, 20, 7, 8, 20, 'Pierna del Diablo', '2026-03-03'), -- Sanji: Sentadilla Búlgara
+(21, 21, 6, 3, 2, 'Precisión Quirúrgica', '2026-03-03'), -- Law: Plancha (2 min)
+(22, 22, 7, 5, 5, '200 kg (Explosivo)', '2026-03-03'), -- Miruko: Sentadilla Búlgara
+(23, 23, 6, 1, 0, 'Infinito', '2026-03-04'),       -- Gojo: Plancha
+(24, 24, 9, 5, 5, '180 kg (Divergente)', '2026-03-04'), -- Itadori: Press de Banca
+(25, 25, 2, 1, 1, '1,000 kg', '2026-03-04'),       -- Sukuna: Peso Muerto
+(26, 26, 3, 5, 30, 'Sin Energía Maldita', '2026-03-04'), -- Toji: Dominadas
+(27, 27, 11, 4, 10, '110 kg (Hora Extra)', '2026-03-04'), -- Nanami: Remo con Barra
+(28, 28, 1, 3, 8, '60 kg', '2026-03-04'),          -- Dabi: Press Militar
+(29, 29, 3, 4, 15, 'Agarre de Bufanda', '2026-03-04'), -- Aizawa: Dominadas
+(30, 30, 6, 3, 2, 'Control Mental', '2026-03-04'), -- Shinso: Plancha (1.5 min)
+(31, 31, 4, 10, 10, 'Alta Velocidad', '2026-03-05'), -- Hawks: Sprints
+(32, 32, 9, 4, 8, '85 kg', '2026-03-05'),          -- Kyoshi: Press de Banca
+(33, 33, 10, 4, 12, 'Hilo de Acero', '2026-03-05'), -- Koga: Rompecráneos
+(34, 34, 3, 6, 20, 'Élite Ackerman', '2026-03-05'), -- Sango: Dominadas
+(35, 35, 2, 5, 5, '150 kg (Híbrido)', '2026-03-05'); -- Inuyasha: Peso Muerto
 
 INSERT INTO asignacion_suplementos (ID_Asig_S, ID_P, ID_Suple, Cantidad_Dosis, Frecuencia, Objetivo_Entreno)
 VALUES
@@ -357,6 +320,7 @@ VALUES
 (30, 44, 6, '1 cap', 'Mañana', 'Equilibrio Marcial');
 
 
+-- 18. Credenciales de Acceso
 INSERT INTO credenciales_access (id_credenciales, id_heroe, username, password, ultimo_acceso) VALUES
 (1, 1, 'all_might', 'AllMight2024!', NOW()),
 (2, 2, 'endeavor', 'Endeavor2024!', NOW()),
@@ -404,7 +368,7 @@ INSERT INTO credenciales_access (id_credenciales, id_heroe, username, password, 
 (44, 44, 'ranma', 'Ranma2024!', NOW()),
 (45, 45, 'ryoga', 'Ryoga2024!', NOW()),
 (46, 46, 'akane', 'Akane2024!', NOW());
-
+-- 17. Auditoría de Peso
 INSERT INTO auditoria_peso (id_auditoria, id_heroe, peso_ant, peso_nue, fecha) VALUES
 (1, 1, 255.00, 252.50, '2024-01-10 08:00:00'),
 (2, 2, 95.00, 96.20, '2024-01-11 09:00:00'),
@@ -479,3 +443,59 @@ VALUES
 (8, 8, 14, '2026-05-04 09:00:00', 35, 'Operativo', 'Excelente', 1, 'Tanjiro usó el tanque de Bacta tras una misión intensa.'),
 (9, 9, 36, '2026-05-04 10:30:00', 45, 'Operativo', 'Operativo', 1, 'Toph probó la plataforma gravitacional para equilibrio.'),
 (10, 5, 37, '2026-05-05 12:00:00', 30, 'Excelente', 'Excelente', 1, 'Zuko entrenó con las mancuernas de Enano Blanco.');
+
+ALTER TABLE medidas_fisicas
+MODIFY COLUMN ID_Medida INT AUTO_INCREMENT;
+INSERT INTO medidas_fisicas (ID_P, Peso_kg, Altura_cm, Grasa_Pct, Pecho_cm, Cintura_cm, Somatotipo_Asignado)
+VALUES
+(1, 257.00, 220.00, '4.8%', 127, 84, 'Hipertrófico'),
+(2, 120.00, 195.00, '7.5%', 117, 89, 'Endomorfo'),
+(3, 71.00, 172.00, '8.5%', 102, 73, 'Mesomorfo'),
+(4, 73.00, 175.00, '9.5%', 105, 77, 'Mesomorfo'),
+(5, 69.00, 176.00, '7.5%', 100, 71, 'Mesomorfo'),
+(6, 78.50, 166.00, '11.0%', 103, 74, 'Mesomorfo'),
+(7, 82.00, 175.00, '6.5%', 112, 75, 'Hipertrófico'),
+(8, 58.00, 164.00, '5.8%', 97, 69, 'Hipertrófico'),
+(9, 61.50, 170.00, '6.5%', 94, 71, 'Mesomorfo'),
+(10, 72.00, 185.00, '7.8%', 102, 75, 'Mesomorfo'),
+(11, 132.00, 220.00, '9.5%', 137, 94, 'Hipertrófico'),
+(12, 96.50, 198.00, '6.8%', 122, 84, 'Hipertrófico'),
+(13, 70.00, 176.00, '8.5%', 100, 74, 'Mesomorfo'),
+(14, 62.50, 165.00, '9.0%', 92, 71, 'Mesomorfo'),
+(15, 64.00, 164.00, '7.5%', 107, 73, 'Mesomorfo'),
+(16, 55.50, 170.00, '11.5%', 87, 64, 'Mesomorfo'),
+(17, 72.50, 167.00, '3.8%', 117, 67, 'Hipertrófico'),
+(18, 111.00, 178.00, '11.8%', 132, 91, 'Endomorfo'),
+(19, 95.50, 181.00, '6.5%', 120, 79, 'Hipertrófico'),
+(20, 78.00, 180.00, '7.5%', 104, 75, 'Mesomorfo'),
+(21, 76.50, 191.00, '8.5%', 100, 77, 'Ectomorfo'),
+(22, 53.00, 159.00, '9.5%', 94, 61, 'Mesomorfo'),
+(23, 83.00, 190.00, '5.5%', 107, 77, 'Ectomorfo'),
+(24, 81.50, 173.00, '8.5%', 110, 75, 'Mesomorfo'),
+(25, 81.00, 173.00, '4.5%', 112, 73, 'Hipertrófico'),
+(26, 92.00, 185.00, '3.5%', 122, 77, 'Hipertrófico'),
+(27, 86.00, 184.00, '9.5%', 107, 81, 'Hipertrófico'),
+(28, 61.50, 175.00, '10.5%', 90, 69, 'Ectomorfo'),
+(29, 69.50, 183.00, '12.5%', 94, 74, 'Ectomorfo'),
+(30, 65.00, 177.00, '11.5%', 92, 72, 'Ectomorfo'),
+(31, 76.00, 172.00, '7.5%', 102, 71, 'Ectomorfo'),
+(32, 56.50, 180.00, '10.5%', 87, 62, 'Ectomorfo'),
+(33, 66.50, 173.00, '8.5%', 97, 69, 'Mesomorfo'),
+(34, 51.50, 163.00, '13.5%', 84, 59, 'Ectomorfo'),
+(35, 66.50, 168.00, '7.5%', 100, 73, 'Mesomorfo'),
+(36, 46.50, 140.00, '14.5%', 82, 57, 'Ectomorfo'),
+(37, 64.50, 160.00, '9.5%', 94, 69, 'Ectomorfo'),
+(38, 68.00, 166.00, '8.5%', 104, 74, 'Mesomorfo'),
+(39, 65.50, 172.00, '9.5%', 97, 71, 'Mesomorfo'),
+(40, 68.50, 168.00, '7.5%', 100, 72, 'Mesomorfo'),
+(41, 77.50, 181.00, '9.5%', 107, 77, 'Ectomorfo'),
+(42, 71.50, 172.00, '6.5%', 110, 73, 'Ectomorfo'),
+(43, 59.50, 163.00, '14.5%', 97, 64, 'Hipertrófico'),
+(44, 66.00, 164.00, '10.5%', 100, 73, 'Ectomorfo'),
+(45, 69.50, 173.00, '11.5%', 102, 75, 'Mesomorfo'),
+(46, 49.50, 156.00, '13.5%', 86, 61, 'Ectomorfo')
+ON DUPLICATE KEY UPDATE
+  Peso_kg = VALUES(Peso_kg),
+  Grasa_Pct = VALUES(Grasa_Pct),
+  Pecho_cm = VALUES(Pecho_cm),
+  Cintura_cm = VALUES(Cintura_cm);

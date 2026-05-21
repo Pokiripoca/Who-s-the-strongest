@@ -114,7 +114,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-6">
         <div>
           <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
-            Come cómo tu heroe
+            Nutrición Estratégica
           </h1>
         </div>
         <div className="flex items-center gap-4 font-mono text-xs">

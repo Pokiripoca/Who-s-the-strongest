@@ -15,36 +15,19 @@ type View =
   | "facility"
   | "nutrition";
 
-const MOCK_HEROES: Hero[] = [
-  {
-    id_p: 3,
-    nombre: "Red Riot (Respaldo)",
-    alias: "Eijiro Kirishima",
-    imagen_url:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz6u3L-16S_vF_SOfG0pL0Y9m_EInT-F3o_g&s",
-    id_serie: 1,
-    serie_titulo: "Boku No Hero Academia",
-    color_hex: "#ff0000",
-    estatus_salud: "Óptimo",
-    permite_entrenar: "Sí",
-    tipo_cuerpo: "Endo-mesomorfo",
-    faccion: "U.A. HIGH",
-    rango: "A",
-    stats: { peso: 72, pecho: 105, cintura: 78, grasa_pct: 12 },
-  } as unknown as Hero,
-];
-
 function App() {
   const [currentView, setCurrentView] = useState<View>("home");
   const [selectedHeroId, setSelectedHeroId] = useState<number | null>(null);
-  const [selectedSerieId, setSelectedSerieId] = useState<number>(0);
+  // 1. Añadido el estado que faltaba para guardar la serie seleccionada
+  const [selectedSerieId, setSelectedSerieId] = useState<number | null>(null);
   const [heroesData, setHeroesData] = useState<Hero[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch("http://localhost:5000/api/heroes")
       .then((res) => {
-        if (!res.ok) throw new Error("Error en el servidor");
+        if (!res.ok) throw new Error("Error de conexión al ecosistema API");
         return res.json();
       })
       .then((data) => {
@@ -52,15 +35,14 @@ function App() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Usando MOCK_HEROES como respaldo:", err);
-        setHeroesData(MOCK_HEROES);
+        console.error("Falla crítica al conectar con el backend:", err);
         setLoading(false);
       });
-  }, []);
+  }, [currentView]);
 
   return (
     <div className="flex bg-zinc-950 min-h-screen text-white">
-      {/* SIDEBAR ORIGINAL */}
+      {/* SIDEBAR OPERATIVO */}
       <Sidebar
         activeView={currentView}
         onGoHome={() => setCurrentView("home")}
@@ -69,48 +51,83 @@ function App() {
         onGoFacility={() => setCurrentView("facility")}
       />
 
-      {/* CONTENEDOR PRINCIPAL */}
+      {/* CONTENEDOR DE RENDERS DINÁMICOS */}
       <main className="flex-1 ml-20">
-        {/* VISTA: HOME */}
-        {currentView === "home" && (
-          <h1 className="text-[12vw] p-12 font-black italic leading-[0.8]">
-            ENTRENA.
-            <br />
-            <span className="text-cyan-400">SUPÉRATE.</span>
-          </h1>
+        {/* Agregamos esto para consumir el estado loading de forma productiva */}
+        {loading && (
+          <div className="fixed top-4 right-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs px-3 py-1.5 rounded-full font-mono animate-pulse z-50">
+            Sincronizando Base de Datos...
+          </div>
         )}
 
-        {/* VISTA: SELECCIÓN DE UNIVERSOS */}
+        {/* VISTA 1: HERO CANVAS HOME */}
+        {currentView === "home" && (
+          <div className="relative min-h-[calc(screen-100px)] flex flex-col items-center justify-center text-center p-12 overflow-hidden select-none">
+            {/* Fondo Técnico Sutil (Líneas de Escaneo / Cuadrícula en CSS) */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+
+            {/* Contenedor Central con la Frase Imponente */}
+            <div className="relative z-10 max-w-5xl space-y-6">
+              <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.9] text-white">
+                FORJAMOS{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-400 to-zinc-600">
+                  LEYENDAS.
+                </span>
+                <br />
+                <span className="text-cyan-400 text-3xl md:text-4xl font-mono tracking-[0.2em] not-italic block my-4 uppercase">
+                  CENTRALIZAMOS TU PROGRESO.
+                </span>
+                DOMINA TU POTENCIAL HÉROE.
+              </h1>
+
+              <p className="font-mono text-xs md:text-sm text-zinc-550 max-w-xl mx-auto tracking-widest uppercase leading-relaxed">
+                The ultimate data platform to track and optimize your physical
+                and nutritional evolution.
+              </p>
+
+              {/* Botón Estilo Neón Reactivo */}
+              <div className="pt-8">
+                <button
+                  onClick={() => setCurrentView("universes")}
+                  className="relative group px-8 py-3 bg-cyan-950/20 border border-cyan-500/40 text-cyan-400 font-mono text-xs tracking-[0.3em] uppercase transition-all duration-300 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.4)]"
+                >
+                  <span className="relative z-10 flex items-center gap-2 justify-center">
+                    INITIALIZE_SYSTEM_{" "}
+                    <span className="font-sans font-bold">→</span>
+                  </span>
+                  {/* Esquinas decorativas de interfaz táctica */}
+                  <div className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
+                  <div className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-cyan-400" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* VISTA 2: SELECCIÓN DE UNIVERSOS */}
         {currentView === "universes" && (
           <UniverseSelection
             heroesData={heroesData}
             onSelectSerie={(id: number) => {
-              setSelectedSerieId(id);
+              setSelectedSerieId(id); // ¡Ahora sí existe!
               setCurrentView("catalog");
             }}
           />
         )}
 
-        {/* VISTA: CATÁLOGO DE HÉROES */}
-        {currentView === "catalog" &&
-          (loading ? (
-            <div className="p-12 font-mono text-cyan-400 animate-pulse text-2xl">
-              Cargando base de datos...
-            </div>
-          ) : (
-            <HeroCatalog
-              heroesData={heroesData}
-              onSelectHero={(id: number) => {
-                setSelectedHeroId(id);
-                setCurrentView("profile");
-              }}
-              onBack={() => setCurrentView("universes")}
-              serieId={selectedSerieId}
-            />
-          ))}
+        {/* VISTA 3: ROSTER COMPLETO FILTRABLE */}
+        {currentView === "catalog" && (
+          <HeroCatalog
+            selectedSerieId={selectedSerieId} // Se lo pasamos por si quieres filtrar el catálogo por el universo clickeado
+            onViewProfile={(id: number) => {
+              setSelectedHeroId(id);
+              setCurrentView("profile");
+            }}
+          />
+        )}
 
-        {/* VISTA: PERFIL DETALLADO */}
-        {currentView === "profile" && selectedHeroId && (
+        {/* VISTA 4: EXPEDIENTE CLÍNICO INDIVIDUAL */}
+        {currentView === "profile" && selectedHeroId !== null && (
           <HeroProfile
             hero={
               heroesData.find((h) => h.id_p === selectedHeroId) || heroesData[0]
@@ -119,12 +136,12 @@ function App() {
           />
         )}
 
-        {/* VISTA: CONTROL DE BIOCOMBUSTIBLE & SUPLEMENTOS */}
+        {/* VISTA 5: MONITOREO ENERGÉTICO Y SUPLEMENTOS */}
         {currentView === "nutrition" && (
           <NutritionDashboard heroesData={heroesData} />
         )}
 
-        {/* VISTA: INFRAESTRUCTURA Y COMPONENTES (FACILITY) */}
+        {/* VISTA 6: LOGS DE LOGÍSTICA Y MAQUINARIA */}
         {currentView === "facility" && <GymFacility />}
       </main>
     </div>

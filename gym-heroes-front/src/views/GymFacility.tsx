@@ -1,210 +1,203 @@
+// src/views/GymFacility.tsx
 import React, { useState, useEffect } from "react";
-import { Database, ShieldAlert, ShieldCheck, MapPin } from "lucide-react";
 
-interface RealEquipment {
+type GymEquipment = {
   id_equipo: number;
   nombre: string;
-  categoria: string;
-  condicion: string;
-  ultimo_mantenimineto: string;
   ubicacion: string;
-}
+  condicion: string;
+};
 
 export const GymFacility: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"areas" | "inventario">("areas");
-  const [equipment, setEquipment] = useState<RealEquipment[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [equipos, setEquipos] = useState<GymEquipment[]>([]);
+  const [selectedEquipo, setSelectedEquipo] = useState<number | "">("");
+  const [idHeroe, setIdHeroe] = useState<number | "">("");
+  const [duracion, setDuracion] = useState<number>(30);
+  const [estadoFinal, setEstadoFinal] = useState("Excelente");
+  const [notas, setNotas] = useState("");
+  const [errorBackend, setErrorBackend] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-
-    fetch("http://localhost:5000/api/facility/equipment")
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al consultar el servidor");
-        return res.json();
-      })
-      .then((data) => {
-        setEquipment(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error leyendo infraestructura de la DB:", err);
-        setLoading(false);
-      });
+    fetch("http://localhost:5000/api/equipos")
+      .then((res) => res.json())
+      .then((data) => setEquipos(data));
   }, []);
 
-  const ubicacionesUnicas = Array.from(
-    new Set(equipment.map((e) => e.ubicacion || "Área General Master")),
-  );
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorBackend(null);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/equipos/registrar-uso",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_equipo: selectedEquipo,
+            id_heroe: idHeroe,
+            duracion,
+            estado_ini:
+              equipos.find((eq) => eq.id_equipo === selectedEquipo)
+                ?.condicion || "Excelente",
+            estado_final: estadoFinal,
+            limpio: true,
+            notas,
+          }),
+        },
+      );
+
+      const resData = await response.json();
+
+      if (!response.ok) {
+        // Aquí capturamos de manera reactiva el SIGNAL SQLSTATE '45000' del backend
+        throw new Error(resData.message || "Error en el registro");
+      }
+
+      alert("¡Uso registrado y estatus de maquinaria actualizado!");
+      // Resetear formulario...
+    } catch (err: any) {
+      setErrorBackend(err.message);
+    }
+  };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      {/* CABECERA */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 pb-6 mb-8 gap-4">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight text-white uppercase italic">
-            Sistemas de <span className="text-cyan-400">Infraestructura</span>
-          </h1>
-          <p className="text-zinc-500 font-mono text-xs mt-1 flex items-center gap-1">
-            <Database size={12} /> Datos sincronizados en vivo desde la tabla
-            `equipamineto`.
-          </p>
-        </div>
+    <div className="p-6 bg-slate-950 text-slate-100 min-h-screen grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Formulario de Registro Transaccional */}
+      <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4 lg:col-span-1 h-fit">
+        <h2 className="text-xl font-black text-amber-400 tracking-wide">
+          LOG DE ENTRENAMIENTO
+        </h2>
 
-        {/* SELECTOR DE PESTAÑAS */}
-        <div className="flex bg-[#0a0a0a] border border-white/5 rounded-xl p-1 font-mono text-sm">
-          <button
-            onClick={() => setActiveTab("areas")}
-            className={`px-4 py-2 rounded-lg font-bold transition-all ${activeTab === "areas" ? "bg-cyan-500 text-black shadow-lg" : "text-zinc-400"}`}
-          >
-            Sectores Operativos
-          </button>
-          <button
-            onClick={() => setActiveTab("inventario")}
-            className={`px-4 py-2 rounded-lg font-bold transition-all ${activeTab === "inventario" ? "bg-cyan-500 text-black shadow-lg" : "text-zinc-400"}`}
-          >
-            Inventario de Maquinaria
-          </button>
-        </div>
-      </div>
-
-      {loading ? (
-        <div className="text-center py-20 font-mono text-cyan-400 animate-pulse text-sm">
-          CONSULTANDO RED DE SENSORES HARDWARE...
-        </div>
-      ) : activeTab === "areas" ? (
-        <div className="space-y-6">
-          <h2 className="text-xs font-bold font-mono text-zinc-600 uppercase tracking-widest border-l-4 border-cyan-400 pl-3">
-            Estatus por Cuadrantes de Entrenamiento Real
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ubicacionesUnicas.map((zona, idx) => {
-              const equiposEnZona = equipment.filter(
-                (e) => e.ubicacion === zona,
-              );
-
-              const enMantenimiento = equiposEnZona.filter(
-                (e) =>
-                  e.condicion.toLowerCase().includes("mantenimiento") ||
-                  e.condicion.toLowerCase().includes("critico") ||
-                  e.condicion.toLowerCase().includes("dañado"),
-              ).length;
-
-              return (
-                <div
-                  key={idx}
-                  className="bg-[#0c0c0e] border border-white/5 rounded-2xl p-6 relative group overflow-hidden hover:border-cyan-500/20 transition-all duration-300"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/[0.02] rounded-full blur-2xl pointer-events-none" />
-
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-cyan-400/70 uppercase tracking-wider font-bold mb-1">
-                    <MapPin size={10} /> Sector Registrado
-                  </div>
-
-                  <h3 className="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:text-cyan-400 transition-colors">
-                    {zona}
-                  </h3>
-
-                  <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4 font-mono text-xs text-zinc-400">
-                    <div>
-                      <span className="block text-zinc-600 font-bold uppercase text-[9px]">
-                        Hardware Activo
-                      </span>
-                      <span className="text-base font-bold text-white">
-                        {equiposEnZona.length}{" "}
-                        {equiposEnZona.length === 1 ? "Unidad" : "Unidades"}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="block text-zinc-600 font-bold uppercase text-[9px]">
-                        Estado Crítico
-                      </span>
-                      <span
-                        className={`text-base font-bold ${enMantenimiento > 0 ? "text-red-400 animate-pulse" : "text-emerald-400"}`}
-                      >
-                        {enMantenimiento} Alertas
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {errorBackend && (
+          <div className="bg-rose-500/10 border border-rose-500 text-rose-400 p-3 rounded-lg text-xs font-semibold animate-shake">
+            {errorBackend}
           </div>
-        </div>
-      ) : (
-        <div>
-          <h2 className="text-xs font-bold font-mono text-zinc-600 mb-4 uppercase tracking-widest border-l-4 border-cyan-400 pl-3">
-            Hardware y Herramientas Quirúrgicas del Ecosistema
-          </h2>
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse font-mono text-xs">
-                <thead>
-                  <tr className="bg-[#0c0c0e] text-zinc-500 uppercase tracking-wider border-b border-white/5">
-                    <th className="p-4 w-20">ID</th>
-                    <th className="p-4">Dispositivo</th>
-                    <th className="p-4">Categoría</th>
-                    <th className="p-4">Ubicación Actual</th>
-                    <th className="p-4">Último Mantenimiento</th>
-                    <th className="p-4 text-right">Estatus Físico</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 text-zinc-300">
-                  {equipment.map((eq) => {
-                    const condLower = eq.condicion.toLowerCase();
-                    const esOptimo =
-                      condLower.includes("excelente") ||
-                      condLower.includes("operativo") ||
-                      condLower.includes("bueno") ||
-                      condLower.includes("indestructible");
+        )}
 
-                    return (
-                      <tr
-                        key={eq.id_equipo}
-                        className="hover:bg-white/[0.01] transition-colors group"
-                      >
-                        <td className="p-4 text-zinc-600 font-bold">
-                          #{eq.id_equipo}
-                        </td>
-                        <td className="p-4 font-bold text-white uppercase tracking-wide group-hover:text-cyan-400 transition-colors">
-                          {eq.nombre}
-                        </td>
-                        <td className="p-4 text-zinc-400">{eq.categoria}</td>
-                        <td className="p-4 text-zinc-400">
-                          <span className="bg-zinc-900/50 px-2 py-1 rounded border border-white/5 text-zinc-300">
-                            {eq.ubicacion}
-                          </span>
-                        </td>
-                        <td className="p-4 text-zinc-500">
-                          {eq.ultimo_mantenimineto
-                            ? eq.ultimo_mantenimineto.split("T")[0]
-                            : "Sin Registro"}
-                        </td>
-                        <td className="p-4 text-right">
-                          <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-black uppercase border ${
-                              esOptimo
-                                ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/10"
-                                : "bg-red-500/5 text-red-400 border-red-500/10 animate-pulse"
-                            }`}
-                          >
-                            {esOptimo ? (
-                              <ShieldCheck size={10} />
-                            ) : (
-                              <ShieldAlert size={10} />
-                            )}
-                            {eq.condicion}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">
+              Maquinaria / Artefacto
+            </label>
+            <select
+              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-sm focus:outline-none text-slate-200"
+              value={selectedEquipo}
+              onChange={(e) => setSelectedEquipo(Number(e.target.value))}
+              required
+            >
+              <option value="">Selecciona equipo...</option>
+              {equipos.map((eq) => (
+                <option key={eq.id_equipo} value={eq.id_equipo}>
+                  {eq.nombre} ({eq.condicion})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">
+              ID del Atleta / Héroe
+            </label>
+            <input
+              type="number"
+              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-sm focus:outline-none"
+              value={idHeroe}
+              onChange={(e) => setIdHeroe(Number(e.target.value))}
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">
+                Minutos
+              </label>
+              <input
+                type="number"
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-sm"
+                value={duracion}
+                onChange={(e) => setDuracion(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">
+                Condición de Entrega
+              </label>
+              <select
+                className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-sm text-slate-200"
+                value={estadoFinal}
+                onChange={(e) => setEstadoFinal(e.target.value)}
+              >
+                <option value="Excelente">Excelente</option>
+                <option value="Operativo">Operativo</option>
+                <option value="Desgastado">Desgastado</option>
+                <option value="Falla Técnica">Falla Técnica</option>
+              </select>
             </div>
           </div>
+
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">
+              Reporte Operativo (Notas)
+            </label>
+            <textarea
+              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-sm h-20 resize-none"
+              value={notas}
+              onChange={(e) => setNotas(e.target.value)}
+              placeholder="Ej. Dejó marcas de quemaduras por ráfagas de ki..."
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-lg text-sm transition-all shadow-md"
+          >
+            Registrar e Inyectar Datos
+          </button>
+        </form>
+      </div>
+
+      {/* Monitor del Inventario Completo */}
+      <div className="lg:col-span-2 bg-slate-900 border border-slate-800 p-5 rounded-xl">
+        <h2 className="text-xl font-black text-slate-300 tracking-wide mb-4">
+          ESTADO DE INFRAESTRUCTURA
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-slate-300">
+            <thead className="bg-slate-950 text-slate-400 uppercase text-xs tracking-wider border-b border-slate-800">
+              <tr>
+                <th className="p-3">Equipo</th>
+                <th className="p-3">Ubicación</th>
+                <th className="p-3 text-center">Condición</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/50">
+              {equipos.map((eq) => (
+                <tr key={eq.id_equipo} className="hover:bg-slate-850/40">
+                  <td className="p-3 font-semibold text-slate-200">
+                    {eq.nombre}
+                  </td>
+                  <td className="p-3 text-xs text-slate-400">{eq.ubicacion}</td>
+                  <td className="p-3 text-center">
+                    <span
+                      className={`px-2 py-0.5 rounded text-xs font-bold ${
+                        ["Excelente", "Operativo"].includes(eq.condicion)
+                          ? "bg-emerald-500/10 text-emerald-400"
+                          : ["Bueno", "Desgastado"].includes(eq.condicion)
+                            ? "bg-amber-500/10 text-amber-400"
+                            : "bg-rose-500/10 text-rose-400"
+                      }`}
+                    >
+                      {eq.condicion}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };

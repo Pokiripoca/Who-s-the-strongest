@@ -227,5 +227,4 @@ GRANT SELECT ON gym_heroes.vista_inventario_gym TO 'front_api_user'@'localhost';
 GRANT SELECT ON gym_heroes.vista_dieta_heroe TO 'front_api_user'@'localhost';
 GRANT SELECT ON gym_heroes.vista_perfil_heroe TO 'front_api_user'@'localhost';
 
--- Consolidación y refresco instantáneo de la matriz de privilegios en el motor
 FLUSH PRIVILEGES;

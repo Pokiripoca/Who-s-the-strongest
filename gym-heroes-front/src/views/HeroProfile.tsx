@@ -1,4 +1,4 @@
-import { ArrowLeft, Activity } from "lucide-react";
+import React from "react";
 import type { Hero } from "../types/hero_types";
 
 interface HeroProfileProps {
@@ -6,91 +6,178 @@ interface HeroProfileProps {
   onBack: () => void;
 }
 
-export const HeroProfile = ({ hero, onBack }: HeroProfileProps) => {
-  return (
-    <div className="p-12 bg-zinc-950 min-h-screen animate-in fade-in zoom-in-95 duration-500">
-      {/* Botón Volver */}
-      <button
-        onClick={onBack}
-        className="flex items-center gap-2 text-zinc-600 hover:text-cyan-400 mb-12 transition-colors font-mono text-[10px] tracking-[0.4em] uppercase group"
-      >
-        <ArrowLeft
-          size={14}
-          className="group-hover:-translate-x-1 transition-transform"
-        />
-        Exit_Dossier [ESC]
-      </button>
+export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
+  const {
+    nombre,
+    alias,
+    rango,
+    serie_titulo,
+    color_hex,
+    estatus_salud,
+    permite_entrenar,
+    tipo_cuerpo,
+    faccion,
+    peso,
+    pecho,
+    cintura,
+    grasa_pct,
+    imagen_url,
+  } = hero;
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        {/* Identificación (Izquierda) */}
-        <div className="lg:col-span-4 space-y-8">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 to-transparent h-1 w-full animate-scan z-10"></div>
-            <div className="relative aspect-[3/4] border border-white/10 overflow-hidden bg-zinc-900">
-              <img
-                src={hero.imagen_url}
-                alt={hero.nombre}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-zinc-950 to-transparent">
-                {/* Muestra dinámicamente la serie real de la base de datos */}
-                <span
-                  className="font-mono text-[10px] tracking-[0.5em] uppercase block mb-2"
-                  style={{ color: hero.color_hex || "#22d3ee" }}
-                >
-                  {hero.serie_titulo} // {hero.faccion}
+  return (
+    <div className="p-12 space-y-6 bg-zinc-950 text-white">
+      {/* RETORNO TÁCTICO */}
+      <div className="flex justify-between items-center border-b border-zinc-800/60 pb-6">
+        <div>
+          <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase">
+            Subject_Inspection_File_
+          </h2>
+          <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
+            Expediente Médico
+          </h1>
+        </div>
+        <button
+          onClick={onBack}
+          className="font-mono text-xs tracking-wider text-zinc-400 hover:text-white transition-colors bg-zinc-900 border border-zinc-800 px-4 py-2 uppercase"
+        >
+          // VOLVER_AL_ROSTER
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* COMPONENTE IDENTIDAD */}
+        <div className="bg-zinc-900/40 border border-zinc-800/80 p-6 relative flex flex-col justify-between">
+          <div
+            style={{ backgroundColor: color_hex }}
+            className="absolute top-0 left-0 right-0 h-[3px]"
+          />
+
+          <div className="space-y-4">
+            <div className="aspect-square bg-zinc-950/80 border border-zinc-850 relative overflow-hidden flex items-center justify-center">
+              {imagen_url ? (
+                <img
+                  src={imagen_url}
+                  alt={nombre}
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                />
+              ) : (
+                <span className="text-zinc-600 font-mono text-[10px] tracking-widest">
+                  NO_RENDER_DATA
                 </span>
-                <h2 className="text-5xl font-[1000] italic uppercase text-white leading-none tracking-tighter">
-                  {hero.nombre}
-                </h2>
-                <p className="text-zinc-500 font-mono text-xs mt-2 italic">
-                  {hero.alias}
+              )}
+              <span className="absolute top-3 right-3 bg-zinc-900 border border-zinc-800 font-mono text-[10px] px-2 py-0.5 text-zinc-400 uppercase tracking-widest">
+                RANK_{rango}
+              </span>
+            </div>
+
+            <div>
+              <span
+                style={{ color: color_hex }}
+                className="text-[10px] font-mono font-bold tracking-[0.2em] uppercase"
+              >
+                {serie_titulo}
+              </span>
+              <h2 className="text-3xl font-black italic tracking-tight uppercase mt-1">
+                {nombre}
+              </h2>
+              <p className="text-xs font-mono text-zinc-500 lowercase">
+                @{alias || "no_alias"}
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-zinc-850/60 space-y-2 font-mono text-xs">
+            <div className="flex justify-between">
+              <span className="text-zinc-550 uppercase">FACCCIÓN_</span>
+              <span className="text-zinc-300 font-bold uppercase">
+                {faccion}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-zinc-550 uppercase">BIOTIPO_</span>
+              <span className="text-zinc-300 font-bold uppercase">
+                {tipo_cuerpo}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* COMPONENTE METRICAS LOGÍSTICAS */}
+        <div className="lg:col-span-2 bg-zinc-900/40 border border-zinc-800/80 p-6 flex flex-col justify-between">
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xs font-mono tracking-widest text-zinc-500 uppercase">
+                ANTROPOMETRÍA_DETALLADA_
+              </h3>
+              <p className="text-lg font-bold uppercase mt-1">
+                Métricas Biológicas en Tiempo Real
+              </p>
+            </div>
+
+            {/* CUADROS RECTOS E IDÉNTICOS A TU INTERFAZ */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-zinc-950/60 border border-zinc-850 p-4 font-mono">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                  MASA CORPO.
+                </p>
+                <p className="text-2xl font-black tracking-tight text-white mt-1">
+                  {peso}{" "}
+                  <span className="text-xs font-normal text-zinc-500">KG</span>
+                </p>
+              </div>
+              <div className="bg-zinc-950/60 border border-zinc-850 p-4 font-mono">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                  C. PECHO
+                </p>
+                <p className="text-2xl font-black tracking-tight text-white mt-1">
+                  {pecho}{" "}
+                  <span className="text-xs font-normal text-zinc-500">CM</span>
+                </p>
+              </div>
+              <div className="bg-zinc-950/60 border border-zinc-850 p-4 font-mono">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                  C. CINTURA
+                </p>
+                <p className="text-2xl font-black tracking-tight text-white mt-1">
+                  {cintura}{" "}
+                  <span className="text-xs font-normal text-zinc-500">CM</span>
+                </p>
+              </div>
+              <div className="bg-zinc-950/60 border border-zinc-850 p-4 font-mono">
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                  PCT_GRASA
+                </p>
+                <p className="text-2xl font-black tracking-tight text-cyan-400 mt-1">
+                  {grasa_pct}
                 </p>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-px bg-white/5 border border-white/5">
-            <DataBox label="Rank" value={hero.rango} color="text-cyan-400" />
-            <DataBox
-              label="Health"
-              value={hero.estatus_salud}
-              color="text-emerald-500"
-            />
-          </div>
-        </div>
 
-        {/* Biometría (Derecha) */}
-        <div className="lg:col-span-8 space-y-12">
-          <div className="relative">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 mb-6 flex items-center gap-2">
-              <Activity size={14} className="text-cyan-500" />{" "}
-              Biometric_Analysis_v.4
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {/* 🔥 SOLUCIÓN INTEGRAL AL UNDEFINED:
-                Usamos el operador de coalescencia nula (??). Si 'hero.peso' no existe,
-                busca en 'hero.stats.peso'. Si tampoco existe, muestra '0' por defecto.
-              */}
-              <StatCard
-                label="Weight"
-                value={`${(hero as any).peso ?? 0}`}
-                unit="kg"
-              />
-              <StatCard
-                label="Chest"
-                value={`${(hero as any).pecho ?? 0}`}
-                unit="cm"
-              />
-              <StatCard
-                label="Waist"
-                value={`${(hero as any).cintura ?? 0}`}
-                unit="cm"
-              />
-              <StatCard
-                label="Body Fat"
-                value={`${(hero as any).grasa_pct ?? 0}`}
-                unit="%"
-              />
+          {/* DIAGNÓSTICO FINAL ESTILO TÁCTICO */}
+          <div className="bg-zinc-950 border border-zinc-850 p-4 mt-6 flex items-center justify-between font-mono text-xs">
+            <div>
+              <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                ESTADO DE SALUD
+              </p>
+              <p className="text-sm font-bold text-zinc-200 mt-0.5 uppercase">
+                {estatus_salud}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">
+                AUTORIZACIÓN_GYM
+              </p>
+              <span
+                className={`flex items-center gap-1.5 font-bold uppercase text-xs ${
+                  permite_entrenar === "Sí"
+                    ? "text-emerald-500"
+                    : "text-rose-500"
+                }`}
+              >
+                <span className="text-sm">●</span>{" "}
+                {permite_entrenar === "Sí" ? "CLEAR TO TRAIN" : "RESTRICTED"}
+              </span>
             </div>
           </div>
         </div>
@@ -98,26 +185,3 @@ export const HeroProfile = ({ hero, onBack }: HeroProfileProps) => {
     </div>
   );
 };
-
-const DataBox = ({ label, value, color }: any) => (
-  <div className="bg-zinc-950 p-5 border border-white/5">
-    <p className="text-[9px] font-mono text-zinc-600 uppercase mb-1 tracking-widest">
-      {label}
-    </p>
-    <p className={`text-2xl font-black italic uppercase ${color}`}>{value}</p>
-  </div>
-);
-
-const StatCard = ({ label, value, unit }: any) => (
-  <div className="bg-zinc-900/20 border border-white/5 p-6 group hover:bg-zinc-900 transition-all">
-    <p className="text-[9px] font-mono text-zinc-500 uppercase mb-3">{label}</p>
-    <div className="flex items-baseline gap-1">
-      <span className="text-3xl font-black italic text-white leading-none">
-        {value}
-      </span>
-      <span className="text-[10px] font-mono text-zinc-600 uppercase font-bold">
-        {unit}
-      </span>
-    </div>
-  </div>
-);

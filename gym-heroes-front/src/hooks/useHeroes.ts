@@ -1,38 +1,32 @@
 import { useState, useEffect } from "react";
 import type { Hero } from "../types/hero_types";
 
-export const useHeroes = () => {
+export function useHeroes() {
   const [heroes, setHeroes] = useState<Hero[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchHeroes = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("http://localhost:5000/api/heroes");
-
-      if (!response.ok) {
-        throw new Error("Error al conectar con el servidor de la Arena");
-      }
-
-      const data = await response.json();
-      setHeroes(data);
-      setError(null);
-    } catch (err: any) {
-      setError(err.message || "Error desconocido");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchHeroes();
+    const API_URL = "http://localhost:3000/api/heroes";
+
+    setLoading(true);
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error al conectar con el servidor logístico");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setHeroes(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
 
-  return {
-    heroes,
-    loading,
-    error,
-    refetch: fetchHeroes,
-  };
-};
+  return { heroes, loading, error };
+}

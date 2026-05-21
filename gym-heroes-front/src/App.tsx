@@ -34,7 +34,6 @@ export default function App() {
     [],
   );
   const [isFacilityLoading, setIsFacilityLoading] = useState<boolean>(false);
-  //  CARGA GLOBAL DE HÉROES
   useEffect(() => {
     const fetchGlobalHeroes = async () => {
       try {
@@ -50,7 +49,6 @@ export default function App() {
     fetchGlobalHeroes();
   }, []);
 
-  // CARGA REAL DE NUTRICIÓN DESDE TU DB
   useEffect(() => {
     if (currentView === "nutrition") {
       const fetchNutritionData = async () => {
@@ -82,7 +80,6 @@ export default function App() {
     }
   }, [currentView]);
 
-  //  CARGA DE DATOS DEL GIMNASIO
   useEffect(() => {
     if (currentView === "facility") {
       const fetchFacilityData = async () => {

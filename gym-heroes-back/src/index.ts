@@ -239,8 +239,8 @@ async function startServer() {
 
   const PORT = 5000;
   app.listen(PORT, () => {
-    console.log(`🚀 Servidor activo y conectado en http://localhost:${PORT}`);
+    console.log(`Servidor activo y conectado en http://localhost:${PORT}`);
   });
 }
 
-startServer().catch((err) => console.error("❌ Error de arranque:", err));
+startServer().catch((err) => console.error("Error de arranque:", err));

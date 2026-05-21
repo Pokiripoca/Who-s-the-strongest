@@ -22,6 +22,6 @@ export const pool = mysql.createPool(poolConfig);
     console.log("⚡ Conexión exitosa a la base de datos MySQL de DataGrip");
     connection.release();
   } catch (err) {
-    console.error("❌ Error crítico al conectar a MySQL:", err);
+    console.error(" Error crítico al conectar a MySQL:", err);
   }
 })();

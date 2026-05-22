@@ -1,9 +1,7 @@
 create database gym_heroes;
 USE gym_heroes;
 
--- SECCIÓN 1: Catálogos e Infraestructura Base (Tablas Independientes)
-
--- 1. Catálogo de Series (Soporte Front-end: Doble Autor y Color Temático)
+-- 1. Catáalogo de Series (Soporte Front-end: Doble Autor y Color Temático)
 CREATE TABLE Series_origen (
     ID_Serie INT PRIMARY KEY,
     Titulo VARCHAR(100) NOT NULL,
@@ -15,7 +13,7 @@ CREATE TABLE Series_origen (
     Color_Hex VARCHAR(7) DEFAULT '#FFFFFF'
 );
 
--- 2. Catálogo de Biotipos Corporales
+-- 2- Catalogo de Biotipos Corporales
 CREATE TABLE cat_tipos_cuerpo (
     ID_Tipo INT PRIMARY KEY,
     Nombre_Tipo VARCHAR(50) NOT NULL,
@@ -40,12 +38,12 @@ CREATE TABLE cat_estatus_salud (
     ID_Estatus INT PRIMARY KEY,
     Nombre_Estatus VARCHAR(50) NOT NULL,
     Nivel_Riesgo VARCHAR(50),
-    Permite_Entrenar VARCHAR(2), -- Almacena 'SI' o 'NO'
+    Permite_Entrenar VARCHAR(2), 
     Accion_Recomendada TEXT,
     Prioridad VARCHAR(20)
 );
 
--- 5. Catálogo de Alimentos (Unidades y Macronutrientes)
+-- 5. Catálogo de Alimentos
 CREATE TABLE cat_alimentos (
     ID_Alimento INT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
@@ -63,7 +61,7 @@ CREATE TABLE cat_planes_nutricion (
     ID_Plan INT PRIMARY KEY,
     Nombre_Plan VARCHAR(50) NOT NULL,
     Objetivo_Fisico VARCHAR(100),
-    Total_Calorias_Dia VARCHAR(20), -- Almacena texto como '2500 kcal' protegido por REGEXP en API
+    Total_Calorias_Dia VARCHAR(20), 
     Ratio_Proteina VARCHAR(20),
     Descripcion_Menu TEXT
 );
@@ -91,23 +89,23 @@ CREATE TABLE cat_suplementos (
     Beneficio_Principal TEXT
 );
 
--- 9. Inventario de Equipamiento de Gym (Tabla Padre de Infraestructura)
+-- 9- Inventario de Equipamiento de Gym (Tabla Padre de Infraestructura)
 CREATE TABLE Equipamineto (
     id_equipo INT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     categoria VARCHAR(50) NOT NULL,
-    condicion VARCHAR(50) NOT NULL, -- Evaluada por el Evento Diario
+    condicion VARCHAR(50) NOT NULL, 
     ultimo_mantenimineto DATE NULL,
     ubicacion VARCHAR(100) NOT NULL
 );
 
 
-
-
     set foreign_key_checks = 1;
 
 drop table if exists Heroes;
--- 10. Tabla Principal: Héroes
+
+
+-- 10. Tabla Principal
 CREATE TABLE Heroes (
     ID_P INT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
@@ -138,7 +136,7 @@ CREATE TABLE Medidas_Fisicas (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 12. Historial de Seguimiento Antropométrico
+-- 12. historial de Seguimiento 
 CREATE TABLE seguimiento_antropometrico (
     ID_Seg INT PRIMARY KEY,
     ID_P INT,
@@ -151,7 +149,7 @@ CREATE TABLE seguimiento_antropometrico (
     FOREIGN KEY (ID_P) REFERENCES Heroes(ID_P)
 );
 
--- 13. Asignación de Dietas Detallada
+-- 13. Asignación de Dietas D
 CREATE TABLE asignacion_dietas_detalle (
     ID_Asig_D INT PRIMARY KEY,
     ID_P INT,
@@ -164,7 +162,7 @@ CREATE TABLE asignacion_dietas_detalle (
     FOREIGN KEY (ID_Alimento) REFERENCES cat_alimentos(ID_Alimento)
 );
 
--- 14. Bitácora Transaccional de Entrenamiento
+-- 14- Bitácora Transaccional de Entrenamiento
 CREATE TABLE bitacora_entrenamiento (
     ID_Bit INT PRIMARY KEY,
     ID_P INT,
@@ -177,7 +175,7 @@ CREATE TABLE bitacora_entrenamiento (
     FOREIGN KEY (ID_Ejerc) REFERENCES Rutina_ejercicios(ID_Ejerc)
 );
 
--- 15. Asignación de Suplementos por Objetivo
+-- 15- Asignación de Suplementos por Objetivo
 CREATE TABLE asignacion_suplementos (
     ID_Asig_S INT PRIMARY KEY,
     ID_P INT,
@@ -189,7 +187,7 @@ CREATE TABLE asignacion_suplementos (
     FOREIGN KEY (ID_Suple) REFERENCES cat_suplementos(ID_Suple)
 );
 
--- 16. Registro Transaccional
+-- 16. Registro 
 CREATE TABLE Uso_Equipamiento (
     id_uso INT PRIMARY KEY,
     id_equipo INT,
@@ -204,7 +202,7 @@ CREATE TABLE Uso_Equipamiento (
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
 
--- 17. Tabla de Registro Histórico de Cambios de Peso
+-- 17. Registro
 CREATE TABLE auditoria_peso (
     id_auditoria INT PRIMARY KEY,
     id_heroe INT,
@@ -214,7 +212,6 @@ CREATE TABLE auditoria_peso (
     FOREIGN KEY (id_heroe) REFERENCES Heroes(ID_P)
 );
 
--- 18. Seguridad de Sistema
 CREATE TABLE credenciales_access (
     id_credenciales INT PRIMARY KEY,
     id_heroe INT,

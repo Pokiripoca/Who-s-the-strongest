@@ -25,7 +25,6 @@ DELIMITER ;
 
 
 -- Registro Centralizado de Bitácora de Entrenamiento
---  ID Héroe, ID Ejercicio, Series, Repeticiones, Carga/Intensidad
 -- Automatiza la inserción de rutinas en la bitácora calculando
 DELIMITER //
 
@@ -51,7 +50,6 @@ DELIMITER ;
 
 
 -- Validación Semántica de Aptitud Médica para Combate
---  ID Estatus de Salud (cat_estatus_salud)
 --  VARCHAR ('APTO' / 'EN REPOSO')
 -- Función determinística que valida si el estatus médico actual
 -- de un personaje le concede el permiso legal de entrenamiento y despliegue.
@@ -77,8 +75,7 @@ DELIMITER ;
 
 
 --  Control Operativo de Uso y Desgaste de Maquinaria
---  ID Uso, ID Equipo, ID Héroe, Duración, Estados, Limpieza, Notas
--- Restringe el uso de equipamiento bloqueando inserciones si el
+-- Restsringe el uso de equipamiento bloqueando inserciones si el
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS sp_registrar_uso_maquinaria $$
@@ -117,8 +114,7 @@ DELIMITER ;
 
 
 -- Sincronización Antropométrica Completa
--- ID Seguimiento, ID Héroe, Peso, Pecho, Cintura, % Grasa, Notas
---  Ejecuta una actualización transaccional dual. Altera el historial
+--  Ejeciuta una actualización transaccional dual. Altera el historial
 
 DELIMITER $$
 
@@ -147,11 +143,6 @@ END $$
 
 DELIMITER ;
 
--- Diario de Monitoreo de Infraestructura
--- Cada 24 horas a las 00:00:00
---  Evalúa de forma asíncrona la bitácora operativa diaria de uso.
--- Si detecta fallas o desgastes reportados por los usuarios, cambia el estado
--- del equipo automáticamente a 'Revisión Requerida'.
 SET GLOBAL event_scheduler = ON;
 
 DELIMITER $$
@@ -177,9 +168,7 @@ BEGIN
 END $$
 
 DELIMITER ;
--- Inicialización y Asignación de Roles del Sistema
---Garantiza el principio de menor privilegio aislando accesos por
--- Limpieza preventiva de usuarios existentes en el servidor local
+
 DROP USER IF EXISTS 'admin_gym'@'localhost';
 DROP USER IF EXISTS 'staff_operativo'@'localhost';
 DROP USER IF EXISTS 'front_api_user'@'localhost';
@@ -192,7 +181,6 @@ GRANT ALL PRIVILEGES ON gym_heroes.* TO 'admin_gym'@'localhost' WITH GRANT OPTIO
 
 --  Staff Clínico y Entrenadores Operativos
 -- Permisos: Inserción y actualización restringida a bitácoras, dietas,
--- evolución corporal y log de maquinarias. Lectura bloqueada a accesos sensibles.
 CREATE USER 'staff_operativo'@'localhost' IDENTIFIED BY 'StaffSecureAccess44!';
 GRANT SELECT, INSERT, UPDATE ON gym_heroes.bitacora_entrenamiento TO 'staff_operativo'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON gym_heroes.seguimiento_antropometrico TO 'staff_operativo'@'localhost';

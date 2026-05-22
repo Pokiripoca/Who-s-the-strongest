@@ -124,7 +124,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-8">
-          {/*  ALIMENTOS EN ALMACÉN */}
           <div className="space-y-4">
             <div className="flex justify-between items-center font-mono text-xs">
               <span className="flex items-center gap-2 text-white font-bold">
@@ -189,7 +188,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
             </div>
           </div>
 
-          {/* UPLEMENTOS AMPLILADOS EN ACADEMIA */}
           <div className="space-y-4">
             <div className="font-mono text-xs text-white font-bold flex items-center gap-2">
               [ ] SUPLEMENTOS_DISPONIBLES ({listaSuplementosUnicos.length})
@@ -245,7 +243,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: SELECCIÓN E INFORME PERSONALIZADO */}
         <div className="space-y-6 font-mono">
           {/* APARTADO SELECCIÓN */}
           <div className="space-y-2">
@@ -266,7 +263,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
             </select>
           </div>
 
-          {/* DIETA ESPECÍFICA DETALLADA */}
           <div className="space-y-2">
             <div className="text-xs text-white font-bold uppercase tracking-wider">
               Asignación Nutricional Específica
@@ -286,7 +282,6 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
                   </p>
                 </div>
 
-                {/* Comidas específicas del ID seleccionado */}
                 {dietaDelHeroe.comidas.length > 0 && (
                   <div className="space-y-1.5">
                     <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">

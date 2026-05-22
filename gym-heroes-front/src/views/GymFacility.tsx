@@ -57,7 +57,7 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
 
   return (
     <div className="p-12 space-y-8 bg-zinc-950 text-white min-h-screen selection:bg-orange-500 selection:text-black">
-      {/* HEADER  */}
+      {/* HEADWR  */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-6">
         <div>
           <h1 className="text-4xl font-black italic tracking-tight uppercase mt-1">
@@ -70,7 +70,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* PANEL IZQUIERDO Y CENTRAL: INVENTARIO DE HARDWARE Y BITÁCORA */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex justify-between items-center font-mono text-xs">
             <span className="flex items-center gap-2 text-white font-bold">
@@ -91,7 +90,6 @@ export const GymFacility: React.FC<GymFacilityProps> = ({
             </select>
           </div>
 
-          {/* GRID TÁCTICO RECTANGULAR DE MAQUINARIAS */}
           {equiposFiltrados.length === 0 ? (
             <div className="p-8 border border-zinc-900 bg-zinc-900/10 text-center font-mono text-xs text-zinc-600 uppercase tracking-widest"></div>
           ) : (

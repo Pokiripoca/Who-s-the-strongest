@@ -11,7 +11,7 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
     nombre,
     alias,
     rango,
-    text_titulo, // 🎯 CORREGIDO: Cambiado de 'serie_titulo' a 'text_titulo'
+    text_titulo,
     color_hex,
     estatus_salud,
     permite_entrenar,
@@ -26,7 +26,6 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
 
   return (
     <div className="p-12 space-y-6 bg-zinc-950 text-white">
-      {/* RETORNO TÁCTICO */}
       <div className="flex justify-between items-center border-b border-zinc-800/60 pb-6">
         <div>
           <h2 className="text-xs font-mono tracking-[0.4em] text-zinc-500 uppercase"></h2>
@@ -100,7 +99,6 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
           </div>
         </div>
 
-        {/* COMPONENTE METRICAS LOGÍSTICAS */}
         <div className="lg:col-span-2 bg-zinc-900/40 border border-zinc-800/80 p-6 flex flex-col justify-between">
           <div className="space-y-6">
             <div>
@@ -151,7 +149,6 @@ export const HeroProfile: React.FC<HeroProfileProps> = ({ hero, onBack }) => {
             </div>
           </div>
 
-          {/* DIAGNÓSTICO FINAL ESTILO TÁCTICO */}
           <div className="bg-zinc-950 border border-zinc-850 p-4 mt-6 flex items-center justify-between font-mono text-xs">
             <div>
               <p className="text-[10px] text-zinc-500 uppercase tracking-wider">

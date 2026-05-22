@@ -31,9 +31,7 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
   return (
     <div className="p-12 space-y-12 bg-zinc-950 min-h-screen text-white font-mono">
       {Object.keys(heroesPorUniverso).length === 0 ? (
-        <div className="text-center text-zinc-600 text-xs tracking-widest uppercase py-12 border border-dashed border-zinc-900 animate-fade-in">
-          NO_UNITS_FOUND
-        </div>
+        <div className="text-center text-zinc-600 text-xs tracking-widest uppercase py-12 border border-dashed border-zinc-900 animate-fade-in"></div>
       ) : (
         Object.entries(heroesPorUniverso).map(
           ([universoNombre, listaDeHeroes]) => {
@@ -64,9 +62,9 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
                       onClick={() => onViewProfile(hero.id_p)}
                       style={
                         {
-                          "--universo-glow": `${universoColor}26`, // Sombra suave (15% opacidad)
-                          "--universo-border": `${universoColor}66`, // Borde encendido (40% opacidad)
-                          animationDelay: `${index * 50}ms`, // Cascada secuencial (50ms por tarjeta)
+                          "--universo-glow": `${universoColor}26`,
+                          "--universo-border": `${universoColor}66`,
+                          animationDelay: `${index * 50}ms`,
                         } as React.CSSProperties
                       }
                       className="bg-zinc-900/20 border border-zinc-800/80 p-4 relative cursor-pointer 
@@ -85,7 +83,6 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     >
-                      {/* IMAGEN CON ZOOM EN HOVER */}
                       <div className="aspect-[4/5] bg-zinc-950 mb-3 overflow-hidden border border-zinc-900 group-hover:border-zinc-700/50 transition-colors">
                         <img
                           src={hero.imagen_url}
@@ -94,7 +91,6 @@ export const HeroCatalog: React.FC<HeroCatalogProps> = ({
                         />
                       </div>
 
-                      {/* DATOS TERMINAL MILITAR */}
                       <div className="space-y-1">
                         <div className="flex justify-between items-center text-[9px] text-zinc-500">
                           <span>ID_P: #{hero.id_p}</span>

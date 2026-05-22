@@ -8,10 +8,8 @@ interface HeroDashboardProps {
 }
 
 export function HeroDashboard({ heroes, onViewProfile }: HeroDashboardProps) {
-  // Estado local para manejar la pestaña activa manualmente con Tailwind
   const [activeTab, setActiveTab] = useState<string>("all");
 
-  // Extrae de forma automática las series únicas basadas en tus datos de MySQL
   const seriesUnicas = Array.from(
     new Map(
       heroes
@@ -23,7 +21,6 @@ export function HeroDashboard({ heroes, onViewProfile }: HeroDashboardProps) {
   return (
     <div className="w-full min-h-screen bg-zinc-950 p-6 font-mono text-white animate-fade-in">
       <div className="w-full space-y-8">
-        {/* Contenedor de Botones de Pestaña (Estilo Terminal Militar) */}
         <div className="flex justify-center border-b border-zinc-900 pb-3">
           <div className="bg-zinc-900/40 p-1 border border-zinc-800/60 rounded-md flex flex-wrap gap-1">
             {/* Botón: Ver Todo */}
@@ -38,7 +35,6 @@ export function HeroDashboard({ heroes, onViewProfile }: HeroDashboardProps) {
               [ ALL_UNITS ]
             </button>
 
-            {/* Botones Dinámicos por Anime */}
             {seriesUnicas.map((serie) => {
               const isSelected = activeTab === `serie-${serie.id}`;
               return (
@@ -58,9 +54,7 @@ export function HeroDashboard({ heroes, onViewProfile }: HeroDashboardProps) {
           </div>
         </div>
 
-        {/* Contenedor de Contenido con Animación de Transición de Tailwind */}
         <div className="transition-all duration-300 ease-in-out">
-          {/* Panel: Ver Todo */}
           {activeTab === "all" && (
             <div className="animate-fade-in">
               <HeroCatalog

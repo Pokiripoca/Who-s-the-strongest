@@ -1,4 +1,3 @@
-// src/types/index.ts
 export interface HeroStats {
   imc: number;
   grasa: string;
@@ -12,7 +11,7 @@ export interface Hero {
   nombre: string;
   rol: string;
   serie: string;
-  color: string; // El Color_Hex de la DB
+  color: string;
   rango: string;
   imagen: string;
   stats: HeroStats;

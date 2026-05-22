@@ -44,7 +44,6 @@ export const Sidebar = ({
           }
         />
 
-        {/* FACILITY */}
         <SidebarButton
           onClick={onGoFacility}
           icon={<Activity size={24} />}
